@@ -1,0 +1,16 @@
+import(methods)
+importFrom(Biobase, validMsg)
+
+exportClasses(QcMetric,
+              QcMetrics)
+
+exportMethods(status, "status<-",
+              name, "name<-",
+              qcdata, "qcdata<-",
+              show, plot,
+              "show<-", "plot<-",
+              "[", "[[")
+
+export(QcMetric, 
+       QcMetrics,
+       qcshow)

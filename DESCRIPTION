@@ -1,0 +1,13 @@
+Package: qcmetrics
+Type: Package
+Title: A framework for quality control
+Version: 0.1
+Author: Laurent Gatto
+Maintainer: Laurent Gatto <lg390@cam.ac.uk>
+Description: The package provides a framework for generic 
+	     quality control of data. It permits to create, 
+	     manage and visualise individual or sets of 
+	     quality control metrics and generate quality 
+	     control reports in various formats. 
+Imports: Biobase, methods
+License: GPL-2
