@@ -10,4 +10,4 @@ setGeneric("qcdata<-", function(object, ..., value) standardGeneric("qcdata<-"))
 setGeneric("show<-", function(object, value) standardGeneric("show<-"))
 setGeneric("plot<-", function(object, value) standardGeneric("plot<-"))
 
-
+setGeneric("qcReport", function(object, ...) standardGeneric("qcReport"))
