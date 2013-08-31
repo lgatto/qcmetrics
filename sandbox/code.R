@@ -3,7 +3,7 @@ library("qcmetrics")
 
 (qc <- QcMetric())
 qcdata(qc)
-qcdata(qc, "x")
+try(qcdata(qc, "x"))
 
 x <- rnorm(100)
 qcdata(qc, "qc1") <- x
@@ -41,3 +41,4 @@ qcm[1]
 qcm[[1]]
 
 
+qcReport(qc, type = "knitr")

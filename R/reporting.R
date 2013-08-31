@@ -6,3 +6,5 @@ setMethod("qcReport", "QcMetric",
                    nozzle = reporting_nozzle(object, ...))
               invisible()
           })
+
+## Sys.getenv("USER")          

@@ -14,21 +14,27 @@ qcshow <- function(object) {
 }
 
 
-QcMetric <- setClass("QcMetric",
-          slots = list(
-              name = "character",
-              qcdata = "environment",
-              plot = "function",
-              show = "function",
-              status = "LogicalOrNULL"),
-         prototype = prototype(
-             name = "A QcMetric prototype",
-             qcdata = new.env(),
-             plot = function(x, ...) {
-                 warning("No specific plot function defined")
-                 invisible(NULL)
-             }, 
-             show = qcshow))
+.QcMetric <- setClass("QcMetric",
+                      slots = list(
+                          name = "character",
+                          qcdata = "environment",
+                          plot = "function",
+                          show = "function",
+                          status = "LogicalOrNULL"),
+                      prototype = prototype(
+                          name = "A QcMetric prototype",
+                          qcdata = new.env(),
+                          plot = function(x, ...) {
+                              warning("No specific plot function defined")
+                              invisible(NULL)
+                          }, 
+                          show = qcshow))
+
+QcMetric <- function(...) {
+    ans <- .QcMetric(...)
+    ans@qcdata <- new.env()
+    ans
+}
 
 setMethod("show", "QcMetric",
           function(object) object@show(object))
