@@ -35,3 +35,9 @@ setMethod("[[","QcMetrics",
           function(x, i="numeric", j="missing" ,drop="missing") 
           x@qcdata[[i]])
 
+
+setMethod("name", "QcMetrics",
+          function(object) sapply(qcdata(object), name))
+
+setMethod("length", "QcMetrics",
+          function(x) length(qcdata(x)))

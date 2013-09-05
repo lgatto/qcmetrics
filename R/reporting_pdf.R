@@ -1,15 +1,13 @@
-## Need a knitr_header
-##        knitr_footer
-
-reporting_knitr <- function(object, ...) {
-    cat("\\section{", name(object) , "}\n\n", sep = "")
-    cat("<<dev='pdf', echo=TRUE>>=\n")
-    cat("show(object)\n")
-    cat("@\n\n") 
-    cat("\\begin{figure}[!hbt]\n")
-    cat("<<dev='pdf', echo=TRUE>>=\n")
-    cat("plot(object)\n")
-    cat("@\n") 
-    cat("\\end{figure}\n\n")
-    invisible()
+reporting_knitr <- function(qcm, i) {
+    c(paste0("\\section{", name(qcm[[i]]), "}"),
+      paste0("<<", name(qcm[[i]]), ", echo=FALSE>>="),
+      paste0("show(qcm[[", i, "]])"),
+      "@\n",
+      "\\begin{figure}[!hbt]",
+      "<<dev='pdf', echo=FALSE, fig.width=5, fig.height=5, fig.align='center'>>=",
+      paste0("plot(qcm[[", i, "]])"),
+      "@",
+      "\\end{figure}",
+      "\\clearpage")
 }
+

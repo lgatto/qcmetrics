@@ -9,7 +9,8 @@ exportMethods(status, "status<-",
               qcdata, "qcdata<-",
               show, plot,
               "show<-", "plot<-",
-              "[", "[[")
+              "[", "[[",
+              qcReport)
 
 export(QcMetric, 
        QcMetrics,

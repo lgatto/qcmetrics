@@ -1,5 +1,6 @@
 rm(list = ls(all = TRUE))
 library("qcmetrics")
+library("knitr")
 
 (qc <- QcMetric())
 qcdata(qc)
@@ -34,11 +35,22 @@ plot(qc)
 plot(qc, col = "red", pch = 19)
 dev.off()
 
-(qcm <- QcMetrics(qcdata = list(qc, qc)))
-qcdata(qcm)
+qc2 <- QcMetric(name = "My other metric", status = TRUE)
+qcdata(qc2, "x") <- rnorm(100)
+qcdata(qc2, "k") <- rep(LETTERS[1:2], 50)
 
-qcm[1]
-qcm[[1]]
+plot(qc2) <- function(object, ...) {
+    require("lattice")
+    d <- data.frame(x = qcdata(object, "x"),
+                    k = qcdata(object, "k"))
+    bwplot(x ~ k, data = d)
+}
+plot(qc2)
+dev.off()
+
+(qcm <- QcMetrics(qcdata = list(qc, qc2)))
+
+qcReport(qcm)
 
 
-qcReport(qc, type = "knitr")
+
