@@ -1,11 +1,13 @@
 setMethod("qcReport", "QcMetrics",
           function(object,
-                   outfile = "qcreport.tex",
+                   name = "qcreport",
                    type = c("knitr", "nozzle"),
                    author = Sys.getenv("USER"),
                    title = "Quality control report generated with \\texttt{qcmetrics}",
                    sessioninfo = TRUE,
                    template,
+                   clean = TRUE,
+                   quiet = TRUE,
                    ...) {
               type <- match.arg(type)
               switch(type,
@@ -31,7 +33,10 @@ setMethod("qcReport", "QcMetrics",
                      }, nozzle = {
                          stop("Not yet implemeted")
                      })
-              knit(text = unlist(ex), output = outfile)
+              out <- knit(text = unlist(ex), output = paste0(name, ".tex"), quiet = quiet)
+              tools::texi2pdf(basename(out), quiet = quiet, clean = clean, ...)
+              out <- knitr:::sub_ext(out, "pdf")
+              message("Report written to ", out, ".")
           })
 
 
