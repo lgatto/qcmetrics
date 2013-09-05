@@ -1,6 +1,6 @@
 rm(list = ls(all = TRUE))
 library("qcmetrics")
-library("knitr")
+
 
 (qc <- QcMetric())
 qcdata(qc)
@@ -51,6 +51,8 @@ dev.off()
 (qcm <- QcMetrics(qcdata = list(qc, qc2)))
 
 qcReport(qcm)
+
+qcReport(qcm, reportname = "/home/lgatto/REPORT", texi2dvi = "pdflatex", author = "Laurent Gatto")
 
 
 

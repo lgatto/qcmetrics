@@ -1,5 +1,7 @@
 import(methods)
+import(knitr)
 importFrom(Biobase, validMsg)
+importFrom(tools, texi2pdf)
 
 exportClasses(QcMetric,
               QcMetrics)

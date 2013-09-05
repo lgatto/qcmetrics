@@ -1,3 +1,5 @@
+%% template based on knitr-template.Rnw from the knitr package
+
 \documentclass{article}
 \usepackage[sc]{mathpazo}
 \renewcommand{\sfdefault}{lmss}
@@ -13,7 +15,6 @@
  {hyperref}
 \hypersetup{
  pdfstartview={XYZ null null 1}}
-\usepackage{breakurl}
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
@@ -24,26 +25,11 @@
 
 \makeatother
 
-\begin{document}
-
-<<setup, include=FALSE, cache=FALSE>>=
-options(width=90)
-opts_chunk$set(out.width = '.6\\linewidth')
-
-
-@
-
 \Sexpr{title}
 
 \Sexpr{author}
 
-\Sexpr{ '\\maketitle'}
+\begin{document}
 
-\section{Session information}
-
-<<session-info, cache=FALSE>>=
-toLatex(sessionInfo())
-Sys.time()
-@
 
 \end{document}
