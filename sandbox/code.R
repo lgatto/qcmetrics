@@ -50,9 +50,7 @@ dev.off()
 
 (qcm <- QcMetrics(qcdata = list(qc, qc2)))
 
-qcReport(qcm)
+qcReport(qcm, texi2dvi = "pdflatex", author = "Laurent Gatto")
+##qcReport(qcm, reportname = "/home/lgatto/REPORT")
 
-qcReport(qcm, reportname = "/home/lgatto/REPORT", texi2dvi = "pdflatex", author = "Laurent Gatto")
-
-
-
+qcReport(qcm, type = "nozzle")

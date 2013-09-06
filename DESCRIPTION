@@ -9,5 +9,5 @@ Description: The package provides a framework for generic
 	     manage and visualise individual or sets of 
 	     quality control metrics and generate quality 
 	     control reports in various formats. 
-Imports: Biobase, methods, knitr, tools
+Imports: Biobase, methods, knitr, tools, Nozzle.R1
 License: GPL-2

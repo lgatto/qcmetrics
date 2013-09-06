@@ -42,7 +42,15 @@ setMethod("qcReport", "QcMetrics",
                              message("Report written to ", out, ".")   
                          }
                      }, nozzle = {
-                         stop("Not yet implemeted")
+                         dir.create(reportname)
+                         dir.create(file.path(reportname, "figure"))
+                         nozreport <- newCustomReport(reportname)
+                         for (i in 1:length(qcm))                              
+                             nozreport <- addTo(nozreport,
+                                                reporting_nozzle(qcm, i, reportname))
+                         out <- file.path(reportname, "index")
+                         writeReport(nozreport, filename = out)
+                         out <- paste0(out, ".html")
                      })
               invisible(out)
           })
