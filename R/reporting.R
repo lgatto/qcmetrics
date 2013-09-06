@@ -28,7 +28,8 @@ setMethod("qcReport", "QcMetrics",
                       writeLines(reporting_knitr_rmd(object, i),
                                  con)
                   if (sessioninfo) {
-                      si <- c("```{r echo=FALSE}",
+                      si <- c("## Session information",
+                              "```{r echo=FALSE}",
                               "sessionInfo()",
                               "```")
                       writeLines(si, con)

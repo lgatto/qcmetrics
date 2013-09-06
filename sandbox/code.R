@@ -48,9 +48,13 @@ plot(qc2) <- function(object, ...) {
 plot(qc2)
 dev.off()
 
-(qcm <- QcMetrics(qcdata = list(qc, qc2)))
+(xx <- QcMetrics(qcdata = list(qc, qc2)))
 
-qcReport(qcm, texi2dvi = "pdflatex", author = "Laurent Gatto")
+
+
+qcReport(xx, texi2dvi = "pdflatex", author = "Laurent Gatto")
 ##qcReport(qcm, reportname = "/home/lgatto/REPORT")
 
-qcReport(qcm, type = "nozzle")
+qcReport(xx, type = "html")
+
+qcReport(xx, type = "nozzle")
