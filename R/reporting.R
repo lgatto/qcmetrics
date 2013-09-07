@@ -4,6 +4,7 @@ setMethod("qcReport", "QcMetrics",
                    type = c("pdf", "tex", "nozzle", "Rmd", "html"),
                    author = Sys.getenv("USER"),
                    title = "Quality control report generated with qcmetrics",
+                   summary = TRUE,
                    sessioninfo = TRUE,
                    template,
                    clean = TRUE,
@@ -27,6 +28,7 @@ setMethod("qcReport", "QcMetrics",
                   for (i in 1:length(object))
                       writeLines(reporting_knitr_rmd(object, i),
                                  con)
+                  ## TODO: add summary
                   if (sessioninfo) {
                       si <- c("## Session information",
                               "```{r echo=FALSE}",
@@ -59,9 +61,15 @@ setMethod("qcReport", "QcMetrics",
                   ex <- lapply(seq_len(length(object)),
                                function(i) reporting_knitr_tex(object, i))
                   ex <- append(list(mktitle, parent), ex)
+                  if (summary)
+                      ex <- append(ex, ## summary
+                                   c("\\clearpage",
+                                     "\\section{QC summary}",
+                                     "<<summary, results = 'asis', echo = FALSE>>=",
+                                     "xtable(as(object, 'data.frame'))",
+                                     "@"))
                   if (sessioninfo) {
-                      si <- c("\\clearpage",
-                              "\\section{Session information}",
+                      si <- c("\\section{Session information}",
                               "<<session-info, cache=FALSE, results = 'asis', echo=FALSE>>=",
                               "toLatex(sessionInfo())",
                               "@")                         

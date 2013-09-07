@@ -1,5 +1,7 @@
 QcMetrics <- setClass("QcMetrics",
-         slots = list(qcdata = "list"),
+         slots = list(
+             metadata = "list",
+             qcdata = "list"),
          validity = function(object) {
              msg <- validMsg(NULL, NULL)
              cls <- unique(sapply(object@qcdata, class))             
@@ -19,10 +21,21 @@ setMethod("show", "QcMetrics",
                          "QC metrics.\n"))
           })
 
+setMethod("status", "QcMetrics",
+          function(object) sapply(qcdata(object), status))
 
 setMethod("qcdata", "QcMetrics",
           function(object) object@qcdata)
 
+setMethod("metadata", "QcMetrics",
+          function(object) object@metadata)
+
+setReplaceMethod("metadata",
+                 signature(object="QcMetric", value="list"),
+                 function(object, value) {
+                     object@metadata <- value
+                     object
+                 })
 
 setMethod("[","QcMetrics",
           function(x, i="numeric", j="missing", drop="missing") {
@@ -41,3 +54,12 @@ setMethod("name", "QcMetrics",
 
 setMethod("length", "QcMetrics",
           function(x) length(qcdata(x)))
+
+setAs("QcMetrics", "data.frame",
+      function (from) {
+          data.frame(name = name(from),
+                     status = status(from))
+      })
+
+as.data.frame.QcMetrics <-
+    function(x, row.names=NULL, optional=FALSE, ...) as(x,"data.frame")    

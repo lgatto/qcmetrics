@@ -6,7 +6,7 @@ See =sandbox/code.R= for an illustration
 
 * TODO
 ** Reporting
-There will be a report generting system for  =QcMetrics= (and possible individual =QcMetric=) instances. I will be possible to export static reports in pdf via =knitr=, html via =Nozzle.R1= or =hwriter= (possibly others). Markdown is also a good solution to export to multiple forats. Dynamic reports could be created using =shiny=.
+There will be a report generting system for  =QcMetrics= (and possible individual =QcMetric=) instances. I will be possible to export static reports in pdf via =knitr=, html via =Nozzle.R1= or =hwriter= (possibly others). Markdown is also a good solution to export to multiple formats. Dynamic reports could be created using =shiny=.
 
 ** Applications
 Illustrate the usage of =qcmetrics= on different types of data. 

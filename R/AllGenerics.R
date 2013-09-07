@@ -7,6 +7,9 @@ setGeneric("name<-", function(object, value) standardGeneric("name<-"))
 setGeneric("qcdata", function(object, x) standardGeneric("qcdata"))
 setGeneric("qcdata<-", function(object, ..., value) standardGeneric("qcdata<-"))
 
+setGeneric("metadata", function(object, x) standardGeneric("metadata"))
+setGeneric("metadata<-", function(object, value) standardGeneric("metadata<-"))
+
 setGeneric("show<-", function(object, value) standardGeneric("show<-"))
 setGeneric("plot<-", function(object, value) standardGeneric("plot<-"))
 
