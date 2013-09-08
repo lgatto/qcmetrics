@@ -6,16 +6,18 @@ See =sandbox/code.R= for an illustration
 
 * TODO
 ** Reporting
-There will be a report generting system for  =QcMetrics= (and possible individual =QcMetric=) instances. I will be possible to export static reports in pdf via =knitr=, html via =Nozzle.R1= or =hwriter= (possibly others). Markdown is also a good solution to export to multiple formats. Dynamic reports could be created using =shiny=.
+- [X] html, pdf
+- Improve nozzle report
+- Dynamic reports could be created using =shiny=.
 
 ** Applications
 Illustrate the usage of =qcmetrics= on different types of data. 
 - Usage some code and examples from =arrayQualityMetrics= for microarrays
-- Prepare QC pipelines for various proteomics data
 - Document the creation of new packages using =qcmetrics= (see project with Wen Bo).
+- Prepare QC pipelines for various proteomics data
 
 ** Serialisation 
-- Objects can of course be serialised with =save=.
+- [X] Objects can of course be serialised with =save=.
 - See if it is possible to interface with the =qcML= standard.
 
 
