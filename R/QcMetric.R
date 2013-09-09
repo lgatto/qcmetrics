@@ -59,11 +59,19 @@ setReplaceMethod("plot",
 setMethod("qcdata", c("QcMetric", "missing"), 
           function(object) ls(object@qcdata))
 
+setMethod("qcdata", c("QcMetric", "character"), 
+          function(object, x) {
+              objs <- qcdata(object)
+              if (!x %in% objs)
+                  stop("No qcdata '", x, "' in object.")
+              get(x, envir = object@qcdata)}
+          )
+
 setReplaceMethod("qcdata",
                  signature(object="QcMetric", value="ANY"),
                  function(object, var, value) {
-                     if (is.environment(value)) {
-                         object@qcdata <- value
+                     if (missing(value) & is.environment(var)) {
+                         object@qcdata <- var
                      } else {
                          objs <- qcdata(object)
                          if (var %in% objs)
@@ -74,15 +82,6 @@ setReplaceMethod("qcdata",
                      }
                      object
                  })
-
-
-setMethod("qcdata", c("QcMetric", "character"), 
-          function(object, x) {
-              objs <- qcdata(object)
-              if (!x %in% objs)
-                  stop("No qcdata '", x, "' in object.")
-              get(x, envir = object@qcdata)}
-          )
 
 setMethod("status", "QcMetric",
           function(object) object@status)

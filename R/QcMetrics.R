@@ -21,17 +21,22 @@ setMethod("show", "QcMetrics",
                          "QC metrics.\n"))
           })
 
+## FIXME: returns a list in case of NULL
 setMethod("status", "QcMetrics",
           function(object) sapply(qcdata(object), status))
 
+## FIXME: breaks in case of NULL statuses
+as.data.frame.QcMetrics <-
+    function(x, row.names=NULL, optional=FALSE, ...) as(x,"data.frame")    
+
 setMethod("qcdata", "QcMetrics",
-          function(object) object@qcdata)
+          function(object, x = "missing") object@qcdata)
 
 setMethod("metadata", "QcMetrics",
           function(object) object@metadata)
 
 setReplaceMethod("metadata",
-                 signature(object="QcMetric", value="list"),
+                 signature(object="QcMetrics", value="list"),
                  function(object, value) {
                      object@metadata <- value
                      object
@@ -60,6 +65,3 @@ setAs("QcMetrics", "data.frame",
           data.frame(name = name(from),
                      status = status(from))
       })
-
-as.data.frame.QcMetrics <-
-    function(x, row.names=NULL, optional=FALSE, ...) as(x,"data.frame")    

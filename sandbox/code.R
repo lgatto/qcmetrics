@@ -58,3 +58,5 @@ qcReport(xx, texi2dvi = "pdflatex", author = "Laurent Gatto")
 qcReport(xx, type = "html")
 
 qcReport(xx, type = "nozzle")
+
+as(xx, "data.frame")
