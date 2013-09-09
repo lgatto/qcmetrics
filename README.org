@@ -21,3 +21,5 @@ Illustrate the usage of =qcmetrics= on different types of data.
 - See if it is possible to interface with the =qcML= standard.
 
 
+* FIXME
+- status and as( , "data.frame") QcMetrics methods in case of NULL status
