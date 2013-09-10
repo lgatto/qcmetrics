@@ -1,4 +1,18 @@
-reporting_nozzle <- function(qcm, i, reportdir) {    
+reporting_nozzle <- function(object,
+                             reportname) {
+    dir.create(reportname)
+    dir.create(file.path(reportname, "figure"))
+    nozreport <- newCustomReport(reportname)
+    for (i in 1:length(object))                              
+        nozreport <- addTo(nozreport,
+                           Qc2Nozzle(object, i, reportname))
+    out <- file.path(reportname, "index")
+    writeReport(nozreport, filename = out)
+    out <- paste0(out, ".html")
+}
+
+
+Qc2Nozzle <- function(qcm, i, reportdir) {    
     ## create figure        
     figdir <- file.path(reportdir, "figure")
     figpng <- file.path(figdir, paste0("qcreport_fig", i, ".png"))

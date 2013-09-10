@@ -1,6 +1,3 @@
-## setClassUnion("LogicalOrNULL",
-##               c("NULL", "logical"))
-
 qcshow <- function(object) {
     cat("Object of class \"", class(object), "\"\n", sep="")
     cat(" Name:", object@name, "\n")                 

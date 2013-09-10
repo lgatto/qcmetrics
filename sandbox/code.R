@@ -38,6 +38,7 @@ dev.off()
 qc2 <- QcMetric(name = "My other metric")
 qcdata(qc2, "x") <- rnorm(100)
 qcdata(qc2, "k") <- rep(LETTERS[1:2], 50)
+qc2
 
 plot(qc2) <- function(object, ...) {
     require("lattice")
@@ -55,8 +56,9 @@ dev.off()
 qcReport(xx, texi2dvi = "pdflatex", author = "Laurent Gatto")
 ##qcReport(qcm, reportname = "/home/lgatto/REPORT")
 
-qcReport(xx, type = "html")
-
+qcReport(xx, type = "tex")
+qcReport(xx, type = "Rmd")
+qcReport(xx, type = "html", clean = FALSE)
 qcReport(xx, type = "nozzle")
 
 status(xx)

@@ -13,3 +13,4 @@ Imports: Biobase, methods, knitr, tools, Nozzle.R1,
 	 xtable, pander
 Suggests: lattice
 License: GPL-2
+VignetteBuilder: knitr

@@ -158,8 +158,8 @@ All software and respective versions used to produce this document are listed be
 toLatex(sessionInfo())
 @
 
-\bibliographystyle{plainnat}
-\bibliography{qcmetrics}
+% \bibliographystyle{plainnat}
+% \bibliography{qcmetrics}
 
 \end{document}
 

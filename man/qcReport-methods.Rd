@@ -32,8 +32,8 @@
 	clean = "logical",
 	quiet = "logical",
 	...)}}{
-      generates a report for the \code{\linkS4class{QcMetrics}}
-      \code{object}. The report will be named according the
+      generates a report for the \code{\link{QcMetrics}}
+      \code{object}. The report will be named according the 
       \code{reportname} (default is \code{qcreprt})and \code{type}, the
       latter defining the output format and the extension. Possible
       types are \code{pdf} (default), "tex", "Rmd", "html" (all
@@ -48,8 +48,11 @@
       templates using the \code{template} arguments. Intermediate files
       are deleted, unless \code{clean} is set to \code{FALSE} and
       verbose output can be turned on by setting \code{quiet} to
-      \code{FALSE}. Addition parameters can be passed to generate the
-      pdf file through \code{...}.
+      \code{FALSE}. Addition parameters can be passed to inner
+      functions. For the \code{pdf} report, passed to \code{texi2pdf}.
+
+      The method invisibly returns the name of the report that was
+      generated. 
     }
   }
 }

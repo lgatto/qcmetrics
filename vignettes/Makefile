@@ -14,11 +14,11 @@ LATEXFILES = *.aux\
 	*.figlist\
 	*.dep\
 	*.dpth\
-	*.makefile
+	*.makefile\
+	qcmetrics.tex
 
 all: 
-	make vif
-	make poster
+	make vig
 
 setvars:
 ifeq (${R_HOME},)
@@ -27,16 +27,16 @@ endif
 
 vig:
 	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
-	bibtex qcmetrics
-	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
+##	bibtex qcmetrics
+##	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
 	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
 
 
 ## manual building
 vig2: 
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('qcmetrics.Rnw');"
-	bibtex qcmetrics
-	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
+##	bibtex qcmetrics
+##	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
 	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
 
 
