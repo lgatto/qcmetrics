@@ -1,0 +1,165 @@
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{The 'qcmetrics' infrastructure for quality control and reporting}
+%\VignetteKeywords{Bioinformatics, Quality control, reporting}
+%\VignettePackage{qcmetrics}
+
+\documentclass[12pt,a4paper,english]{scrartcl}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage[auth-sc]{authblk}
+\usepackage{setspace}
+\onehalfspacing
+
+% caption formatting
+\setcapindent{0em}
+\setkomafont{captionlabel}{\sffamily\bfseries}
+\setkomafont{caption}{\sffamily}
+
+\renewcommand\Authands{ and }
+
+\newcommand{\R}{\texttt{R} }
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+%% colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\usepackage{geometry}
+\geometry{verbose,
+  tmargin = 2.5cm,
+  bmargin = 2.5cm,
+  lmargin = 3.0cm,
+  rmargin = 3.0cm}
+
+\usepackage{hyperref}
+\usepackage{breakurl}
+\hypersetup{%
+  pdfusetitle,
+  bookmarks = {true},
+  bookmarksnumbered = {true},
+  bookmarksopen = {true},
+  bookmarksopenlevel = 2,
+  unicode = {true},
+  breaklinks = {false},
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+
+\author{
+  Laurent Gatto\thanks{\email{lg390@cam.ac.uk}}
+}
+
+
+\affil{
+  Computational Proteomics Unit\\
+  Cambridge Center for Proteomics\\
+  University of Cambridge
+}
+
+\begin{document}
+
+\title{The \Rpackage{qcmetrics} infrastructure for quality control and automatic reporting}
+
+\maketitle
+
+%% Abstract and keywords %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vskip 0.3in minus 0.1in
+\hrule
+\begin{abstract}
+
+\end{abstract}
+\textit{Keywords}: Bioinformatics, Quality control, reporting, visualisation 
+\vskip 0.1in minus 0.05in
+\hrule
+\vskip 0.2in minus 0.1in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\tableofcontents
+
+<<env, include=FALSE, echo=FALSE, cache=FALSE>>=
+library("knitr")
+opts_chunk$set(fig.align = 'center', 
+               fig.show = 'hold', 
+               par = TRUE,
+               prompt = TRUE,
+               eval = TRUE,
+               stop_on_error = 1L,
+               comment = NA)
+options(replace.assign = TRUE, 
+        width = 55)
+
+suppressPackageStartupMessages(library("qcmetrics"))
+set.seed(1)
+@ 
+%%$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Introduction}\label{sec:intro} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\section{The QC classes}\label{sec:qcclasses}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\section{Creating QC pipelines}\label{sec:pipeline}
+
+\subsection{Microarray degradation}
+
+\subsection{Proteomics}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\section{Generating reports}\label{sec:report}
+
+\clearpage
+
+\singlespacing
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Session information}\label{sec:sessionInfo} 
+
+All software and respective versions used to produce this document are listed below.
+
+<<sessioninfo, results='asis', echo=FALSE>>=
+toLatex(sessionInfo())
+@
+
+\bibliographystyle{plainnat}
+\bibliography{qcmetrics}
+
+\end{document}
+
