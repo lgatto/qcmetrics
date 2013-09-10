@@ -23,8 +23,7 @@
 \title{The \code{"QcMetrics"} class for collections of QC items}
 
 \description{
-  Data structure for storing lists of \code{\link{QcMetric}}
-  items. 
+  Data structure for storing lists of \code{QcMetric} items. 
 }
 
 \section{Objects from the Class}{
@@ -84,7 +83,7 @@
 
 
 \seealso{
-  The \code{\link{"QcMetric"}} class for individual QC items.
+  The \code{\link{QcMetric}} class for individual QC items.
 }
 
 \examples{
