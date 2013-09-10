@@ -38,13 +38,15 @@ setMethod("qcReport", "QcMetrics",
                   }
                   close(con)
                   if (type == "html") {
-                      out <- knit2html(out, quiet = quiet)
+                      ext <- "html"
+                      out <- knit2html(out,
+                                       output = paste(reportname, ext, sep = "."),
+                                       quiet = quiet)
                       if (clean) {
                           unlink(paste(reportname, "Rmd", sep = "."))
                           unlink(paste(reportname, "md", sep = "."))
                       }
                   }
-                  message("Report written to ", out, ".")
               }
               if (type %in% c("tex", "pdf")) {
                   ext <- "tex"
@@ -66,6 +68,7 @@ setMethod("qcReport", "QcMetrics",
                                    c("\\clearpage",
                                      "\\section{QC summary}",
                                      "<<summary, results = 'asis', echo = FALSE>>=",
+                                     "library('xtable')",
                                      "xtable(as(object, 'data.frame'))",
                                      "@"))
                   if (sessioninfo) {
@@ -88,7 +91,6 @@ setMethod("qcReport", "QcMetrics",
                       file.remove(paste0(reportname, ".tex"))
                       unlink("figure", recursive = TRUE)
                   }
-                  message("Report written to ", out, ".")   
               }
               if (type == "nozzle") {
                   dir.create(reportname)
@@ -101,6 +103,7 @@ setMethod("qcReport", "QcMetrics",
                   writeReport(nozreport, filename = out)
                   out <- paste0(out, ".html")
               }
+              message("Report written to ", out, ".")   
               invisible(out)
           })
 

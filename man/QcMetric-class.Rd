@@ -17,7 +17,7 @@
 \alias{QcMetric}
 
 
-\title{Class \code{"QcMetric"}}
+\title{The \code{"QcMetric"} class for QC items}
 
 \description{
   Data structure for individual QC metrics items. 
@@ -77,7 +77,9 @@
       the \code{object} using the provide \code{show} method. }
     \item{plot<-}{\code{signature(object = "QcMetric", value =
 	"function")}: sets a custom \code{plot} method for
-      \code{object}. } 
+      \code{object}. }
+    \item{qcReport}{\code{signature(x = "QcMetric", ...)}: to generate 
+      quality reports. See \code{\link{qcReport}} for details. }    
   }
 }
 
@@ -130,7 +132,11 @@ plot(qc) <-
              ...)
 plot(qc)
 plot(qc, col = "red", pch = 19)
-dev.off()
+
+\dontrun{
+    ## generate a report 
+    qcReport(qcm)
+}
 }
 
 \keyword{classes}

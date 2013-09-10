@@ -14,7 +14,7 @@
 \alias{as.data.frame.QcMetrics}
 \alias{QcMetrics}
 
-\title{Class \code{"QcMetrics"}}
+\title{The \code{"QcMetrics"} class for collections of QC items}
 
 \description{
   Data structure for storing lists of \code{\linkS4class{"QcMetric"}}
@@ -101,6 +101,5 @@ qcm
 
 qcm[1] ## a QcMetrics instance
 qcm[[1]] ## a single QcMetric
-
 }
 \keyword{classes}
