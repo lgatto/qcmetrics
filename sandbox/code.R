@@ -35,7 +35,7 @@ plot(qc)
 plot(qc, col = "red", pch = 19)
 dev.off()
 
-qc2 <- QcMetric(name = "My other metric", status = TRUE)
+qc2 <- QcMetric(name = "My other metric")
 qcdata(qc2, "x") <- rnorm(100)
 qcdata(qc2, "k") <- rep(LETTERS[1:2], 50)
 
@@ -59,4 +59,5 @@ qcReport(xx, type = "html")
 
 qcReport(xx, type = "nozzle")
 
+status(xx)
 as(xx, "data.frame")

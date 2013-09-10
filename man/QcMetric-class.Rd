@@ -18,7 +18,7 @@
 \alias{show,QcMetric-method}
 \alias{show<-,QcMetric,function-method}
 \alias{show<-}
-\alias{status<-,QcMetric,LogicalOrNULL-method}
+\alias{status<-,QcMetric,logical-method}
 \alias{status,QcMetric-method}
 \alias{status}
 \alias{status<-}
@@ -45,10 +45,9 @@
     \item{\code{show}:}{Object of class \code{"function"} to print a
       short textual representation of the \code{object}. A reasonable
       default value is provided. }
-    \item{\code{status}:}{Object of class \code{"LogicalOrNULL"}, i.e
-      either a \code{logical} or \code{NULL} that represent the weather
-      the data passes (\code{TRUE}) or fails (\code{FALSE}) the metric
-      or has not yet been evaluated.}
+    \item{\code{status}:}{Object of class \code{"logical"} that
+      indicates weather the data passes (\code{TRUE}) or fails
+      (\code{FALSE}) the metric or has not yet been evaluated. } 
   }
 }
 
@@ -61,7 +60,7 @@
     \item{status}{\code{signature(object = "QcMetric")}: retrieves the
       status of the \code{object}. }
     \item{status<-}{\code{signature(object = "QcMetric", value =
-	"LogicalOrNULL")}: sets the status of the \code{object}s. }    
+	"logical")}: sets the status of the \code{object}s. }    
     \item{qcdata}{\code{signature(object = "QcMetric", x = "missing")}:
       lists all the data \code{object}s that are associated with the
       \code{object}s. }  

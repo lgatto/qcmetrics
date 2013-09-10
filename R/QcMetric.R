@@ -1,12 +1,10 @@
-setClassUnion("LogicalOrNULL",
-              c("NULL", "logical"))
+## setClassUnion("LogicalOrNULL",
+##               c("NULL", "logical"))
 
 qcshow <- function(object) {
     cat("Object of class \"", class(object), "\"\n", sep="")
     cat(" Name:", object@name, "\n")                 
-    cat(" Status:",
-        ifelse(is.null(object@status), "NULL", object@status), 
-        "\n")
+    cat(" Status:", object@status, "\n")
     cat(" Data: ")
     if (length(qcdata(object)) == 0) cat("empty\n")
     else cat(qcdata(object), "\n")    
@@ -20,9 +18,10 @@ qcshow <- function(object) {
                           qcdata = "environment",
                           plot = "function",
                           show = "function",
-                          status = "LogicalOrNULL"),
+                          status = "logical"),
                       prototype = prototype(
                           name = "A QcMetric prototype",
+                          status = NA,
                           qcdata = new.env(),
                           plot = function(x, ...) {
                               warning("No specific plot function defined")
@@ -86,7 +85,7 @@ setReplaceMethod("qcdata",
 setMethod("status", "QcMetric",
           function(object) object@status)
 
-setReplaceMethod("status", signature(object="QcMetric", value="LogicalOrNULL"),
+setReplaceMethod("status", signature(object="QcMetric", value="logical"),
                  function(object, value) {
                      object@status <- value
                      object

@@ -7,6 +7,7 @@ setMethod("qcReport", "QcMetrics",
                    summary = TRUE,
                    sessioninfo = TRUE,
                    template,
+                   ## reporter = NULL,
                    clean = TRUE,
                    quiet = TRUE,
                    ...) {

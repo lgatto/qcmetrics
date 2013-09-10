@@ -21,11 +21,9 @@ setMethod("show", "QcMetrics",
                          "QC metrics.\n"))
           })
 
-## FIXME: returns a list in case of NULL
 setMethod("status", "QcMetrics",
           function(object) sapply(qcdata(object), status))
 
-## FIXME: breaks in case of NULL statuses
 as.data.frame.QcMetrics <-
     function(x, row.names=NULL, optional=FALSE, ...) as(x,"data.frame")    
 
