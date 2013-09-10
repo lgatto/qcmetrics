@@ -9,6 +9,7 @@ Description: The package provides a framework for generic
 	     manage and visualise individual or sets of 
 	     quality control metrics and generate quality 
 	     control reports in various formats. 
-Imports: Biobase, methods, knitr, tools, Nozzle.R1, xtable
+Imports: Biobase, methods, knitr, tools, Nozzle.R1, 
+	 xtable, pander
 Suggests: lattice
 License: GPL-2

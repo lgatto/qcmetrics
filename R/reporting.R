@@ -28,7 +28,20 @@ setMethod("qcReport", "QcMetrics",
                   for (i in 1:length(object))
                       writeLines(reporting_knitr_rmd(object, i),
                                  con)
-                  ## TODO: add summary
+                  if (summary) {
+                      writeLines("## QC summary", con)
+                      if (type == "Rmd") {
+                          smry <- c(smry,
+                                    "```{r echo=FALSE}",
+                                    "library('pander')",
+                                    "pandoc.table(as(object, 'data.frame'))",
+                                    "```")
+                          writeLines(smry, con)
+                      } else { ## html
+                          print(xtable(as(qcm, 'data.frame')), type = 'html',
+                                file = con)
+                      }
+                  }
                   if (sessioninfo) {
                       si <- c("## Session information",
                               "```{r echo=FALSE}",
@@ -103,7 +116,7 @@ setMethod("qcReport", "QcMetrics",
                   writeReport(nozreport, filename = out)
                   out <- paste0(out, ".html")
               }
-              message("Report written to ", out, ".")   
+              message("Report written to ", out)   
               invisible(out)
           })
 
