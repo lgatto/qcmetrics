@@ -71,7 +71,8 @@ qcReport(qcm, reportname = report)
 ## html report
 html <- qcReport(qcm, reportname = report, type = "html")
 html
-browseURL(html)
+if (interactive())
+    browseURL(html)
 }
 
 \keyword{methods}

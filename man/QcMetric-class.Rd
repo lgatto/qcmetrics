@@ -1,20 +1,27 @@
 \name{QcMetric-class}
 \Rdversion{1.1}
 \docType{class}
+\alias{class:QcMetric}
 \alias{QcMetric-class}
+\alias{QcMetric}
 \alias{name<-,QcMetric,character-method}
 \alias{name,QcMetric-method}
 \alias{plot,QcMetric,missing-method}
 \alias{plot<-,QcMetric,function-method}
+\alias{plot<-}
 \alias{qcdata<-,QcMetric-method}
 \alias{qcdata,QcMetric,character-method}
 \alias{qcdata,QcMetric,missing-method}
+\alias{qcdata}
+\alias{qcdata<-}
 \alias{qcshow}
 \alias{show,QcMetric-method}
 \alias{show<-,QcMetric,function-method}
+\alias{show<-}
 \alias{status<-,QcMetric,LogicalOrNULL-method}
 \alias{status,QcMetric-method}
-\alias{QcMetric}
+\alias{status}
+\alias{status<-}
 
 
 \title{The \code{"QcMetric"} class for QC items}
@@ -89,7 +96,7 @@
 
 
 \seealso{
-  The \code{\linkS4class{"QcMetrics"}} class to bundle a set of
+  The \code{\link{QcMetrics}} class to bundle a set of
   \code{QcMetric} instances. 
 }
 \examples{

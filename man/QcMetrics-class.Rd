@@ -2,22 +2,28 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{QcMetrics-class}
+\alias{class:QcMetrics}
+\alias{QcMetrics}
 \alias{[,QcMetrics-method}
 \alias{[[,QcMetrics-method}
 \alias{length,QcMetrics-method}
 \alias{metadata,QcMetrics-method}
 \alias{metadata<-,QcMetrics,list-method}
+\alias{metadata}
+\alias{metadata<-}
 \alias{name,QcMetrics-method}
+\alias{name<-,QcMetrics,character-method}
+\alias{name}
+\alias{name<-}
 \alias{qcdata,QcMetrics,ANY-method}
 \alias{show,QcMetrics-method}
 \alias{status,QcMetrics-method}
 \alias{as.data.frame.QcMetrics}
-\alias{QcMetrics}
 
 \title{The \code{"QcMetrics"} class for collections of QC items}
 
 \description{
-  Data structure for storing lists of \code{\linkS4class{"QcMetric"}}
+  Data structure for storing lists of \code{\link{QcMetric}}
   items. 
 }
 
@@ -41,7 +47,7 @@
       generated, ... or fully fledged \emph{minimum information}
       descriptions (see \code{\linkS4class{MIAxE}}), when available. }    
     \item{\code{qcdata}:}{Object of class \code{"list"} storing all the
-      indivisual \code{\linkS4class{QcMetric}} instances. }
+      indivisual \code{\link{QcMetric}} instances. }
   }
 }
 \section{Methods}{
@@ -49,9 +55,9 @@
     \item{[}{\code{signature(x = "QcMetrics")}: subsets \code{x} as a
       new \code{QcMetrics} instance. }
     \item{[[}{\code{signature(x = "QcMetrics")}: extracts a single
-      \code{\linkS4class{QcMetric}} instance.  }
+      \code{QcMetric} instance.  }
     \item{length}{\code{signature(x = "QcMetrics")}: returns the number
-      of \code{\linkS4class{QcMetric}} instances populate \code{x}.}
+      of \code{QcMetric} instances populate \code{x}.}
     \item{metadata}{\code{signature(object = "QcMetrics")}: return the
       \code{object}'s metadata list. }
     \item{metadata<-}{\code{signature(object = "QcMetric", value =
@@ -60,7 +66,7 @@
       \code{character} vector of length \code{length(object)} with the names
       of the \code{QcMetric} instances. }
     \item{qcdata}{\code{signature(object = "QcMetrics", x = "missing")}:
-      returns a list of all \code{\linkS4class{QcMetric}} instances. }
+      returns a list of all \code{QcMetric} instances. }
     \item{show}{\code{signature(object = "QcMetrics")}: prints a short
       textual description of \code{object}. }
     \item{status}{\code{signature(object = "QcMetrics")}: returns a
@@ -78,7 +84,7 @@
 
 
 \seealso{
-  The \code{\linkS4class{"QcMetric"}} class for individual QC items.
+  The \code{\link{"QcMetric"}} class for individual QC items.
 }
 
 \examples{
