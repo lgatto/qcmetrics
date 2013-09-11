@@ -9,7 +9,7 @@
 \alias{plot,QcMetric,missing-method}
 \alias{plot<-,QcMetric,function-method}
 \alias{plot<-}
-\alias{qcdata<-,QcMetric-method}
+\alias{qcdata<-,QcMetric,ANY-method}
 \alias{qcdata,QcMetric,character-method}
 \alias{qcdata,QcMetric,missing-method}
 \alias{qcdata}

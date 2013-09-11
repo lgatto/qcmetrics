@@ -182,6 +182,9 @@ maqcm
 qcReport(maqcm, reportname = "rnadeg")
 @
 
+%% include report with pdfpages
+%% see http://tex.stackexchange.com/questions/105589/insert-pdf-in-latex
+
 \subsubsection{Wrapper}
 
 Once an appropriate set of quality metrics have been identified, the generation of the \Robject{QcMetrics} instances can be wrapped up for automation.

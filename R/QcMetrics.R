@@ -29,7 +29,7 @@ setReplaceMethod("status", signature(object="QcMetrics", value="logical"),
                      if (length(object) != length(value))
                          stop("The length of the statuses must be equal to the number of QC items.")
                      l <- qcdata(object)
-                     for (i in seq_along(values))
+                     for (i in seq_along(value))
                          status(l[[i]]) <- value[i]
                      qcdata(object) <- l
                      object
@@ -41,7 +41,7 @@ as.data.frame.QcMetrics <-
 setMethod("qcdata", "QcMetrics",
           function(object, x = "missing") object@qcdata)
 
-setReplaceMethod("qcdata<-",
+setReplaceMethod("qcdata",
                  signature(object="QcMetrics", value="list"),
                  function(object, value) {
                      object@qcdata <- value
