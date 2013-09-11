@@ -24,11 +24,29 @@ setMethod("show", "QcMetrics",
 setMethod("status", "QcMetrics",
           function(object) sapply(qcdata(object), status))
 
+setReplaceMethod("status", signature(object="QcMetrics", value="logical"),
+                 function(object, value) {
+                     if (length(object) != length(value))
+                         stop("The length of the statuses must be equal to the number of QC items.")
+                     l <- qcdata(object)
+                     for (i in seq_along(values))
+                         status(l[[i]]) <- value[i]
+                     qcdata(object) <- l
+                     object
+                 })
+
 as.data.frame.QcMetrics <-
     function(x, row.names=NULL, optional=FALSE, ...) as(x,"data.frame")    
 
 setMethod("qcdata", "QcMetrics",
           function(object, x = "missing") object@qcdata)
+
+setReplaceMethod("qcdata<-",
+                 signature(object="QcMetrics", value="list"),
+                 function(object, value) {
+                     object@qcdata <- value
+                     object
+                 })
 
 setMethod("metadata", "QcMetrics",
           function(object) object@metadata)

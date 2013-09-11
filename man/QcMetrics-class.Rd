@@ -16,8 +16,10 @@
 \alias{name}
 \alias{name<-}
 \alias{qcdata,QcMetrics,ANY-method}
+\alias{qcdata<-,QcMetrics,list-method}
 \alias{show,QcMetrics-method}
 \alias{status,QcMetrics-method}
+\alias{status<-,QcMetrics,logical-method}
 \alias{as.data.frame.QcMetrics}
 
 \title{The \code{"QcMetrics"} class for collections of QC items}
@@ -66,10 +68,15 @@
       of the \code{QcMetric} instances. }
     \item{qcdata}{\code{signature(object = "QcMetrics", x = "missing")}:
       returns a list of all \code{QcMetric} instances. }
+    \item{qcdata<-}{\code{signature(object = "QcMetrics", value = "list")}:
+      sets the \code{qcdata} of object. }
     \item{show}{\code{signature(object = "QcMetrics")}: prints a short
       textual description of \code{object}. }
     \item{status}{\code{signature(object = "QcMetrics")}: returns a
-      vector of XXX }
+      vector of quality statuses (\code{logicals}).}
+    \item{status<-}{\code{signature(object = "QcMetrics", value =
+	"logical")}: sets the quality statuses. Lenght of \code{value}
+      and \code{object} must be identical. }    
     \item{as}{\code{signature(object = "QcMetrics", "data.frame")}:
       coerces \code{object} as a \code{length(object)} by 2 data frame
       with the respective \code{QcMetric} instances names and statuses. } 
