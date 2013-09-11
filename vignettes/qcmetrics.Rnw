@@ -105,6 +105,8 @@ options(replace.assign = TRUE,
         width = 55)
 
 suppressPackageStartupMessages(library("qcmetrics"))
+suppressPackageStartupMessages(library("MAQCsubsetAFX"))
+suppressPackageStartupMessages(library("yaqcaffy"))
 set.seed(1)
 @ 
 %%$
@@ -133,6 +135,114 @@ set.seed(1)
 
 \subsection{Microarray degradation}
 
+We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} and the actin and GAPDH $\ratio{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package. The first code chunk retrieves the data and computes the QC data.
+
+<<maqcdata, cache = TRUE>>=
+library("MAQCsubsetAFX")
+data(refA)
+deg <- AffyRNAdeg(refA)
+yqc <- yaqc(refA)
+
+
+par(mfrow = c(1, 2))
+yaqcaffy:::.plotQCRatios(yqc, "all")
+@
+
+<<maqc1>>=
+qc1 <- QcMetric(name = "Affy RNA degradation slopes")
+qcdata(qc1, "deg") <- deg
+plot(qc1) <- function(object, ...) {
+    x <- qcdata(object, "deg")
+    nms <- x$sample.names
+    plotAffyRNAdeg(x, col = 1:length(nms), ...)
+    legend("topleft", nms, lty = 1, cex = 0.8, 
+           col = 1:length(nms), bty = "n")
+}
+status(qc1) <- TRUE
+qc1
+@
+
+
+<<maqc2>>=
+qc2 <- QcMetric(name = "Affy RNA degradation ratios")
+qcdata(qc2, "yqc") <- yqc
+plot(qc2) <- function(object, ...) {
+    par(mfrow = c(1, 2))
+    yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all", ...)
+}
+status(qc2) <- TRUE
+@
+
+<<maqcm>>=
+maqcm <- QcMetrics(qcdata = list(qc1, qc2))
+maqcm
+@
+
+<<maqcreport>>=
+qcReport(maqcm, reportname = "rnadeg")
+@
+
+\subsubsection{Wrapper}
+
+Once an appropriate set of quality metrics have been identified, the generation of the \Robject{QcMetrics} instances can be wrapped up for automation.
+
+<<maqcwrap>>=
+rnaqc <- function(input, status,
+                  type, reportname = "rnadegradation") {
+    if (is.character(input))
+        input <- ReadAffy(input)
+    ## first QC item
+    qc1 <- QcMetric(name = "Affy RNA degradation slopes")
+    qcdata(qc1, "deg") <- deg
+    plot(qc1) <- function(object, ...) {
+        x <- qcdata(object, "deg")
+        nms <- x$sample.names
+        plotAffyRNAdeg(x, col = 1:length(nms), ...)
+        legend("topleft", nms, lty = 1, cex = 0.8, 
+               col = 1:length(nms), bty = "n")
+    }
+    if (!missing(status))
+        status(qc1) <- status[1]
+    ## second QC item
+    qc1 <- QcMetric(name = "Affy RNA degradation slopes")
+    qcdata(qc1, "deg") <- deg
+    plot(qc1) <- function(object, ...) {
+        x <- qcdata(object, "deg")
+        nms <- x$sample.names
+        plotAffyRNAdeg(x, col = 1:length(nms), ...)
+        legend("topleft", nms, lty = 1, cex = 0.8, 
+               col = 1:length(nms), bty = "n")
+    }
+    if (!missing(status))
+        status(qc2) <- status[2]
+    qcm <- QcMetrics(qcdata = list(qc1, qc2))
+    if (!missing(type))         
+        qcreport(qcm, reportname, type = type,
+                 title = "Affymetrix RNA degradation report")
+    invisible(qcm)
+}
+@
+
+
+If is now possible to generate a report from a set of CEL files or firectly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items. These can also be set later, as illustrated below. 
+
+<<qcwrap2>>=
+myqc <- rnaqc(refA)
+status(myqc) <- c(TRUE, TRUE)
+@
+
+<<echo = FALSE>>=
+stopifnot(all.equal(myqc, maqcm))
+@
+
+The report can be generated manually with \code{qcReport(myqc)} or directly with the wrapper function as follows:
+
+<<qcwrap3>>=
+myqc <- rnaqc(refA, tpye = "pdf")
+@
+
+
+
 \subsection{Proteomics}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,7 +250,7 @@ set.seed(1)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 
-\section{Generating reports}\label{sec:report}
+\section{Custom reports}\label{sec:report}
 
 \clearpage
 
