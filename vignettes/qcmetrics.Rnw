@@ -107,6 +107,8 @@ options(replace.assign = TRUE,
 suppressPackageStartupMessages(library("qcmetrics"))
 suppressPackageStartupMessages(library("MAQCsubsetAFX"))
 suppressPackageStartupMessages(library("yaqcaffy"))
+suppressPackageStartupMessages(library("affy"))
+suppressPackageStartupMessages(library("AnnotationDbi"))
 set.seed(1)
 @ 
 %%$
@@ -118,24 +120,56 @@ set.seed(1)
 
 \section{Introduction}\label{sec:intro} 
 
+Why QC is important. Need for standardisation and automation. Package is general framework. Below we demonstrate how to create QC objects, how to bundle them to create sets of QC metrics and how to generate reports in multiple formats. The goal is to provide means to develope QC pipeline and automate the generation of reports through wrapper QC functions \ref{sec:wrapper}. It is however hoped that the community will go a step further by developing and distributing fully fledged QC packages for dedicated applications \ref{sec:qcpkg}. Need for repository for QC packages.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
 
 \section{The QC classes}\label{sec:qcclasses}
 
+The package provides are two types of QC containers. The \Robject{QcMetric} class stores data and visualisation functions for single metrics. Several such metrics can be bundles into a \Robject{QcMetrics} instances, that can be used as templates for automaated report generation. Below, we will provide a quick overview of how to create respective \Robject{QcMetric} and \Robject{QcMetrics} instances. More details are available in the respective documentations. 
+
+\subsection{The \Robject{QcMetric} class}
+
+A QC metric is composed of a description or name, some QC data, a status that defines of the metric is deemed of good quality (coded as \Robject{TRUE}), bad quality (coded as \Robject{FALSE}) or not yet evaluated (coded as \Robject{NA}). Finally, individual metrics can be displayed as a short textual summary or plotted, To do the former, one can use the default \Rfunction{show} method while the latter \Rfunction{plot} method will have to be specifically defined.
+
+<<qcmetric>>=
+library("qcmetrics")
+qc <- QcMetric(name = "A test metric")
+qcdata(qc, "x") <- rnorm(100)
+qcdata(qc) ## all available qcdata
+summary(qcdata(qc, "x")) ## get x
+show(qc) ## or just qc
+plot(qc) <- function(object, ... ) boxplot(qcdata(object, "x"), ...)
+plot(qc)
+status(qc) <- TRUE
+qc
+@
+
+\subsection{The \Robject{QcMetrics} class}
+
+A \Robject{QcMetrics} object is essentially just a list of individual \Robject{QcMetric} instances. It is also possible to set a list of metadata to describe the source of the QC metrics.
+
+<<qcmetrics>>=
+qcm <- QcMetrics(qcdata = list(qc))
+qcm
+metadata(qcm) <- list(metadata1 = 123,
+                      metadata2 = "abc")
+@
+
+The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to generate reports, as described in more details below. 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-
 \section{Creating QC pipelines}\label{sec:pipeline}
+
 
 \subsection{Microarray degradation}
 
-We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} and the actin and GAPDH $\ratio{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package. The first code chunk retrieves the data and computes the QC data.
+We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package. The first code chunk retrieves the data and computes the QC data.
 
 <<maqcdata, cache = TRUE>>=
 library("MAQCsubsetAFX")
@@ -177,14 +211,21 @@ maqcm <- QcMetrics(qcdata = list(qc1, qc2))
 maqcm
 @
 
-<<maqcreport>>=
+%% Running this one with echoing so that the auxiliary files, 
+%% in particular the figure directory does not get deleted, as 
+%% it is also created and needed by the vignette itself.
+<<maqcreport0, echo = FALSE, message = FALSE>>=
+qcReport(maqcm, reportname = "rnadeg", clean = FALSE)
+@
+
+<<maqcreport, eval = FALSE>>=
 qcReport(maqcm, reportname = "rnadeg")
 @
 
 %% include report with pdfpages
 %% see http://tex.stackexchange.com/questions/105589/insert-pdf-in-latex
 
-\subsubsection{Wrapper}
+\subsection{A wrapper function}\label{sec:wrapper}
 
 Once an appropriate set of quality metrics have been identified, the generation of the \Robject{QcMetrics} instances can be wrapped up for automation.
 
@@ -231,7 +272,7 @@ status(myqc)
 status(myqc) <- c(TRUE, TRUE)
 @
 
-<<echo = FALSE>>=
+<<test, echo = FALSE>>=
 stopifnot(all.equal(myqc, maqcm))
 @
 
@@ -243,7 +284,7 @@ myqc <- rnaqc(refA, type = "pdf")
 
 \subsection{Proteomics}
 
-<<protdata>>=
+<<protdata, eval = FALSE>>=
 library("RforProteomics")
 library("mzR")
 ## ms <- getPXD000001mzXML()
@@ -254,7 +295,7 @@ hd <- header(ms)
 exp <- readMSData(msfile)
 @
 
-<<protqc>>=
+<<protqc, eval = FALSE>>=
 plot(basePeakIntensity ~ retentionTime, data = hd, type = "l")
 ## plot2d(exp, ...)
 ## plotDensity(exp, ...)
@@ -262,13 +303,9 @@ plot(basePeakIntensity ~ retentionTime, data = hd, type = "l")
 @ 
 
 
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
 
 \section{Report generation}\label{sec:report}
 
@@ -276,7 +313,21 @@ plot(basePeakIntensity ~ retentionTime, data = hd, type = "l")
 
 It is possible to customise reports for any of the existing types. The generation of the \texttt{pdf} report is based on a \texttt{tex} template \texttt{knitr-template.tex} that is available with the package\footnote{You can find its location with \Rfunction{system.file("templates", package = "qcmetrics")}.}. The \Rfunction{qcReport} method accepts the path to a custom \Robject{template} as argument. 
 
+\paragraph{TODO} Similarly, \texttt{html} reports can be customised by providing a \texttt{css} definition as \Robject{template} argument when calling \Rfunction{qcReport}. 
+
+It is also possible to generate the \texttt{tex} and \texttt{Rmd} (\R markdown) intermediates to the \texttt{pdf} and \texttt{html} outputs.
+
 \subsection{New report types}
+
+The existing report types are documented in the \Rfunction{qcReport} manual. Below, we will describe how to create new types, using as an example a simple plain text report. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{QC packages}\label{sec:qcpkg}
+
+
 
 \clearpage
 
