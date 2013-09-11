@@ -140,12 +140,10 @@ We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAF
 <<maqcdata, cache = TRUE>>=
 library("MAQCsubsetAFX")
 data(refA)
+library("affy")
 deg <- AffyRNAdeg(refA)
+library("yaqcaffy")
 yqc <- yaqc(refA)
-
-
-par(mfrow = c(1, 2))
-yaqcaffy:::.plotQCRatios(yqc, "all")
 @
 
 <<maqc1>>=
@@ -171,6 +169,7 @@ plot(qc2) <- function(object, ...) {
     yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all", ...)
 }
 status(qc2) <- TRUE
+qc2
 @
 
 <<maqcm>>=
@@ -196,7 +195,7 @@ rnaqc <- function(input, status,
         input <- ReadAffy(input)
     ## first QC item
     qc1 <- QcMetric(name = "Affy RNA degradation slopes")
-    qcdata(qc1, "deg") <- deg
+    qcdata(qc1, "deg") <- AffyRNAdeg(refA)
     plot(qc1) <- function(object, ...) {
         x <- qcdata(object, "deg")
         nms <- x$sample.names
@@ -207,14 +206,11 @@ rnaqc <- function(input, status,
     if (!missing(status))
         status(qc1) <- status[1]
     ## second QC item
-    qc1 <- QcMetric(name = "Affy RNA degradation slopes")
-    qcdata(qc1, "deg") <- deg
-    plot(qc1) <- function(object, ...) {
-        x <- qcdata(object, "deg")
-        nms <- x$sample.names
-        plotAffyRNAdeg(x, col = 1:length(nms), ...)
-        legend("topleft", nms, lty = 1, cex = 0.8, 
-               col = 1:length(nms), bty = "n")
+    qc2 <- QcMetric(name = "Affy RNA degradation ratios")
+    qcdata(qc2, "yqc") <- yaqc(refA)
+    plot(qc2) <- function(object, ...) {
+        par(mfrow = c(1, 2))
+        yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all", ...)
     }
     if (!missing(status))
         status(qc2) <- status[2]
@@ -229,7 +225,7 @@ rnaqc <- function(input, status,
 
 If is now possible to generate a report from a set of CEL files or firectly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items. These can also be set later, as illustrated below. 
 
-<<qcwrap2>>=
+<<qcwrap2, cache = TRUE>>=
 myqc <- rnaqc(refA)
 status(myqc) <- c(TRUE, TRUE)
 @
