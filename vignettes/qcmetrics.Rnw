@@ -227,6 +227,7 @@ If is now possible to generate a report from a set of CEL files or firectly from
 
 <<qcwrap2, cache = TRUE>>=
 myqc <- rnaqc(refA)
+status(myqc)
 status(myqc) <- c(TRUE, TRUE)
 @
 
@@ -236,8 +237,8 @@ stopifnot(all.equal(myqc, maqcm))
 
 The report can be generated manually with \code{qcReport(myqc)} or directly with the wrapper function as follows:
 
-<<qcwrap3>>=
-myqc <- rnaqc(refA, tpye = "pdf")
+<<qcwrap3, eval = FALSE>>=
+myqc <- rnaqc(refA, type = "pdf")
 @
 
 
