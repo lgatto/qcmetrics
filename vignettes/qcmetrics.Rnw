@@ -241,16 +241,42 @@ The report can be generated manually with \code{qcReport(myqc)} or directly with
 myqc <- rnaqc(refA, type = "pdf")
 @
 
-
-
 \subsection{Proteomics}
+
+<<protdata>>=
+library("RforProteomics")
+library("mzR")
+## ms <- getPXD000001mzXML()
+msfile <- "~/Documents/Teaching/WTAC_ProteomicsBioinformatics-EBI/material/iTRAQ/iTRAQ_example_4415-5500.mzML"
+ms <- openMSfile(ms)
+hd <- header(ms)
+
+exp <- readMSData(msfile)
+@
+
+<<protqc>>=
+plot(basePeakIntensity ~ retentionTime, data = hd, type = "l")
+## plot2d(exp, ...)
+## plotDensity(exp, ...)
+## p <- plotMzDelta(exp)
+@ 
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 
-\section{Custom reports}\label{sec:report}
+\section{Report generation}\label{sec:report}
+
+\subsection{Custom reports}
+
+It is possible to customise reports for any of the existing types. The generation of the \texttt{pdf} report is based on a \texttt{tex} template \texttt{knitr-template.tex} that is available with the package\footnote{You can find its location with \Rfunction{system.file("templates", package = "qcmetrics")}.}. The \Rfunction{qcReport} method accepts the path to a custom \Robject{template} as argument. 
+
+\subsection{New report types}
 
 \clearpage
 

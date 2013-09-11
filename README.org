@@ -11,7 +11,10 @@ See =sandbox/code.R= for an illustration
 - [X] externalise the report-generating code into functions and 
       add a reporter argument to qcReport to provide custom reporting fuctions.
 - [ ] Improve nozzle report
-- Dynamic reports could be created using =shiny=.
+- [ ] Dynamic reports could be created using =shiny=.
+- [ ] Report customisation
+   - [ ] pdf via different template 
+   - [ ] html via css - see markdown::mardownToHTML stylecheet arg. Use the template argument in =qcReport= for this too.
 
 ** Applications
 Illustrate the usage of =qcmetrics= on different types of data. 
