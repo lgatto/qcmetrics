@@ -13,6 +13,7 @@
 \onehalfspacing
 
 \usepackage[final]{pdfpages}
+\usepackage{marginnote}
 
 % caption formatting
 \setcapindent{0em}
@@ -396,15 +397,17 @@ qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 
 \section{Report generation}\label{sec:report}
 
-The report generation is handled by dedicated packages, in particular \Rpackage{knitr} \cite{Xie:2013} for the \texttt{pdf} and \texttt{html} formats.
+The report generation is handled by dedicated packages, in particular \Rpackage{knitr} \cite{Xie:2013} for the \texttt{pdf} and \texttt{html} formats. 
 
 \subsection{Custom reports}
 
-It is possible to customise reports for any of the existing types. The generation of the \texttt{pdf} report is based on a \texttt{tex} template \texttt{knitr-template.tex} that is available with the package\footnote{You can find its location with \Rfunction{system.file("templates", package = "qcmetrics")}.}. The \Rfunction{qcReport} method accepts the path to a custom \Robject{template} as argument. 
+It is possible to customise reports for any of the existing types. The generation of the \texttt{pdf} report is based on a \texttt{tex} template, \texttt{knitr-template.tex}, that is available with the package\footnote{You can find its location with \Rfunction{system.file("templates", package = "qcmetrics")}.}. The \Rfunction{qcReport} method accepts the path to a custom \Robject{template} as argument. 
 
-\paragraph{TODO} Similarly, \texttt{html} reports can be customised by providing a \texttt{css} definition as \Robject{template} argument when calling \Rfunction{qcReport}. 
+The template corresponds to a \LaTeX preamble with the inclusion of two variables that are passed to the \Rfunction{qcReport} and used to customise the template: the author's name and the reports title. The former is defaulted to the system's user with \Rfunction{Sys.getenv("USER")} and the later is a simple character. The qcReport also automatically generates summary and session information sections. The core of the QC report, i.e the sections corresponding the the individual \Robject{QcMetric} instances bundled in a \Robject{QcMetrics} input (described in more details below) is then inserted into the template and weaved, or more specifically \Rfunction{knit}'ted into a \texttt{tex} document that is (if \Robject{type} is \texttt{pdf}) compiled into a \texttt{pdf} document.
 
-It is also possible to generate the \texttt{tex} and \texttt{Rmd} (\R markdown) intermediates to the \texttt{pdf} and \texttt{html} outputs.
+
+The generation of the \texttt{html} report is enabled by the creation of a \R markdown file (\texttt{Rmd}) that is them converted with \Rpackage{knitr} and \Rpackage{markdown} into \texttt{html}. The \texttt{Rmd} synatex being much simpler, no \texttt{Rmd} template is needed. It is however possible to customise the final \texttt{html} output by providing a \texttt{css} definition as \Robject{template} argument\marginnote{\textbf{TODO}}.  when calling \Rfunction{qcReport}.
+
 
 \subsection{New report types}
 
