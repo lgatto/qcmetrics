@@ -15,6 +15,8 @@ LATEXFILES = *.aux\
 	*.dep\
 	*.dpth\
 	*.makefile\
+	rnadeg.*\
+	protqc.*\
 	qcmetrics.tex
 
 all: 
@@ -51,6 +53,7 @@ clean:
 
 
 allclean: clean
+	rm -f TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
 	rm -f  qcmetrics.pdf
 	rm -rf figure/
 	rm -rf cache/

@@ -1,27 +1,23 @@
 #+TITLE: A General Framework for Quality Control Metrics
 
-* Usage
-
-See =sandbox/code.R= for an illustration
-
 * TODO
 ** Reporting
-- [X] html, pdf
 - [ ] Add metadata section
-- [X] externalise the report-generating code into functions and 
-      add a reporter argument to qcReport to provide custom reporting fuctions.
 - [ ] Improve nozzle report
 - [ ] Dynamic reports could be created using =shiny=.
 - [ ] Report customisation
    - [ ] pdf via different template 
    - [ ] TODO html via css - see markdown::mardownToHTML stylecheet arg. Use the template argument in =qcReport= for this too.
+- [X] html, pdf
+- [X] externalise the report-generating code into functions and 
+      add a reporter argument to qcReport to provide custom reporting fuctions.
 
 ** Applications
 Illustrate the usage of =qcmetrics= on different types of data. 
-- [X] RNA degradation
 - [ ] Usage some code and examples from =arrayQualityMetrics= for microarrays
 - [ ] Document the creation of new packages using =qcmetrics= (see project with Wen Bo).
 - [ ] Prepare QC pipelines for various proteomics data
+- [X] RNA degradation
 
 ** Serialisation 
 - [X] Objects can of course be serialised with =save=.

@@ -12,6 +12,8 @@
 \usepackage{setspace}
 \onehalfspacing
 
+\usepackage[final]{pdfpages}
+
 % caption formatting
 \setcapindent{0em}
 \setkomafont{captionlabel}{\sffamily\bfseries}
@@ -80,7 +82,7 @@
 \vskip 0.3in minus 0.1in
 \hrule
 \begin{abstract}
-
+  The \Rpackage{qcmetrics} package is a framework that provides simple data containers for quality metrics and support for automatic report generation. This document briefly illustrates the core data structures and then demonstrates the generation and automation of quality control reports for microarray and proteomics data.  
 \end{abstract}
 \textit{Keywords}: Bioinformatics, Quality control, reporting, visualisation 
 \vskip 0.1in minus 0.05in
@@ -109,6 +111,9 @@ suppressPackageStartupMessages(library("MAQCsubsetAFX"))
 suppressPackageStartupMessages(library("yaqcaffy"))
 suppressPackageStartupMessages(library("affy"))
 suppressPackageStartupMessages(library("AnnotationDbi"))
+suppressPackageStartupMessages(library("RforProteomics"))
+suppressPackageStartupMessages(library("mzR"))
+suppressPackageStartupMessages(library("MSnbase"))
 set.seed(1)
 @ 
 %%$
@@ -133,7 +138,7 @@ The package provides are two types of QC containers. The \Robject{QcMetric} clas
 
 \subsection{The \Robject{QcMetric} class}
 
-A QC metric is composed of a description or name, some QC data, a status that defines of the metric is deemed of good quality (coded as \Robject{TRUE}), bad quality (coded as \Robject{FALSE}) or not yet evaluated (coded as \Robject{NA}). Finally, individual metrics can be displayed as a short textual summary or plotted, To do the former, one can use the default \Rfunction{show} method while the latter \Rfunction{plot} method will have to be specifically defined.
+A QC metric is composed of a description ( \Robject{name} in the code chunk below), some QC data (the \Robject{qcdata}) and a \Robject{status} that defines of the metric is deemed of good quality (coded as \Robject{TRUE}), bad quality (coded as \Robject{FALSE}) or not yet evaluated (coded as \Robject{NA}). Individual metrics can be displayed as a short textual summary or plotted. To do the former, one can use the default \Rfunction{show} method.
 
 <<qcmetric>>=
 library("qcmetrics")
@@ -142,10 +147,17 @@ qcdata(qc, "x") <- rnorm(100)
 qcdata(qc) ## all available qcdata
 summary(qcdata(qc, "x")) ## get x
 show(qc) ## or just qc
-plot(qc) <- function(object, ... ) boxplot(qcdata(object, "x"), ...)
-plot(qc)
 status(qc) <- TRUE
 qc
+@
+
+Plotting \Robject{QcMetric} instances requires to implement a plotting method that is adequate to the data at hand. We can use a \Rfunction{plot} replacement method to define our custom code.
+
+<<qcmetricplot, dev='pdf', fig.width = 4, fig.height = 4>>=
+plot(qc)
+plot(qc) <-
+    function(object, ... ) boxplot(qcdata(object, "x"), ...)
+plot(qc)
 @
 
 \subsection{The \Robject{QcMetrics} class}
@@ -169,7 +181,7 @@ The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to
 
 \subsection{Microarray degradation}
 
-We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package. The first code chunk retrieves the data and computes the QC data.
+We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} \cite{Gautier:2004} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package \cite{yaqcaffy}. The first code chunk retrieves the data and computes the QC data.
 
 <<maqcdata, cache = TRUE>>=
 library("MAQCsubsetAFX")
@@ -179,6 +191,8 @@ deg <- AffyRNAdeg(refA)
 library("yaqcaffy")
 yqc <- yaqc(refA)
 @
+
+We then create two \Robject{QcMetric} instances, one for each of our quality metrics. 
 
 <<maqc1>>=
 qc1 <- QcMetric(name = "Affy RNA degradation slopes")
@@ -202,9 +216,11 @@ plot(qc2) <- function(object, ...) {
     par(mfrow = c(1, 2))
     yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all", ...)
 }
-status(qc2) <- TRUE
+status(qc2) <- FALSE
 qc2
 @
+
+Then, we combine the individual QC items into a \Robject{QcMetrics} instance. 
 
 <<maqcm>>=
 maqcm <- QcMetrics(qcdata = list(qc1, qc2))
@@ -218,18 +234,23 @@ maqcm
 qcReport(maqcm, reportname = "rnadeg", clean = FALSE)
 @
 
+With our \Robject{QcMetrics} data, we can easily generate quality reports in several different formats. Below, we create a \texttt{pdf} report, which is the default type. Using \texttt{tpye = "html"} would generate the equivalent report in \texttt{html} format. See \Rfunction{?qcReport} for more details.
+
 <<maqcreport, eval = FALSE>>=
-qcReport(maqcm, reportname = "rnadeg")
+qcReport(maqcm, reportname = "rnadeg", type = "pdf")
 @
 
-%% include report with pdfpages
-%% see http://tex.stackexchange.com/questions/105589/insert-pdf-in-latex
+The resulting report is shown below. Each \Robject{QcMetric} item generates a section named according to the object's name. A final summary section shows a table with all the QC items and their status. The report concludes with a detailed session information section.
+
+\includepdf[pages=-,nup=2x2, frame=TRUE]{rnadeg.pdf}
+
+\clearpage
 
 \subsection{A wrapper function}\label{sec:wrapper}
 
-Once an appropriate set of quality metrics have been identified, the generation of the \Robject{QcMetrics} instances can be wrapped up for automation.
+Once an appropriate set of quality metrics have been identified, the generation of the \Robject{QcMetrics} instances can be wrapped up for automation. 
 
-<<maqcwrap>>=
+<<maqcwrap, tidy=FALSE>>=
 rnaqc <- function(input, status,
                   type, reportname = "rnadegradation") {
     if (is.character(input))
@@ -237,10 +258,10 @@ rnaqc <- function(input, status,
     ## first QC item
     qc1 <- QcMetric(name = "Affy RNA degradation slopes")
     qcdata(qc1, "deg") <- AffyRNAdeg(refA)
-    plot(qc1) <- function(object, ...) {
+    plot(qc1) <- function(object) {
         x <- qcdata(object, "deg")
         nms <- x$sample.names
-        plotAffyRNAdeg(x, col = 1:length(nms), ...)
+        plotAffyRNAdeg(x, col = 1:length(nms))
         legend("topleft", nms, lty = 1, cex = 0.8, 
                col = 1:length(nms), bty = "n")
     }
@@ -249,9 +270,9 @@ rnaqc <- function(input, status,
     ## second QC item
     qc2 <- QcMetric(name = "Affy RNA degradation ratios")
     qcdata(qc2, "yqc") <- yaqc(refA)
-    plot(qc2) <- function(object, ...) {
+    plot(qc2) <- function(object) {
         par(mfrow = c(1, 2))
-        yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all", ...)
+        yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all")
     }
     if (!missing(status))
         status(qc2) <- status[2]
@@ -264,16 +285,17 @@ rnaqc <- function(input, status,
 @
 
 
-If is now possible to generate a report from a set of CEL files or firectly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items. These can also be set later, as illustrated below. 
+If is now possible to generate a report from a set of CEL files or directly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items. These can also be set later, as illustrated below. 
 
 <<qcwrap2, cache = TRUE>>=
 myqc <- rnaqc(refA)
 status(myqc)
-status(myqc) <- c(TRUE, TRUE)
+## check the QC data 
+status(myqc) <- c(TRUE, FALSE)
 @
 
 <<test, echo = FALSE>>=
-stopifnot(all.equal(myqc, maqcm))
+## stopifnot(all.equal(myqc, maqcm))
 @
 
 The report can be generated manually with \code{qcReport(myqc)} or directly with the wrapper function as follows:
@@ -284,30 +306,85 @@ myqc <- rnaqc(refA, type = "pdf")
 
 \subsection{Proteomics}
 
-<<protdata, eval = FALSE>>=
-library("RforProteomics")
-library("mzR")
-## ms <- getPXD000001mzXML()
-msfile <- "~/Documents/Teaching/WTAC_ProteomicsBioinformatics-EBI/material/iTRAQ/iTRAQ_example_4415-5500.mzML"
-ms <- openMSfile(ms)
-hd <- header(ms)
+To illustrate a simple QC analysis for proteomics data, we will download dataset \texttt{PXD00001} from the ProteomeXchange repository in the \texttt{mzXML} format \citep{Pedrioli:2004}. The MS$^2$ spectra from that mass-spectrometry run are then read into \R and stored as an \Robject{MSnExp} experiment using the \Rfunction{readMSData} function from the \Rpackage{MSnbase} package \cite{Gatto:2012}. 
 
-exp <- readMSData(msfile)
+<<protdata, eval=TRUE, cache=TRUE>>=
+library("RforProteomics")
+msfile <- getPXD000001mzXML()
+library("MSnbase")
+exp <- readMSData(msfile, verbose = FALSE)
 @
 
-<<protqc, eval = FALSE>>=
-plot(basePeakIntensity ~ retentionTime, data = hd, type = "l")
-## plot2d(exp, ...)
-## plotDensity(exp, ...)
-## p <- plotMzDelta(exp)
+The \Robject{QcMetrics} will consist of 3 items, namely a chromatogram constructed with the MS$^2$ spectra precursor's intensities, two figures illustrating the total ion count and precursor charges in the MS space and an $\frac{m}{z}$ delta plot illustrates the suitability of MS2 spectra for identification (see \Rfunction{?plotMzDelta} or \cite{Foster:2011}). 
+
+
+<<protqc1, cache=TRUE, tidy=FALSE>>=
+qc1 <- QcMetric(name = "Chromatogram")
+x <- rtime(exp)
+y <- precursorIntensity(exp)
+o <- order(x)
+qcdata(qc1, "x") <- x[o]
+qcdata(qc1, "y") <- y[o]
+plot(qc1) <- function(object, ...)
+    plot(qcdata(object, "x"),
+         qcdata(object, "y"),
+         col = "darkgrey", type ="l",
+         xlab = "retention time",
+         ylab = "precursor intensity")
+@
+
+<<protqc2, cache=TRUE>>=
+qc2 <- QcMetric(name = "MS space")
+qcdata(qc2, "p2d") <- plot2d(exp, z = "charge", plot = FALSE)
+plot(qc2) <- function(object) { 
+    require("ggplot2")
+    print(qcdata(object, "p2d"))
+}
+@
+
+<<protqc3, cache=TRUE, messages=FALSE, tidy=FALSE, warnings=FALSE>>=
+qc3 <- QcMetric(name = "M/Z delta plot")
+qcdata(qc3, "pmz") <- plotMzDelta(exp, plot = FALSE,
+                                  verbose = FALSE)
+plot(qc3) <- function(object) 
+    suppressWarnings(print(qcdata(object, "pmz")))
 @ 
 
+Note that we do not store the raw data in any of the above instances, but always pre-compute the necessary data that or plots that are then stored as \Robject{qcdata}. Let's now combine the three items into a \Robject{QcMetrics} object, decorate it with custom meta-data using the MIAPE information from the \Robject{MSnExp} object and generate a report.
+
+<<protqcm, tidy=FALSE>>=
+protqcm <- QcMetrics(qcdata = list(qc1, qc2, qc3))
+metadata(protqcm) <- list(
+    data = "PXD000001",
+    instrument = experimentData(exp)@instrumentModel,
+    source = experimentData(exp)@ionSource,
+    analyser = experimentData(exp)@analyser,
+    detector = experimentData(exp)@detectorType,
+    manufacurer = experimentData(exp)@instrumentManufacturer)
+@
+
+%% Running this one with echoing so that the auxiliary files, 
+%% in particular the figure directory does not get deleted, as 
+%% it is also created and needed by the vignette itself.
+<<protreport0, echo = FALSE, message = FALSE>>=
+qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
+@
+
+The status column of the summary table is empty as we have not set the QC items statuses yet. 
+
+<<protreport, eval=FALSE>>=
+qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
+@
+
+\includepdf[pages=-,nup=2x2, frame=TRUE]{protqc.pdf}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Report generation}\label{sec:report}
+
+The report generation is handled by dedicated packages, in particular \Rpackage{knitr} \cite{Xie:2013} for the \texttt{pdf} and \texttt{html} formats.
 
 \subsection{Custom reports}
 
@@ -328,7 +405,6 @@ The existing report types are documented in the \Rfunction{qcReport} manual. Bel
 \section{QC packages}\label{sec:qcpkg}
 
 
-
 \clearpage
 
 \singlespacing
@@ -345,8 +421,8 @@ All software and respective versions used to produce this document are listed be
 toLatex(sessionInfo())
 @
 
-% \bibliographystyle{plainnat}
-% \bibliography{qcmetrics}
+\bibliographystyle{plainnat}
+\bibliography{qcmetrics}
 
 \end{document}
 
