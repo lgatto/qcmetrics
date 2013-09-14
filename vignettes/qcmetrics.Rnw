@@ -125,7 +125,12 @@ set.seed(1)
 
 \section{Introduction}\label{sec:intro} 
 
-Why QC is important. Need for standardisation and automation. Package is general framework. Below we demonstrate how to create QC objects, how to bundle them to create sets of QC metrics and how to generate reports in multiple formats. The goal is to provide means to develope QC pipeline and automate the generation of reports through wrapper QC functions \ref{sec:wrapper}. It is however hoped that the community will go a step further by developing and distributing fully fledged QC packages for dedicated applications \ref{sec:qcpkg}. Need for repository for QC packages.
+Quality control (QC) is an essential step in any analytical process. Data of poor quality can at best least to the absence of positive results or, much worse, it false positives that stem from uncaught faulty and noisy data and much wasted ressources in pursuing red herrings.  
+
+QC is a prime example where standardisation and automation are of great benefit. A great variety of QC metrics, software and pipelines have been described for any assay commonly used in modern biology. This document present a different tool for QC, whose main features are flexibility and versatility. The \Rpackage{qcmetrics} package is a general framework for QC and quality assessment (QA) that can accomodate any type of data. It provide a flexible framework to implement QC items, that store relevant QC metrics and the visualisation mechanism. These individual items can the be bundled into higher level QC containers that can be readily used to generate reports in various formats. As a result, it becomes easy to develope complete custom pipelines from scratch, automate the generation of reports. The pipelines can easily be updated to accomodate new QC items of better visualisation techiques. 
+
+In section \ref{sec:qcclasses}, we provide an overview of the framework. In section \ref{sec:pipline}, we use microarray (subsection \ref{sec:marray}) and proteomics data (subsection \ref{sec:prot}) to demonstrate the elaboration of QC pipelines: how to create infividual QC objects, how to bundle them to create sets of QC metrics and how to generate reports in multiple formats. We also show how the above steps can be fully automated through simple wrapper functions \ref{sec:wrapper}. Although kept simple in the interest of time and space, these examples are meaningful and relevant. In section \ref{sec:report}, we provide more detail about the report generation process, how reports can be customised and how new exports can be contributed. We proceed in section \ref{sec:qcpkg} on the consolidation of QC pipelines using \R  and elaborate on the development of dedicate QC packages with \Rpackage{qcmetrics}. 
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -179,7 +184,7 @@ The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to
 \section{Creating QC pipelines}\label{sec:pipeline}
 
 
-\subsection{Microarray degradation}
+\subsection{Microarray degradation}\label{sec:marray}
 
 We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} \cite{Gautier:2004} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package \cite{yaqcaffy}. The first code chunk retrieves the data and computes the QC data.
 
@@ -304,7 +309,7 @@ The report can be generated manually with \code{qcReport(myqc)} or directly with
 myqc <- rnaqc(refA, type = "pdf")
 @
 
-\subsection{Proteomics}
+\subsection{Proteomics}\label{sec:prot}
 
 To illustrate a simple QC analysis for proteomics data, we will download dataset \texttt{PXD00001} from the ProteomeXchange repository in the \texttt{mzXML} format \citep{Pedrioli:2004}. The MS$^2$ spectra from that mass-spectrometry run are then read into \R and stored as an \Robject{MSnExp} experiment using the \Rfunction{readMSData} function from the \Rpackage{MSnbase} package \cite{Gatto:2012}. 
 
@@ -378,6 +383,13 @@ qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 
 \includepdf[pages=-,nup=2x2, frame=TRUE]{protqc.pdf}
 
+
+\begin{itemize}
+\item May be also a high-level example with mzTab?
+\end{itemize}
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -403,6 +415,22 @@ The existing report types are documented in the \Rfunction{qcReport} manual. Bel
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{QC packages}\label{sec:qcpkg}
+
+
+It is hoped that the community will go a step further by developing and distributing fully fledged QC packages for dedicated applications \ref{sec:qcpkg}. Need for repository for QC packages.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conclusions}\label{sec:ccl}
+
+
+
+\begin{itemize}
+\item Stress out the need for QC of multiple omics technologies, accomodation different types of high-level data.
+\item Elaborate on lab memory QC type of frameworks
+\end{itemize}
 
 
 \clearpage
