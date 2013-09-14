@@ -16,6 +16,8 @@ LATEXFILES = *.aux\
 	*.dpth\
 	*.makefile\
 	rnadeg.*\
+	rnadeg2.*\
+	rnadeg3.*\
 	protqc.*\
 	qcmetrics.tex
 

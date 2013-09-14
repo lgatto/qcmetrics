@@ -4,6 +4,7 @@ setGeneric("status<-", function(object, value) standardGeneric("status<-"))
 setGeneric("name", function(object) standardGeneric("name"))
 setGeneric("name<-", function(object, value) standardGeneric("name<-"))
 
+setGeneric("qcenv", function(object) standardGeneric("qcenv"))
 setGeneric("qcdata", function(object, x) standardGeneric("qcdata"))
 setGeneric("qcdata<-", function(object, ..., value) standardGeneric("qcdata<-"))
 

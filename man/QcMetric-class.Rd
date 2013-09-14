@@ -9,6 +9,7 @@
 \alias{plot,QcMetric,missing-method}
 \alias{plot<-,QcMetric,function-method}
 \alias{plot<-}
+\alias{qcenv,QcMetric-method}
 \alias{qcdata<-,QcMetric,ANY-method}
 \alias{qcdata,QcMetric,character-method}
 \alias{qcdata,QcMetric,missing-method}
@@ -72,7 +73,9 @@
       assigning the RHS value. If \code{var} is missing and the RHS
       expression is an environment, the all the variables associated
       \code{object} are replaces with those in the \code{value}
-      environment. } 
+      environment. }
+    \item{qcenc}{\code{signature(object = "QcMetric")}: return the
+      \code{environment} that stores the QC data. }
     \item{show}{\code{signature(object = "QcMetric")}: shows a textual
       summary of \code{object}. The default \code{show} implementation
       is available as the \code{qcshow} function. }

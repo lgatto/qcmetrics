@@ -4,13 +4,15 @@ reporting_rmd <- function(object,
                           title = title,
                           summary = summary,
                           sessioninfo = sessioninfo,
-                          qcto = Qc2Rmd) {
+                          qcto) {
+    if (is.null(qcto))
+        qcto <- Qc2Rmd
     ext <- "Rmd"
     out <- paste(reportname, ext, sep = ".")
     con <- file(out, "w")
     on.exit(close(con))
     title <- sub("qcmetrics", "`qcmetrics`", title)
-    title <- paste0("# ", title)
+    title <- paste0("", title)
     author <- paste0("Author: ", author, "\n")
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
@@ -18,7 +20,7 @@ reporting_rmd <- function(object,
         writeLines(qcto(object, i),
                    con)
     if (summary) {
-        writeLines("## QC summary", con)
+        writeLines("QC summary", con)
         smry <- c("```{r echo=FALSE}",
                   "library('pander')",
                   "pandoc.table(as(object, 'data.frame'))",
@@ -26,7 +28,7 @@ reporting_rmd <- function(object,
         writeLines(smry, con)
     }
     if (sessioninfo) {
-        si <- c("## Session information",
+        si <- c("Session information",
                 "```{r echo=FALSE}",
                 "sessionInfo()",
                 "```")
@@ -41,14 +43,17 @@ reporting_html <- function(object,
                            title = title,
                            summary = summary,
                            sessioninfo = sessioninfo,
+                           template,
                            clean = clean, 
                            quiet = quiet,
-                           qcto = Qc2Rmd) {
+                           qcto) {
+    if (is.null(qcto))
+        qcto <- Qc2Rmd
     ext <- "Rmd"
     out <- paste(reportname, ext, sep = ".")
     con <- file(out, "w")
     title <- sub("qcmetrics", "`qcmetrics`", title)
-    title <- paste0("# ", title)
+    title <- paste0("", title)
     author <- paste0("Author: ", author, "\n")
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
@@ -56,14 +61,14 @@ reporting_html <- function(object,
         writeLines(qcto(object, i),
                    con)
     if (summary) { ## only difference with Rmd type
-        writeLines("## QC summary", con)
+        writeLines("QC summary", con)
         writeLines(print(xtable(as(object, 'data.frame')),
                          type = 'html',
                          print.results = FALSE),
                    con)
     }
     if (sessioninfo) 
-        writeLines(c("## Session information",
+        writeLines(c("Session information",
                      "```{r echo=FALSE}",
                      "sessionInfo()",
                      "```"),
@@ -71,16 +76,22 @@ reporting_html <- function(object,
     close(con)
     ## procude html    
     ext <- "html"
-    out <- knit2html(out,
-                     output = paste(reportname, ext, sep = "."),
-                     quiet = quiet)
+    if (!is.null(template)) {
+        out <- knit2html(out,
+                         output = paste(reportname, ext, sep = "."),
+                         stylesheet = template, 
+                         quiet = quiet)
+    } else {
+        out <- knit2html(out,
+                         output = paste(reportname, ext, sep = "."),
+                         quiet = quiet)
+    }        
     if (clean) {
         unlink(paste(reportname, "Rmd", sep = "."))
         unlink(paste(reportname, "md", sep = "."))
     }
     return(out)
 }
-
 
 reporting_pdf <- function(object,
                           reportname = reportname,
@@ -91,8 +102,10 @@ reporting_pdf <- function(object,
                           template = template,
                           clean = clean, 
                           quiet = clean,
-                          qcto = Qc2Tex,
+                          qcto,
                           ...) {
+    if (is.null(qcto))
+        qcto <- Qc2Tex
     out <- reporting_tex(object,
                          reportname = reportname,
                          author = author,
@@ -120,9 +133,11 @@ reporting_tex <- function(object,
                           summary = summary,
                           sessioninfo = sessioninfo,
                           template = template,
-                          ## clean - no tex files cleaning 
+                          ## clean -  no tex files cleaning 
                           quiet = quiet,
-                          qcto = Qc2Tex) {
+                          qcto) {
+    if (is.null(qcto))
+        qcto <- Qc2Tex
     ext <- "tex"
     if (is.null(template)) 
         template <- system.file("templates", "knitr-template.Rnw",
@@ -155,10 +170,20 @@ reporting_tex <- function(object,
     out <- knit(text = unlist(ex),
                 output = paste0(reportname, ".tex"),
                 quiet = quiet)
-    ## also move figure directory
+    ## TODO also move figure directory
     return(out)
 }
 
+
+Qc2Rmd <- function(object, i) {
+    c(paste0("", name(object[[i]])),
+      paste0("```{r ", name(object[[i]]), ", echo=FALSE}"),
+      paste0("show(object[[", i, "]])"),
+      "```",
+      "```{r, echo=FALSE, fig.width=5, fig.height=5, fig.align='left'}",
+      paste0("plot(object[[", i, "]])"),
+      "```")
+}
 
 Qc2Tex <- function(object, i) {
     c(paste0("\\section{", name(object[[i]]), "}"),
@@ -175,13 +200,48 @@ Qc2Tex <- function(object, i) {
 
 
 
-Qc2Rmd <- function(object, i) {
-    c(paste0("## ", name(object[[i]])),
-      paste0("```{r ", name(object[[i]]), ", echo=FALSE}"),
-      paste0("show(object[[", i, "]])"),
-      "```",
-      "```{r, echo=FALSE, fig.width=5, fig.height=5, fig.align='left'}",
-      paste0("plot(object[[", i, "]])"),
-      "```")
+Qc2Tex2 <- function(object, i) {
+    nm <- name(object[[i]])
+    if (is.na(status(object[[i]]))) {
+        symb <- "$\\Circle$"
+    } else if (status(object[[i]])) {
+        symb <- "{\\color{green} $\\CIRCLE$}"
+    } else {
+        symb <- "{\\color{red} $\\CIRCLE$}"
+    }
+    sec <- paste0("\\section{", nm,
+                  "\\hspace{2mm}", symb, "}")    
+    cont <- c(paste0("<<", name(object[[i]]), ", echo=FALSE>>="),
+              paste0("show(object[[", i, "]])"),
+              "@\n",
+              "\\begin{figure}[!hbt]",
+              "<<dev='pdf', echo=FALSE, fig.width=5, fig.height=5, fig.align='center'>>=",
+              paste0("plot(object[[", i, "]])"),
+              "@",
+              "\\end{figure}",
+              "\\clearpage")
+    c(sec, cont)
 }
 
+Qc2Tex3 <- function(object, i) {
+    nm <- name(object[[i]])
+    if (is.na(status(object[[i]]))) {
+        symb <- "$\\Circle$"
+    } else if (status(object[[i]])) {
+        symb <- "{\\color{green} $\\smiley$}"
+    } else {
+        symb <- "{\\color{red} $\\frownie$}"
+    }
+    sec <- paste0("\\section{", nm,
+                  "\\hspace{2mm}", symb, "}")    
+    cont <- c(paste0("<<", name(object[[i]]), ", echo=FALSE>>="),
+              paste0("show(object[[", i, "]])"),
+              "@\n",
+              "\\begin{figure}[!hbt]",
+              "<<dev='pdf', echo=FALSE, fig.width=5, fig.height=5, fig.align='center'>>=",
+              paste0("plot(object[[", i, "]])"),
+              "@",
+              "\\end{figure}",
+              "\\clearpage")
+    c(sec, cont)
+}

@@ -21,4 +21,8 @@ exportMethods(status, "status<-",
 export(QcMetric, 
        QcMetrics,
        qcshow,
-       as.data.frame.QcMetrics)
+       as.data.frame.QcMetrics,
+       Qc2Tex,
+       Qc2Tex2,
+       Qc2Tex3,
+       Qc2Rmd)

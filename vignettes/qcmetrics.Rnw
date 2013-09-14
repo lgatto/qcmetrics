@@ -14,6 +14,7 @@
 
 \usepackage[final]{pdfpages}
 \usepackage{marginnote}
+\usepackage{wasysym}
 
 % caption formatting
 \setcapindent{0em}
@@ -126,11 +127,11 @@ set.seed(1)
 
 \section{Introduction}\label{sec:intro} 
 
-Quality control (QC) is an essential step in any analytical process. Data of poor quality can at best least to the absence of positive results or, much worse, it false positives that stem from uncaught faulty and noisy data and much wasted ressources in pursuing red herrings.  
+Quality control (QC) is an essential step in any analytically process. Data of poor quality can at best least to the absence of positive results or, much worse, it false positives that stem from uncaught faulty and noisy data and much wasted resources in pursuing red herrings.  
 
-QC is a prime example where standardisation and automation are of great benefit. A great variety of QC metrics, software and pipelines have been described for any assay commonly used in modern biology. This document present a different tool for QC, whose main features are flexibility and versatility. The \Rpackage{qcmetrics} package is a general framework for QC and quality assessment (QA) that can accomodate any type of data. It provide a flexible framework to implement QC items, that store relevant QC metrics and the visualisation mechanism. These individual items can the be bundled into higher level QC containers that can be readily used to generate reports in various formats. As a result, it becomes easy to develope complete custom pipelines from scratch, automate the generation of reports. The pipelines can easily be updated to accomodate new QC items of better visualisation techiques. 
+QC is a prime example where standardisation and automation are of great benefit. A great variety of QC metrics, software and pipelines have been described for any assay commonly used in modern biology. This document present a different tool for QC, whose main features are flexibility and versatility. The \Rpackage{qcmetrics} package is a general framework for QC and quality assessment (QA) that can accommodate any type of data. It provide a flexible framework to implement QC items, that store relevant QC metrics and the visualisation mechanism. These individual items can the be bundled into higher level QC containers that can be readily used to generate reports in various formats. As a result, it becomes easy to develop complete custom pipelines from scratch, automate the generation of reports. The pipelines can easily be updated to accommodate new QC items of better visualisation techniques. 
 
-In section \ref{sec:qcclasses}, we provide an overview of the framework. In section \ref{sec:pipline}, we use microarray (subsection \ref{sec:marray}) and proteomics data (subsection \ref{sec:prot}) to demonstrate the elaboration of QC pipelines: how to create infividual QC objects, how to bundle them to create sets of QC metrics and how to generate reports in multiple formats. We also show how the above steps can be fully automated through simple wrapper functions \ref{sec:wrapper}. Although kept simple in the interest of time and space, these examples are meaningful and relevant. In section \ref{sec:report}, we provide more detail about the report generation process, how reports can be customised and how new exports can be contributed. We proceed in section \ref{sec:qcpkg} on the consolidation of QC pipelines using \R  and elaborate on the development of dedicate QC packages with \Rpackage{qcmetrics}. 
+In section \ref{sec:qcclasses}, we provide an overview of the framework. In section \ref{sec:pipline}, we use microarray (subsection \ref{sec:marray}) and proteomics data (subsection \ref{sec:prot}) to demonstrate the elaboration of QC pipelines: how to create individual QC objects, how to bundle them to create sets of QC metrics and how to generate reports in multiple formats. We also show how the above steps can be fully automated through simple wrapper functions \ref{sec:wrapper}. Although kept simple in the interest of time and space, these examples are meaningful and relevant. In section \ref{sec:report}, we provide more detail about the report generation process, how reports can be customised and how new exports can be contributed. We proceed in section \ref{sec:qcpkg} on the consolidation of QC pipelines using \R  and elaborate on the development of dedicate QC packages with \Rpackage{qcmetrics}. 
 
 
 
@@ -140,7 +141,7 @@ In section \ref{sec:qcclasses}, we provide an overview of the framework. In sect
 
 \section{The QC classes}\label{sec:qcclasses}
 
-The package provides are two types of QC containers. The \Robject{QcMetric} class stores data and visualisation functions for single metrics. Several such metrics can be bundles into a \Robject{QcMetrics} instances, that can be used as templates for automaated report generation. Below, we will provide a quick overview of how to create respective \Robject{QcMetric} and \Robject{QcMetrics} instances. More details are available in the respective documentations. 
+The package provides are two types of QC containers. The \Robject{QcMetric} class stores data and visualisation functions for single metrics. Several such metrics can be bundles into a \Robject{QcMetrics} instances, that can be used as templates for automated report generation. Below, we will provide a quick overview of how to create respective \Robject{QcMetric} and \Robject{QcMetrics} instances. More details are available in the respective documentations. 
 
 \subsection{The \Robject{QcMetric} class}
 
@@ -168,7 +169,7 @@ plot(qc)
 
 \subsection{The \Robject{QcMetrics} class}
 
-A \Robject{QcMetrics} object is essentially just a list of individual \Robject{QcMetric} instances. It is also possible to set a list of metadata to describe the source of the QC metrics.
+A \Robject{QcMetrics} object is essentially just a list of individual \Robject{QcMetric} instances. It is also possible to set a list of meta-data to describe the source of the QC metrics.
 
 <<qcmetrics>>=
 qcm <- QcMetrics(qcdata = list(qc))
@@ -187,7 +188,7 @@ The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to
 
 \subsection{Microarray degradation}\label{sec:marray}
 
-We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} \cite{Gautier:2004} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package \cite{yaqcaffy}. The first code chunk retrieves the data and computes the QC data.
+We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} \citep{Gautier:2004} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package \citep{yaqcaffy}. The first code chunk retrieves the data and computes the QC data.
 
 <<maqcdata, cache = TRUE>>=
 library("MAQCsubsetAFX")
@@ -240,7 +241,7 @@ maqcm
 qcReport(maqcm, reportname = "rnadeg", clean = FALSE)
 @
 
-With our \Robject{QcMetrics} data, we can easily generate quality reports in several different formats. Below, we create a \texttt{pdf} report, which is the default type. Using \texttt{tpye = "html"} would generate the equivalent report in \texttt{html} format. See \Rfunction{?qcReport} for more details.
+With our \Robject{QcMetrics} data, we can easily generate quality reports in several different formats. Below, we create a \texttt{pdf} report, which is the default type. Using \texttt{type = "html"} would generate the equivalent report in \texttt{html} format. See \Rfunction{?qcReport} for more details.
 
 <<maqcreport, eval = FALSE>>=
 qcReport(maqcm, reportname = "rnadeg", type = "pdf")
@@ -312,7 +313,7 @@ myqc <- rnaqc(refA, type = "pdf")
 
 \subsection{Proteomics}\label{sec:prot}
 
-To illustrate a simple QC analysis for proteomics data, we will download dataset \texttt{PXD00001} from the ProteomeXchange repository in the \texttt{mzXML} format \citep{Pedrioli:2004}. The MS$^2$ spectra from that mass-spectrometry run are then read into \R and stored as an \Robject{MSnExp} experiment using the \Rfunction{readMSData} function from the \Rpackage{MSnbase} package \cite{Gatto:2012}. 
+To illustrate a simple QC analysis for proteomics data, we will download dataset \texttt{PXD00001} from the ProteomeXchange repository in the \texttt{mzXML} format \citep{Pedrioli:2004}. The MS$^2$ spectra from that mass-spectrometry run are then read into \R and stored as an \Robject{MSnExp} experiment using the \Rfunction{readMSData} function from the \Rpackage{MSnbase} package \citep{Gatto:2012}. 
 
 <<protdata, eval=TRUE, cache=TRUE>>=
 library("RforProteomics")
@@ -321,7 +322,7 @@ library("MSnbase")
 exp <- readMSData(msfile, verbose = FALSE)
 @
 
-The \Robject{QcMetrics} will consist of 3 items, namely a chromatogram constructed with the MS$^2$ spectra precursor's intensities, two figures illustrating the total ion count and precursor charges in the MS space and an $\frac{m}{z}$ delta plot illustrates the suitability of MS2 spectra for identification (see \Rfunction{?plotMzDelta} or \cite{Foster:2011}). 
+The \Robject{QcMetrics} will consist of 3 items, namely a chromatogram constructed with the MS$^2$ spectra precursor's intensities, two figures illustrating the total ion count and precursor charges in the MS space and an $\frac{m}{z}$ delta plot illustrates the suitability of MS2 spectra for identification (see \Rfunction{?plotMzDelta} or \citep{Foster:2011}). 
 
 
 <<protqc1, cache=TRUE, tidy=FALSE>>=
@@ -356,7 +357,11 @@ plot(qc3) <- function(object)
     suppressWarnings(print(qcdata(object, "pmz")))
 @ 
 
-Note that we do not store the raw data in any of the above instances, but always pre-compute the necessary data that or plots that are then stored as \Robject{qcdata}. Let's now combine the three items into a \Robject{QcMetrics} object, decorate it with custom meta-data using the MIAPE information from the \Robject{MSnExp} object and generate a report.
+\paragraph{NB} We do not store the raw data in any of the above instances, but always pre-compute the necessary data that or plots that are then stored as \Robject{qcdata}. If the raw data was to be needed in multiple \Robject{QcMetric} instances, we could re-use the same \Robject{qcdata} (environment) to avoid unnecessary copies: \Rfunction{qcdata(qc2) <- qcenv(qc1)} and implement different views through custom \Rfunction{plot} methods. 
+
+\bigskip
+
+Let's now combine the three items into a \Robject{QcMetrics} object, decorate it with custom meta-data using the MIAPE information from the \Robject{MSnExp} object and generate a report.
 
 <<protqcm, tidy=FALSE>>=
 protqcm <- QcMetrics(qcdata = list(qc1, qc2, qc3))
@@ -385,33 +390,74 @@ qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 \includepdf[pages=-,nup=2x2, frame=TRUE]{protqc.pdf}
 
 
-\begin{itemize}
-\item May be also a high-level example with mzTab?
-\end{itemize}
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Report generation}\label{sec:report}
 
-The report generation is handled by dedicated packages, in particular \Rpackage{knitr} \cite{Xie:2013} for the \texttt{pdf} and \texttt{html} formats. 
+The report generation is handled by dedicated packages, in particular \Rpackage{knitr} \citep{Xie:2013} for the \texttt{pdf} and \texttt{html} formats. 
 
 \subsection{Custom reports}
+
+\subsubsection*{Templates}
 
 It is possible to customise reports for any of the existing types. The generation of the \texttt{pdf} report is based on a \texttt{tex} template, \texttt{knitr-template.tex}, that is available with the package\footnote{You can find its location with \Rfunction{system.file("templates", package = "qcmetrics")}.}. The \Rfunction{qcReport} method accepts the path to a custom \Robject{template} as argument. 
 
 The template corresponds to a \LaTeX preamble with the inclusion of two variables that are passed to the \Rfunction{qcReport} and used to customise the template: the author's name and the reports title. The former is defaulted to the system's user with \Rfunction{Sys.getenv("USER")} and the later is a simple character. The qcReport also automatically generates summary and session information sections. The core of the QC report, i.e the sections corresponding the the individual \Robject{QcMetric} instances bundled in a \Robject{QcMetrics} input (described in more details below) is then inserted into the template and weaved, or more specifically \Rfunction{knit}'ted into a \texttt{tex} document that is (if \Robject{type} is \texttt{pdf}) compiled into a \texttt{pdf} document.
 
+The generation of the \texttt{html} report is enabled by the creation of a \R markdown file (\texttt{Rmd}) that is then converted with \Rpackage{knitr} and \Rpackage{markdown} into \texttt{html}. The \texttt{Rmd} syntax being much simpler, no \texttt{Rmd} template is needed. It is however possible to customise the final \texttt{html} output by providing a \texttt{css} definition as \Robject{template} argument when calling \Rfunction{qcReport}.
 
-The generation of the \texttt{html} report is enabled by the creation of a \R markdown file (\texttt{Rmd}) that is them converted with \Rpackage{knitr} and \Rpackage{markdown} into \texttt{html}. The \texttt{Rmd} synatex being much simpler, no \texttt{Rmd} template is needed. It is however possible to customise the final \texttt{html} output by providing a \texttt{css} definition as \Robject{template} argument\marginnote{\textbf{TODO}}.  when calling \Rfunction{qcReport}.
+Initial support for the \Rpackage{Nozzle.R1} package \citep{nozzle} is available with type \texttt{nozzle}. 
+
+\subsubsection*{\Robject{QcMetric} sections}
+
+The generation of the sections for \Robject{QcMetric} instances is controlled by a function passed to the \Robject{qcto} argument. This function takes care of transforming an instance of class \Robject{QcMetric} into a \texttt{character} that can be insterted into the report. For the \texttt{tex} and \texttt{pdf} reports, \Rfunction{Qc2Tex} is used; the \texttt{Rmd} and \texttt{html} reports make use of \Rfunction{Qc2Rmd}. These functions take an instance of class \Robject{QcMetrics} and the index of the \Robject{QcMetric} to be converted.
+
+<<Qc2Tex, tidy=FALSE>>=
+qcmetrics:::Qc2Tex
+qcmetrics:::Qc2Tex(maqcm, 1)
+@
+
+Let's investigate how to customise these sections depending on the \Robject{QcMetric} status, the goal being to highlight positive QC results (i.e. when the status is \Robject{TRUE}) with {\color{green} $\CIRCLE$} (or {\color{green} $\smiley$}), negative results with {\color{red} $\CIRCLE$} (or {\color{red} $\frownie$}) and use $\Circle$ if status is \Robject{NA} after the section title\footnote{The respective symbols are \texttt{CIRCLE}, \texttt{smiley}, \texttt{frownie} and \texttt{Circle} from package \texttt{wasysym}.}.
+
+Below, we see that different section headers are composed based on the value of \Rfunction{status(object[[i]])} by appending the appropriate \LaTeX symbol. 
+
+<<Qc2Tex2, tidy=FALSE>>=
+Qc2Tex2
+@
+
+To use this specific sectioning code, we pass our new function as \Robject{qcto} when generating the report. To generate smiley labels, use \Rfunction{Qc2Tex3}.
+
+%% Running this one with echoing so that the auxiliary files, 
+%% in particular the figure directory does not get deleted, as 
+%% it is also created and needed by the vignette itself.
+<<maqcreport2, echo = FALSE, message = FALSE>>=
+qcReport(maqcm, reportname = "rnadeg2", clean = FALSE, qcto = Qc2Tex2)
+@
+<<maqcreport3, echo = FALSE, message = FALSE>>=
+qcReport(maqcm, reportname = "rnadeg3", clean = FALSE, qcto = Qc2Tex3)
+@
+
+<<maqcreport4, eval = FALSE>>=
+qcReport(maqcm, reportname = "rnadeg2", qcto = Qc2Tex2)
+@
+
+%% \includepdf[pages=1-2,nup=2x2, frame=TRUE]{rnadeg2.pdf}
+\includepdfmerge[nup=2x2, frame=TRUE]{rnadeg2.pdf, 1-2, rnadeg3.pdf, 1-2}
 
 
 \subsection{New report types}
 
-The existing report types are documented in the \Rfunction{qcReport} manual. Below, we will describe how to create new types, using as an example a simple plain text report. 
+A reporting function is a function that 
+
+\begin{itemize}
+\item Converts the approriate QC item sections (for example the \Rfunction{Qc2Tex2} function described above)
+\item Optionally includes the QC item sections into addition header and footer, either by writing these directly or by inserting the sections into an appropriate template. The reporting functions that are available in \Rpackage{qcmetrics} can be found in \Rfunction{?qcReport}: \Rfunction{reporting\_tex} for type \texttt{tex}, \Rfunction{reporting\_pdf} for type \texttt{pdf}, \ldots These functions should use the same arguments as \Rfunction{qcReport} insofar as possible. 
+\item Once written to a report source file, the final report type is generated. \Rfunction{knit} is used to convert the \texttt{Rnw} source to \texttt{tex} which is compiled into \texttt{pdf} using \Rfunction{tools::texi2pdf}. The \texttt{Rmd} content is directly written into a file which is knitted and converted to \texttt{html} using \Rfunction{knit2html} (which call \Rfunction{markdownTOHTML}). 
+\end{itemize}
+
+New \Rfunction{reporting\_abc} functions can be called directly or passed to \Rfunction{qcReport} using the \Robject{reporter} argument. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
@@ -431,6 +477,7 @@ It is hoped that the community will go a step further by developing and distribu
 
 
 \begin{itemize}
+\item Versatility of \R and Bioc well suited for high throughput biology data 
 \item Stress out the need for QC of multiple omics technologies, accomodation different types of high-level data.
 \item Elaborate on lab memory QC type of frameworks
 \end{itemize}
