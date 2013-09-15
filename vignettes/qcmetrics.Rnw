@@ -127,12 +127,11 @@ set.seed(1)
 
 \section{Introduction}\label{sec:intro} 
 
-Quality control (QC) is an essential step in any analytically process. Data of poor quality can at best least to the absence of positive results or, much worse, it false positives that stem from uncaught faulty and noisy data and much wasted resources in pursuing red herrings.  
+Quality control (QC) is an essential step in any analytically process. Data of poor quality can at best lead to the absence of positive results or, much worse, it false positives that stem from uncaught faulty and noisy data and much wasted resources in pursuing red herrings.  
 
-QC is a prime example where standardisation and automation are of great benefit. A great variety of QC metrics, software and pipelines have been described for any assay commonly used in modern biology. This document present a different tool for QC, whose main features are flexibility and versatility. The \Rpackage{qcmetrics} package is a general framework for QC and quality assessment (QA) that can accommodate any type of data. It provide a flexible framework to implement QC items, that store relevant QC metrics and the visualisation mechanism. These individual items can the be bundled into higher level QC containers that can be readily used to generate reports in various formats. As a result, it becomes easy to develop complete custom pipelines from scratch, automate the generation of reports. The pipelines can easily be updated to accommodate new QC items of better visualisation techniques. 
+Quality is often a relative concept that depends on the nature of the biological sample, the experimental settings, the analytical process and other factors. Research and development in the area of QC has generally lead in two types of work being disseminated. The comparison of samples of variable quality and the identification of metrics that correlate with the quality of the data. These quality metrics could then, in later experiments, be used to assess their quality. The design of domain-specific software to facilitate the collection, visualisation and interpretation of various QC metrics is also an area that has seen much development. QC is a prime example where standardisation and automation are of great benefit. While a great variety of QC metrics, software and pipelines have been described for any assay commonly used in modern biology, we present here a different tool for QC, whose main features are flexibility and versatility. The \Rpackage{qcmetrics} package is a general framework for QC that can accommodate any type of data. It provides a flexible framework to implement QC items that store relevant QC metrics with a specific visualisation mechanism. These individual items can the be bundled into higher level QC containers that can be readily used to generate reports in various formats. As a result, it becomes easy to develop complete custom pipelines from scratch and automate the generation of reports. The pipelines can easily be updated to accommodate new QC items of better visualisation techniques. 
 
 In section \ref{sec:qcclasses}, we provide an overview of the framework. In section \ref{sec:pipline}, we use microarray (subsection \ref{sec:marray}) and proteomics data (subsection \ref{sec:prot}) to demonstrate the elaboration of QC pipelines: how to create individual QC objects, how to bundle them to create sets of QC metrics and how to generate reports in multiple formats. We also show how the above steps can be fully automated through simple wrapper functions \ref{sec:wrapper}. Although kept simple in the interest of time and space, these examples are meaningful and relevant. In section \ref{sec:report}, we provide more detail about the report generation process, how reports can be customised and how new exports can be contributed. We proceed in section \ref{sec:qcpkg} on the consolidation of QC pipelines using \R  and elaborate on the development of dedicate QC packages with \Rpackage{qcmetrics}. 
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -141,11 +140,11 @@ In section \ref{sec:qcclasses}, we provide an overview of the framework. In sect
 
 \section{The QC classes}\label{sec:qcclasses}
 
-The package provides are two types of QC containers. The \Robject{QcMetric} class stores data and visualisation functions for single metrics. Several such metrics can be bundles into a \Robject{QcMetrics} instances, that can be used as templates for automated report generation. Below, we will provide a quick overview of how to create respective \Robject{QcMetric} and \Robject{QcMetrics} instances. More details are available in the respective documentations. 
+The package provides two types of QC containers. The \Robject{QcMetric} class stores data and visualisation functions for single metrics. Several such metrics can be bundles into \Robject{QcMetrics} instances, that can be used as input for automated report generation. Below, we will provide a quick overview of how to create respective \Robject{QcMetric} and \Robject{QcMetrics} instances. More details are available in the respective documentations. 
 
 \subsection{The \Robject{QcMetric} class}
 
-A QC metric is composed of a description ( \Robject{name} in the code chunk below), some QC data (the \Robject{qcdata}) and a \Robject{status} that defines of the metric is deemed of good quality (coded as \Robject{TRUE}), bad quality (coded as \Robject{FALSE}) or not yet evaluated (coded as \Robject{NA}). Individual metrics can be displayed as a short textual summary or plotted. To do the former, one can use the default \Rfunction{show} method.
+A QC metric is composed of a description (\Robject{name} in the code chunk below), some QC data (the \Robject{qcdata}) and a \Robject{status} that defines if the metric is deemed of acceptable quality (coded as \Robject{TRUE}), bad quality (coded as \Robject{FALSE}) or not yet evaluated (coded as \Robject{NA}). Individual metrics can be displayed as a short textual summary or plotted. To do the former, one can use the default \Rfunction{show} method.
 
 <<qcmetric>>=
 library("qcmetrics")
@@ -158,9 +157,9 @@ status(qc) <- TRUE
 qc
 @
 
-Plotting \Robject{QcMetric} instances requires to implement a plotting method that is adequate to the data at hand. We can use a \Rfunction{plot} replacement method to define our custom code.
+Plotting \Robject{QcMetric} instances requires to implement a plotting method that is adequate to the data at hand. We can use a \Rfunction{plot} replacement method to define our custom code. The code inside the \Rfunction{plot} function extracts the relevant QC data with \Rfunction{qcdata} from \Robject{object} that is passed as argument to \Rfunction{plot} and then uses the adequate visualisation to present the QC data.
 
-<<qcmetricplot, dev='pdf', fig.width = 4, fig.height = 4>>=
+<<qcmetricplot, dev='pdf', fig.width = 4, fig.height = 4, tidy = FALSE>>=
 plot(qc)
 plot(qc) <-
     function(object, ... ) boxplot(qcdata(object, "x"), ...)
@@ -249,6 +248,10 @@ qcReport(maqcm, reportname = "rnadeg", type = "pdf")
 
 The resulting report is shown below. Each \Robject{QcMetric} item generates a section named according to the object's name. A final summary section shows a table with all the QC items and their status. The report concludes with a detailed session information section.
 
+\bigskip
+
+In addition to the report, it is of course advised to store the actual \Robject{QcMetrics} object. This is most easily done with the \R \Rfunction{save}/\Rfunction{load} and \Rfunction{saveRDS}/\Rfunction{readRDS} functions. As the data and visualisation methods are stored together, it is possibly to reproduce the figures from the report of further explore the data at a later stage.
+
 \includepdf[pages=-,nup=2x2, frame=TRUE]{rnadeg.pdf}
 
 \clearpage
@@ -283,8 +286,9 @@ rnaqc <- function(input, status,
     }
     if (!missing(status))
         status(qc2) <- status[2]
-    qcm <- QcMetrics(qcdata = list(qc1, qc2))
-    if (!missing(type))         
+    ## bundle into QcMetrics 
+    qcm <- QcMetrics(qcdata = list(qc1, qc2))    
+    if (!missing(type))    
         qcreport(qcm, reportname, type = type,
                  title = "Affymetrix RNA degradation report")
     invisible(qcm)
@@ -292,7 +296,7 @@ rnaqc <- function(input, status,
 @
 
 
-If is now possible to generate a report from a set of CEL files or directly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items. These can also be set later, as illustrated below. 
+If is now possible to generate a \Robject{QcMetrics} objet from a set of CEL files or directly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items; these can also be set later, as illustrated below. If a report type is specified, the corresponding report is generated. 
 
 <<qcwrap2, cache = TRUE>>=
 myqc <- rnaqc(refA)
@@ -322,7 +326,7 @@ library("MSnbase")
 exp <- readMSData(msfile, verbose = FALSE)
 @
 
-The \Robject{QcMetrics} will consist of 3 items, namely a chromatogram constructed with the MS$^2$ spectra precursor's intensities, two figures illustrating the total ion count and precursor charges in the MS space and an $\frac{m}{z}$ delta plot illustrates the suitability of MS2 spectra for identification (see \Rfunction{?plotMzDelta} or \citep{Foster:2011}). 
+The \Robject{QcMetrics} will consist of 3 items, namely a chromatogram constructed with the MS$^2$ spectra precursor's intensities, a figure illustrating the precursor charges in the MS space and an $\frac{m}{z}$ delta plot illustrates the suitability of MS2 spectra for identification (see \Rfunction{?plotMzDelta} or \citep{Foster:2011}). 
 
 
 <<protqc1, cache=TRUE, tidy=FALSE>>=
@@ -357,7 +361,7 @@ plot(qc3) <- function(object)
     suppressWarnings(print(qcdata(object, "pmz")))
 @ 
 
-\paragraph{NB} We do not store the raw data in any of the above instances, but always pre-compute the necessary data that or plots that are then stored as \Robject{qcdata}. If the raw data was to be needed in multiple \Robject{QcMetric} instances, we could re-use the same \Robject{qcdata} (environment) to avoid unnecessary copies: \Rfunction{qcdata(qc2) <- qcenv(qc1)} and implement different views through custom \Rfunction{plot} methods. 
+Note that we do not store the raw data in any of the above instances, but always pre-compute the necessary data or plots that are then stored as \Robject{qcdata}. If the raw data was to be needed in multiple \Robject{QcMetric} instances, we could re-use the same \Robject{qcdata} \emph{environment} to avoid unnecessary copies using \Rfunction{qcdata(qc2) <- qcenv(qc1)} and implement different views through custom \Rfunction{plot} methods. 
 
 \bigskip
 
@@ -474,12 +478,11 @@ It is hoped that the community will go a step further by developing and distribu
 
 \section{Conclusions}\label{sec:ccl}
 
-
-
 \begin{itemize}
 \item Versatility of \R and Bioc well suited for high throughput biology data 
 \item Stress out the need for QC of multiple omics technologies, accomodation different types of high-level data.
 \item Elaborate on lab memory QC type of frameworks
+\item Maybe elaborate on difference between single sample vs multiple sample QC, and how to distinguish them in the latter case?
 \end{itemize}
 
 
