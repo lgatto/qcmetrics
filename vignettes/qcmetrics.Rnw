@@ -400,7 +400,7 @@ qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 
 \section{Report generation}\label{sec:report}
 
-The report generation is handled by dedicated packages, in particular \Rpackage{knitr} \citep{Xie:2013} for the \texttt{pdf} and \texttt{html} formats. 
+The report generation is handled by dedicated packages, in particular the \Rpackage{knitr} \citep{Xie:2013} and \Rpackage{markdown} \cite{markdown} packages. 
 
 \subsection{Custom reports}
 
@@ -408,7 +408,7 @@ The report generation is handled by dedicated packages, in particular \Rpackage{
 
 It is possible to customise reports for any of the existing types. The generation of the \texttt{pdf} report is based on a \texttt{tex} template, \texttt{knitr-template.tex}, that is available with the package\footnote{You can find its location with \Rfunction{system.file("templates", package = "qcmetrics")}.}. The \Rfunction{qcReport} method accepts the path to a custom \Robject{template} as argument. 
 
-The template corresponds to a \LaTeX preamble with the inclusion of two variables that are passed to the \Rfunction{qcReport} and used to customise the template: the author's name and the reports title. The former is defaulted to the system's user with \Rfunction{Sys.getenv("USER")} and the later is a simple character. The qcReport also automatically generates summary and session information sections. The core of the QC report, i.e the sections corresponding the the individual \Robject{QcMetric} instances bundled in a \Robject{QcMetrics} input (described in more details below) is then inserted into the template and weaved, or more specifically \Rfunction{knit}'ted into a \texttt{tex} document that is (if \Robject{type} is \texttt{pdf}) compiled into a \texttt{pdf} document.
+The template corresponds to a \LaTeX~preamble with the inclusion of two variables that are passed to the \Rfunction{qcReport} and used to customise the template: the author's name and the reports title. The former is defaulted to the system's user with \Rfunction{Sys.getenv("USER")} and the later is a simple character. The qcReport also automatically generates summary and session information sections. The core of the QC report, i.e the sections corresponding the the individual \Robject{QcMetric} instances bundled in a \Robject{QcMetrics} input (described in more details below) is then inserted into the template and weaved, or more specifically \Rfunction{knit}'ted into a \texttt{tex} document that is (if \Robject{type} is \texttt{pdf}) compiled into a \texttt{pdf} document.
 
 The generation of the \texttt{html} report is enabled by the creation of a \R markdown file (\texttt{Rmd}) that is then converted with \Rpackage{knitr} and \Rpackage{markdown} into \texttt{html}. The \texttt{Rmd} syntax being much simpler, no \texttt{Rmd} template is needed. It is however possible to customise the final \texttt{html} output by providing a \texttt{css} definition as \Robject{template} argument when calling \Rfunction{qcReport}.
 
@@ -425,7 +425,7 @@ qcmetrics:::Qc2Tex(maqcm, 1)
 
 Let's investigate how to customise these sections depending on the \Robject{QcMetric} status, the goal being to highlight positive QC results (i.e. when the status is \Robject{TRUE}) with {\color{green} $\CIRCLE$} (or {\color{green} $\smiley$}), negative results with {\color{red} $\CIRCLE$} (or {\color{red} $\frownie$}) and use $\Circle$ if status is \Robject{NA} after the section title\footnote{The respective symbols are \texttt{CIRCLE}, \texttt{smiley}, \texttt{frownie} and \texttt{Circle} from package \texttt{wasysym}.}.
 
-Below, we see that different section headers are composed based on the value of \Rfunction{status(object[[i]])} by appending the appropriate \LaTeX symbol. 
+Below, we see that different section headers are composed based on the value of \Rfunction{status(object[[i]])} by appending the appropriate \LaTeX~symbol. 
 
 <<Qc2Tex2, tidy=FALSE>>=
 Qc2Tex2
@@ -485,7 +485,7 @@ Alternatively, the \Rfunction{rnaqc} function could be modularised so that QC it
 
 \subsection{A QC pipeline repository}
 
-
+The wiki on the \Rpackage{qcmetrics} github page\footnote{\url{https://github.com/lgatto/qcmetrics}} can be edited by any github user and will be used to cite, document and share QC functions, pipelines and packages, in particular those that make use of the \Rpackage{qcmetrics} infrastructure. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -493,6 +493,8 @@ Alternatively, the \Rfunction{rnaqc} function could be modularised so that QC it
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Conclusions}\label{sec:ccl}
+
+
 
 \begin{itemize}
 \item Versatility of \R and Bioc well suited for high throughput biology data 
