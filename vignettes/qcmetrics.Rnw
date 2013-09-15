@@ -469,11 +469,23 @@ New \Rfunction{reporting\_abc} functions can be called directly or passed to \Rf
 
 \section{QC packages}\label{sec:qcpkg}
 
+\subsection{A simple RNA degradation package}
+
 While the examples presented in section \ref{sec:pipeline} and in particular the wrapper function in section \ref{sec:wrapper} are flexible and fast ways to design QC pipeline prototypes, a more robust mechanism is desirable for production pipelines. The \R packaging mechanism is ideally suited for this for it provides versioning, documentation, unit testing and easy distribution and installation facilities. 
 
-While the detailed description of package development is out of the scope of this document, describe how to proceed ...
+While the detailed description of package development is out of the scope of this document, it is of interest to provide an overview of the development of a QC package. Taking the wrapper function, it could be used the create the package structure
 
-It is hoped that the community will go a step further by developing and distributing fully fledged QC packages for dedicated applications \ref{sec:qcpkg}. Need for repository for QC packages.
+<<qcpkg0, eval=FALSE>>=
+package.skeleton("RnaDegQC", list = "rnaqc")
+@
+
+The \texttt{DESCRIPTION} file would need to be updated. The packages \Rpackage{qcmetrics}, \Rpackage{affy} and \Rpackage{yaqcaffy} would need to be specifed as dependencies in the \texttt{Imports:} line and imported in the \texttt{NAMESPACE} file. The documentation file \texttt{RnaDegQC/man/rnaqc.Rd} and the (optional) \texttt{RnaDegQC/man/RnaDegQC-packge.Rd} would need to be updated. 
+
+Alternatively, the \Rfunction{rnaqc} function could be modularised so that QC items would be created and returned by dedicated constructors like \Rfunction{makeRnaDegSlopes} and \Rfunction{makeRnaDegRatios}. This would provide other developers with the means to re-use some components of the pipeline by using the package. 
+
+\subsection{A QC pipeline repository}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
