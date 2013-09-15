@@ -1,11 +1,17 @@
 #+TITLE: A General Framework for Quality Control Metrics
 
+* Pipelines and package repository
+
+May be use the =qcmetrics= github wiki?
+
 * TODO
+
 ** More [0/1]
 - [ ] Describe how to add additinal functions
 
 ** Reporting [3/6]
 - [ ] Add metadata section
+- [ ] Add a =save= arg to qcReport to save =object= and provide link in report.
 - [ ] Improve nozzle report
 - [ ] Dynamic reports could be created using =shiny=.
 - [X] Report customisation
