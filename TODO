@@ -4,6 +4,7 @@ Dear Emacs, please make this -*-org-*- mode
 
 ** More [0/1]
 - [ ] TODO Describe how to add additinal functions
+- [ ] parametrise chunk params
 
 ** Reporting [3/6]
 - [ ] TODO Add metadata section
