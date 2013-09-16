@@ -296,7 +296,7 @@ rnaqc <- function(input, status,
 @
 
 
-If is now possible to generate a \Robject{QcMetrics} objet from a set of CEL files or directly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items; these can also be set later, as illustrated below. If a report type is specified, the corresponding report is generated. 
+If is now possible to generate a \Robject{QcMetrics} object from a set of CEL files or directly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items; these can also be set later, as illustrated below. If a report type is specified, the corresponding report is generated. 
 
 <<qcwrap2, cache = TRUE>>=
 myqc <- rnaqc(refA)
@@ -315,9 +315,9 @@ The report can be generated manually with \code{qcReport(myqc)} or directly with
 myqc <- rnaqc(refA, type = "pdf")
 @
 
-\subsection{Proteomics}\label{sec:prot}
+\subsection{Proteomics raw data}\label{sec:prot}
 
-To illustrate a simple QC analysis for proteomics data, we will download dataset \texttt{PXD00001} from the ProteomeXchange repository in the \texttt{mzXML} format \citep{Pedrioli:2004}. The MS$^2$ spectra from that mass-spectrometry run are then read into \R and stored as an \Robject{MSnExp} experiment using the \Rfunction{readMSData} function from the \Rpackage{MSnbase} package \citep{Gatto:2012}. 
+To illustrate a simple QC analysis for proteomics data, we will download data set \texttt{PXD00001} from the ProteomeXchange repository in the \texttt{mzXML} format \citep{Pedrioli:2004}. The MS$^2$ spectra from that mass-spectrometry run are then read into \R and stored as an \Robject{MSnExp} experiment using the \Rfunction{readMSData} function from the \Rpackage{MSnbase} package \citep{Gatto:2012}. 
 
 <<protdata, eval=TRUE, cache=TRUE>>=
 library("RforProteomics")
@@ -393,6 +393,67 @@ qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 
 \includepdf[pages=-,nup=2x2, frame=TRUE]{protqc.pdf}
 
+\subsection{Processed $^{15}$N labelling data}\label{sec:n15}
+
+In this section, we describe a set of $^{15}$N metabolic labelling QC metrics. The data is available as an \Robject{MSnSet} instance and was processed with in-house tools. Briefly, MS$^2$ where search with the Mascot search engin and identification scores adjusted with Mascot Percolator. Heavy and light pairs were then searched in the survey scans and incorporation was estimated based on the peptide sequence and the profile of the heavy form (the \Robject{inc} feature variable). Heavy and light peptides isotopic envelope areas were finally integrated to obtain unlabelled and $^{15}$N quantitation data. The \Robject{pms} object provides such data for PSMs (peptide spectrum matches) with a posterior error probability < 0.05 that can be uniquely matched to proteins.
+
+We first load the \Rpackage{MSnbase} package (required to support the \Robject{MSnSet} data structure) and example data that is distributed with the \Rpackage{qcmetrics} package. We will make use of the \Rpackage{ggplot2} plotting package.
+
+<<n15ex>>=
+library("MSnbase")
+data(psm)
+library("ggplot2")
+@
+ 
+The first QC item examines the $^{15}$N incorporation rate, available in the \Robject{inc} feature variable. We also defined a median incorporation rate threshold \Robject{tr} or 97.5 that is used to set the QC status. We then implement a custom \Rfunction{show} method, that print 5 summary values of the variable's distribution. We finally defined the metric's \Rfunction{plot} function that represent the distribution of the PSM's incorporation rates as a boxplot, shows all the individual rates as jittered dots and represents the \Robject{tr} threshold as a dotted red line. 
+
+${15}^$N experiments of good quality are characterised with high incorporation rates, which allow to deconvolute the heavy and light peptide isotopic envelopes and acurate quantification.
+
+<<qcinc>>=
+## incorporation rate QC metric
+qcinc <- QcMetric(name = "15N incorporation rate")
+qcdata(qcinc, "inc") <- fData(psm)$inc
+qcdata(qcinc, "tr") <- 97.5
+status(qcinc) <- median(qcdata(qcinc, "inc")) > qcdata(qcinc, "tr")
+
+show(qcinc) <- function(object) {
+    qcshow(object, qcdata = FALSE) 
+    cat(" QC threshold:", qcdata(object, "tr"), "\n")
+    cat(" Incorporation rate\n")
+    print(summary(qcdata(object, "inc")))
+    invisible(NULL)
+}
+
+plot(qcinc) <- function(object) {
+    inc <- qcdata(object, "inc")
+    tr <- qcdata(object, "tr")
+    lab <- "Incorporation rate"
+    dd <- data.frame(inc = qcdata(qcinc, "inc"))
+    p <- ggplot(dd, aes(factor(""), inc)) +
+        geom_jitter(colour = "#4582B370", size = 3) + 
+    geom_boxplot(fill = "#FFFFFFD0", colour = "#000000", outlier.size = 0) +
+    geom_hline(yintercept = tr, colour = "red", linetype = "dotted",
+                 size = 1) +
+                     labs(x = "", y = "Incorporation rate") 
+    p
+}
+@
+
+The second metric inspects the log$_2$ fold-changes of the PSMs, unique peptides with modifications, unique peptide sequences (not taking modifications into account) and proteins. These respective data sets are computed with the \Rfunction{combineFeatures} function (see \Rfunction{?combineFeatures} for details).
+
+<<combinefeatures, tidy = FALSE>>=
+pep <- combineFeatures(psm,
+                       groupBy=as.character(fData(psm)$Peptide_Sequence), 
+                       "median", verbose = FALSE)
+modpep <- combineFeatures(psm,
+                          groupBy=modseq,
+                          "median", verbose = FALSE)
+prot <- combineFeatures(psm,
+                        groupBy=as.character(fData(psm)$Protein_Accession), 
+                        "median", verbose = FALSE)
+@
+
+Each log$_2$ fold-change distributions  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
@@ -416,7 +477,7 @@ Initial support for the \Rpackage{Nozzle.R1} package \citep{nozzle} is available
 
 \subsubsection*{\Robject{QcMetric} sections}
 
-The generation of the sections for \Robject{QcMetric} instances is controlled by a function passed to the \Robject{qcto} argument. This function takes care of transforming an instance of class \Robject{QcMetric} into a \texttt{character} that can be insterted into the report. For the \texttt{tex} and \texttt{pdf} reports, \Rfunction{Qc2Tex} is used; the \texttt{Rmd} and \texttt{html} reports make use of \Rfunction{Qc2Rmd}. These functions take an instance of class \Robject{QcMetrics} and the index of the \Robject{QcMetric} to be converted.
+The generation of the sections for \Robject{QcMetric} instances is controlled by a function passed to the \Robject{qcto} argument. This function takes care of transforming an instance of class \Robject{QcMetric} into a \texttt{character} that can be inserted into the report. For the \texttt{tex} and \texttt{pdf} reports, \Rfunction{Qc2Tex} is used; the \texttt{Rmd} and \texttt{html} reports make use of \Rfunction{Qc2Rmd}. These functions take an instance of class \Robject{QcMetrics} and the index of the \Robject{QcMetric} to be converted.
 
 <<Qc2Tex, tidy=FALSE>>=
 qcmetrics:::Qc2Tex
@@ -456,7 +517,7 @@ qcReport(maqcm, reportname = "rnadeg2", qcto = Qc2Tex2)
 A reporting function is a function that 
 
 \begin{itemize}
-\item Converts the approriate QC item sections (for example the \Rfunction{Qc2Tex2} function described above)
+\item Converts the appropriate QC item sections (for example the \Rfunction{Qc2Tex2} function described above)
 \item Optionally includes the QC item sections into addition header and footer, either by writing these directly or by inserting the sections into an appropriate template. The reporting functions that are available in \Rpackage{qcmetrics} can be found in \Rfunction{?qcReport}: \Rfunction{reporting\_tex} for type \texttt{tex}, \Rfunction{reporting\_pdf} for type \texttt{pdf}, \ldots These functions should use the same arguments as \Rfunction{qcReport} insofar as possible. 
 \item Once written to a report source file, the final report type is generated. \Rfunction{knit} is used to convert the \texttt{Rnw} source to \texttt{tex} which is compiled into \texttt{pdf} using \Rfunction{tools::texi2pdf}. The \texttt{Rmd} content is directly written into a file which is knitted and converted to \texttt{html} using \Rfunction{knit2html} (which call \Rfunction{markdownTOHTML}). 
 \end{itemize}
@@ -479,7 +540,7 @@ While the detailed description of package development is out of the scope of thi
 package.skeleton("RnaDegQC", list = "rnaqc")
 @
 
-The \texttt{DESCRIPTION} file would need to be updated. The packages \Rpackage{qcmetrics}, \Rpackage{affy} and \Rpackage{yaqcaffy} would need to be specifed as dependencies in the \texttt{Imports:} line and imported in the \texttt{NAMESPACE} file. The documentation file \texttt{RnaDegQC/man/rnaqc.Rd} and the (optional) \texttt{RnaDegQC/man/RnaDegQC-packge.Rd} would need to be updated. 
+The \texttt{DESCRIPTION} file would need to be updated. The packages \Rpackage{qcmetrics}, \Rpackage{affy} and \Rpackage{yaqcaffy} would need to be specified as dependencies in the \texttt{Imports:} line and imported in the \texttt{NAMESPACE} file. The documentation file \texttt{RnaDegQC/man/rnaqc.Rd} and the (optional) \texttt{RnaDegQC/man/RnaDegQC-packge.Rd} would need to be updated. 
 
 Alternatively, the \Rfunction{rnaqc} function could be modularised so that QC items would be created and returned by dedicated constructors like \Rfunction{makeRnaDegSlopes} and \Rfunction{makeRnaDegRatios}. This would provide other developers with the means to re-use some components of the pipeline by using the package. 
 
@@ -494,15 +555,13 @@ The wiki on the \Rpackage{qcmetrics} github page\footnote{\url{https://github.co
 
 \section{Conclusions}\label{sec:ccl}
 
+\R and Bioconductor are well suited for the analysis of high throughput biology data. They provide first class statistical routines, excellent graph capabilities and a interface of choice to import and manipulate various omics data, as demonstrated by the wealth of packages\footnote{\url{http://bioconductor.org/packages/release/BiocViews.html\#\_\_\_QualityControl}} that provide functionalities for QC.
 
+The \Rpackage{qcmetrics} package is different than existing \R packages and QC systems in general. It proposes a unique domain-independent framework to design QC pipelines and is thus suited for any use case. The examples presented in this document illustrated the application of \Rpackage{qcmetrics} on data containing single or multiple samples or experimental runs from different technologies. It is also possible to automate the generation of QC metrics for a set of repeated (and growing) analyses of standard samples to establish \emph{lab memory} types of QC reports, that track a set of metrics for controlled standard samples over time. It can be applied to raw data or processed data and tailored to suite precise needs. The popularisation of integrative approaches that combine multiple types of data in novel ways stresses out the need for flexible QC development. 
 
-\begin{itemize}
-\item Versatility of \R and Bioc well suited for high throughput biology data 
-\item Stress out the need for QC of multiple omics technologies, accomodation different types of high-level data.
-\item Elaborate on lab memory QC type of frameworks
-\item Maybe elaborate on difference between single sample vs multiple sample QC, and how to distinguish them in the latter case?
-\end{itemize}
+\Rpackage{qcmetrics} is a versatile software that allows rapid and easy QC pipeline prototyping and development and supports straightforward migration to production level systems through its well defined packaging mechanism. 
 
+%% Maybe elaborate on difference between single sample vs multiple sample QC, and how to distinguish them in the latter case?
 
 \clearpage
 
