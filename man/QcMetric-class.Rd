@@ -78,7 +78,9 @@
       \code{environment} that stores the QC data. }
     \item{show}{\code{signature(object = "QcMetric")}: shows a textual
       summary of \code{object}. The default \code{show} implementation
-      is available as the \code{qcshow} function. }
+      is available as the \code{qcshow{object, qcdata}} function. The
+      second argument is a logical (default is \code{TRUE}) that
+      specifies whether \code{qcdata(object)} should be displayed. }
     \item{show<-}{\code{signature(object = "QcMetric", value =
 	"function")}: sets a custom \code{show} method for
       \code{object}. } 

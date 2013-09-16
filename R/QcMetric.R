@@ -1,10 +1,12 @@
-qcshow <- function(object) {
+qcshow <- function(object, qcdata = TRUE) {
     cat("Object of class \"", class(object), "\"\n", sep="")
     cat(" Name:", object@name, "\n")                 
     cat(" Status:", object@status, "\n")
-    cat(" Data: ")
-    if (length(qcdata(object)) == 0) cat("empty\n")
-    else cat(qcdata(object), "\n")    
+    if (qcdata) {
+        cat(" Data: ")
+        if (length(qcdata(object)) == 0) cat("empty\n")
+        else cat(qcdata(object), "\n")
+    }
     invisible(NULL)
 }
 
