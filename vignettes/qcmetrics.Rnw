@@ -101,7 +101,8 @@ library("knitr")
 opts_chunk$set(fig.align = 'center', 
                fig.show = 'hold', 
                par = TRUE,
-               prompt = TRUE,
+               prompt = FALSE,
+               tidy = FALSE,
                eval = TRUE,
                stop_on_error = 1L,
                comment = NA)
@@ -395,27 +396,30 @@ qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 
 \subsection{Processed $^{15}$N labelling data}\label{sec:n15}
 
-In this section, we describe a set of $^{15}$N metabolic labelling QC metrics. The data is available as an \Robject{MSnSet} instance and was processed with in-house tools. Briefly, MS$^2$ where search with the Mascot search engin and identification scores adjusted with Mascot Percolator. Heavy and light pairs were then searched in the survey scans and incorporation was estimated based on the peptide sequence and the profile of the heavy form (the \Robject{inc} feature variable). Heavy and light peptides isotopic envelope areas were finally integrated to obtain unlabelled and $^{15}$N quantitation data. The \Robject{pms} object provides such data for PSMs (peptide spectrum matches) with a posterior error probability < 0.05 that can be uniquely matched to proteins.
+In this section, we describe a set of $^{15}$N metabolic labelling QC metrics. The data is available as an \Robject{MSnSet} instance and was processed with in-house tools. Briefly, MS$^2$ where search with the Mascot search engine and identification scores adjusted with Mascot Percolator. Heavy and light pairs were then searched in the survey scans and incorporation was estimated based on the peptide sequence and the profile of the heavy form (the \Robject{inc} feature variable). Heavy and light peptides isotopic envelope areas were finally integrated to obtain unlabelled and $^{15}$N quantitation data. The \Robject{psm} object provides such data for PSMs (peptide spectrum matches) with a posterior error probability < 0.05 that can be uniquely matched to proteins.
 
 We first load the \Rpackage{MSnbase} package (required to support the \Robject{MSnSet} data structure) and example data that is distributed with the \Rpackage{qcmetrics} package. We will make use of the \Rpackage{ggplot2} plotting package.
 
 <<n15ex>>=
 library("MSnbase")
-data(psm)
+data(n15psm)
+psm
 library("ggplot2")
 @
  
-The first QC item examines the $^{15}$N incorporation rate, available in the \Robject{inc} feature variable. We also defined a median incorporation rate threshold \Robject{tr} or 97.5 that is used to set the QC status. We then implement a custom \Rfunction{show} method, that print 5 summary values of the variable's distribution. We finally defined the metric's \Rfunction{plot} function that represent the distribution of the PSM's incorporation rates as a boxplot, shows all the individual rates as jittered dots and represents the \Robject{tr} threshold as a dotted red line. 
+The first QC item examines the $^{15}$N incorporation rate, available in the \Robject{inc} feature variable. We also defined a median incorporation rate threshold \Robject{tr} or 97.5 that is used to set the QC status. We then implement a custom \Rfunction{show} method, that print 5 summary values of the variable's distribution. 
 
-${15}^$N experiments of good quality are characterised with high incorporation rates, which allow to deconvolute the heavy and light peptide isotopic envelopes and acurate quantification.
-
-<<qcinc>>=
+<<qcinc, tidy=FALSE>>=
 ## incorporation rate QC metric
 qcinc <- QcMetric(name = "15N incorporation rate")
 qcdata(qcinc, "inc") <- fData(psm)$inc
 qcdata(qcinc, "tr") <- 97.5
 status(qcinc) <- median(qcdata(qcinc, "inc")) > qcdata(qcinc, "tr")
+@
 
+We then defined the metric's \Rfunction{plot} function that represent the distribution of the PSM's incorporation rates as a boxplot, shows all the individual rates as jittered dots and represents the \Robject{tr} threshold as a dotted red line. 
+
+<<qcinc2, tidy=FALSE>>=
 show(qcinc) <- function(object) {
     qcshow(object, qcdata = FALSE) 
     cat(" QC threshold:", qcdata(object, "tr"), "\n")
@@ -423,7 +427,6 @@ show(qcinc) <- function(object) {
     print(summary(qcdata(object, "inc")))
     invisible(NULL)
 }
-
 plot(qcinc) <- function(object) {
     inc <- qcdata(object, "inc")
     tr <- qcdata(object, "tr")
@@ -431,29 +434,144 @@ plot(qcinc) <- function(object) {
     dd <- data.frame(inc = qcdata(qcinc, "inc"))
     p <- ggplot(dd, aes(factor(""), inc)) +
         geom_jitter(colour = "#4582B370", size = 3) + 
-    geom_boxplot(fill = "#FFFFFFD0", colour = "#000000", outlier.size = 0) +
-    geom_hline(yintercept = tr, colour = "red", linetype = "dotted",
-                 size = 1) +
-                     labs(x = "", y = "Incorporation rate") 
+    geom_boxplot(fill = "#FFFFFFD0", colour = "#000000",
+                 outlier.size = 0) +
+    geom_hline(yintercept = tr, colour = "red",
+               linetype = "dotted", size = 1) +
+    labs(x = "", y = "Incorporation rate") 
     p
 }
 @
 
-The second metric inspects the log$_2$ fold-changes of the PSMs, unique peptides with modifications, unique peptide sequences (not taking modifications into account) and proteins. These respective data sets are computed with the \Rfunction{combineFeatures} function (see \Rfunction{?combineFeatures} for details).
+$^{15}$N experiments of good quality are characterised with high incorporation rates, which allow to deconvolute the heavy and light peptide isotopic envelopes and accurate quantification.
+
+\bigskip
+
+The second metric inspects the log$_2$ fold-changes of the PSMs, unique peptides with modifications, unique peptide sequences (not taking 
+
+modifications into account) and proteins. These respective data sets are computed with the \Rfunction{combineFeatures} function (see \Rfunction{?combineFeatures} for details).
 
 <<combinefeatures, tidy = FALSE>>=
 pep <- combineFeatures(psm,
-                       groupBy=as.character(fData(psm)$Peptide_Sequence), 
+                       as.character(fData(psm)$Peptide_Sequence), 
                        "median", verbose = FALSE)
 modpep <- combineFeatures(psm,
-                          groupBy=modseq,
+                          fData(psm)$modseq,
                           "median", verbose = FALSE)
 prot <- combineFeatures(psm,
-                        groupBy=as.character(fData(psm)$Protein_Accession), 
+                        as.character(fData(psm)$Protein_Accession), 
                         "median", verbose = FALSE)
 @
 
-Each log$_2$ fold-change distributions  
+The log$_2$ fold-change for each of the features are then computed and stored as QC data of our next QC item. We also store a pair of values \Robject{explfc} that defined an interval in which we expect our median PSM log$_2$ fold-change to be. 
+
+<<qclfc, tidy=FALSE>>=
+## calculate log fold-change
+qclfc <- QcMetric(name = "Log2 fold-changes")
+qcdata(qclfc, "lfc.psm") <-
+    log2(exprs(psm)[,"unlabelled"] / exprs(psm)[, "N15"])
+qcdata(qclfc, "lfc.pep") <-
+    log2(exprs(pep)[,"unlabelled"] / exprs(pep)[, "N15"])
+qcdata(qclfc, "lfc.modpep") <-
+    log2(exprs(modpep)[,"unlabelled"] / exprs(modpep)[, "N15"])
+qcdata(qclfc, "lfc.prot") <-
+    log2(exprs(prot)[,"unlabelled"] / exprs(prot)[, "N15"])
+qcdata(qclfc, "explfc") <- c(-0.5, 0.5)
+
+status(qclfc) <-
+    median(qcdata(qclfc, "lfc.psm")) > qcdata(qclfc, "explfc")[1] &
+    median(qcdata(qclfc, "lfc.psm")) < qcdata(qclfc, "explfc")[2]
+@
+
+As previously, we provide a custom \Rfunction{show} method that displays summary values for the four fold-changes. The \Rfunction{plot} function illustrates the respective log$_2$ fold-change densities and the expected median PSM fold-change range (red rectangle). The expected 0 log$_2$ fold-change is shown as a dotted black vertical line and the observed median PSM value is shown as a blue dashed line.
+
+<<qclfc2, tidy=FALSE>>=
+show(qclfc) <- function(object) {
+    qcshow(object, qcdata = FALSE) ## default
+    cat(" QC thresholds:", qcdata(object, "explfc"), "\n")
+    cat(" * PSM log2 fold-changes\n")
+    print(summary(qcdata(object, "lfc.psm")))
+    cat(" * Modified peptide log2 fold-changes\n")
+    cat(" * Peptide log2 fold-changes\n")
+    print(summary(qcdata(object, "lfc.pep")))
+    print(summary(qcdata(object, "lfc.modpep")))
+    cat(" * Protein log2 fold-changes\n")
+    print(summary(qcdata(object, "lfc.prot")))    
+    invisible(NULL)
+}
+plot(qclfc) <- function(object) {
+    x <- qcdata(object, "explfc")
+    plot(density(qcdata(object, "lfc.psm")),
+         main = "", sub = "", col = "red",
+         ylab = "", lwd = 2,
+         xlab = expression(log[2]~fold-change))    
+    lines(density(qcdata(object, "lfc.modpep")),
+          col = "steelblue", lwd = 2)
+    lines(density(qcdata(object, "lfc.pep")),
+          col = "blue", lwd = 2)
+    lines(density(qcdata(object, "lfc.prot")),
+          col = "orange")
+    abline(h = 0, col = "grey")
+    abline(v = 0, lty = "dotted")    
+    rect(x[1], -1, x[2], 1, col = "#EE000030",
+         border = NA)
+    abline(v = median(qcdata(object, "lfc.psm")),
+           lty = "dashed", col = "blue")
+    legend("topright",
+           c("PSM", "Peptides", "Modified peptides", "Proteins"),
+           col = c("red", "steelblue", "blue", "orange"), lwd = 2,
+           bty = "n")
+}
+@
+
+A good quality experiment is expected to have a tight distribution centred around 0. Major deviations would indicate incomplete incorporation, errors in the respective amounts of light and heavy material used and a wide distribution would reflect large variability in the data. 
+
+\bigskip
+
+Our last QC item inspects the number of features that have been identified in the experiment. We also investigate how many peptides (with or without considering the modification) have been observed at the PSM level. Here, we do not specify any expected values as the number of observed features is experiment specific; the QC status is left as \Robject{NA}.
+
+<<qcnb, tidy=FALSE>>=
+## number of features
+qcnb <- QcMetric(name = "Number of features")
+qcdata(qcnb, "count") <- c(
+    PSM = nrow(psm),
+    ModPep = nrow(modpep),
+    Pep = nrow(pep),
+    Prot = nrow(prot))
+qcdata(qcnb, "peptab") <-
+    table(fData(psm)$Peptide_Sequence)
+qcdata(qcnb, "modpeptab") <-
+    table(fData(psm)$modseq)
+@
+
+The counts are displayed in the new \Rfunction{show} and plotted as bar charts in the \Rfunction{plot} methods.
+
+<<qcnb2, tidy=FALSE>>=
+show(qcnb) <- function(object) {
+    qcshow(object, qcdata = FALSE)
+    print(qcdata(object, "count"))
+}
+plot(qcnb) <- function(object) {
+    layout(matrix(c(1, 2, 1, 3), ncol = 2))
+    barplot(qcdata(object, "count"), horiz = TRUE, las = 2)
+    barplot(table(qcdata(object, "modpeptab")),
+            xlab = "Modified peptides")
+    barplot(table(qcdata(object, "peptab")),
+            xlab = "Peptides")
+}
+@
+
+In the code chunk below, we combine the 3 QC items into a \Robject{QcMetrics} instance and generate a report using meta data extracted from the \Robject{psm} \Robject{MSnSet} instance.
+
+<<n15qcm, tidy=FALSE>>=
+n15qcm <- QcMetrics(qcdata = list(qcinc, qclfc, qcnb))
+qcReport(n15qcm, reportname = "n15qcreport",
+         title = expinfo(experimentData(psm))["title"],
+         author = expinfo(experimentData(psm))["contact"],
+         clean = FALSE)
+@
+
+\includepdf[pages=-,nup=2x2, frame=TRUE]{n15qcreport.pdf}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
@@ -461,7 +579,7 @@ Each log$_2$ fold-change distributions
 
 \section{Report generation}\label{sec:report}
 
-The report generation is handled by dedicated packages, in particular the \Rpackage{knitr} \citep{Xie:2013} and \Rpackage{markdown} \cite{markdown} packages. 
+The report generation is handled by dedicated packages, in particular the \Rpackage{knitr} \citep{Xie:2013} and \Rpackage{markdown} \citep{markdown} packages. 
 
 \subsection{Custom reports}
 

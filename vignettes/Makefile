@@ -18,6 +18,7 @@ LATEXFILES = *.aux\
 	rnadeg.*\
 	rnadeg2.*\
 	rnadeg3.*\
+	n15qcreport.*\
 	protqc.*\
 	qcmetrics.tex
 
