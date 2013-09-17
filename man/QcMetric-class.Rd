@@ -10,7 +10,8 @@
 \alias{plot<-,QcMetric,function-method}
 \alias{plot<-}
 \alias{qcenv,QcMetric-method}
-\alias{qcenv<-,QcMetric,evironment-method}
+\alias{qcenv<-,QcMetric,environment-method}
+\alias{qcenv}
 \alias{qcdata<-,QcMetric,ANY-method}
 \alias{qcdata,QcMetric,character-method}
 \alias{qcdata,QcMetric,missing-method}
@@ -74,7 +75,7 @@
       assigning the RHS value. If \code{var} is missing and the RHS
       expression is an environment, then \code{qcdata} is reset with all
       the variables in \code{value}. }
-    \item{qcenc}{\code{signature(object = "QcMetric")}: return the
+    \item{qcenv}{\code{signature(object = "QcMetric")}: return the
       \code{environment} that stores the QC data. }
     \item{qcenv<-}{\code{signature(object = "QcMetric")}:
       Set all variable in the RHS \code{environment} as \code{qcdata}

@@ -12,7 +12,8 @@
 \usage{data(psm)}
 
 \references{
-  See \code{\linkS4class{MSnbase::MSnSet}} and the \code{MSnbase-demo} vignette.   
+  See \code{MSnSet} and the \code{MSnbase-demo} vignette in the
+  \code{MSnbase} package.
 }
 
 \examples{
