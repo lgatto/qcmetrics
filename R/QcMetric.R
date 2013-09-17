@@ -21,7 +21,7 @@ qcshow <- function(object, qcdata = TRUE) {
                       prototype = prototype(
                           name = "A QcMetric prototype",
                           status = NA,
-                          qcdata = new.env(),
+                          qcdata = new.env(parent=emptyenv()),
                           plot = function(x, ...) {
                               warning("No specific plot function defined")
                               invisible(NULL)
@@ -30,7 +30,7 @@ qcshow <- function(object, qcdata = TRUE) {
 
 QcMetric <- function(...) {
     ans <- .QcMetric(...)
-    ans@qcdata <- new.env()
+    ans@qcdata <- new.env(parent=emptyenv())
     ans
 }
 
