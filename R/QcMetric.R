@@ -58,7 +58,7 @@ setMethod("qcenv", c("QcMetric"),
           function(object) object@qcdata)
 
 setReplaceMethod("qcenv",
-                 signature(object="QcMetric", value="environement"),
+                 signature(object="QcMetric", value="environment"),
                  function(object, value) {
                      object@qcdata <- value
                      object
