@@ -12,6 +12,7 @@
 \alias{qcenv,QcMetric-method}
 \alias{qcenv<-,QcMetric,environment-method}
 \alias{qcenv}
+\alias{qcenv<-}
 \alias{qcdata<-,QcMetric,ANY-method}
 \alias{qcdata,QcMetric,character-method}
 \alias{qcdata,QcMetric,missing-method}
