@@ -1,5 +1,6 @@
 \name{psm}
 \alias{psm}
+\alias{n15psm}
 \docType{data}
 
 \title{ 15N example data }
@@ -11,11 +12,12 @@
 \usage{data(psm)}
 
 \references{
-  See \code{\linkS4class{MSnSet}} and the \code{MSnbase-demo} vignette.   
+  See \code{\linkS4class{MSnbase::MSnSet}} and the \code{MSnbase-demo} vignette.   
 }
 
 \examples{
-data(psm)
+library("MSnbase")
+data(n15psm)
 psm
 }
 
