@@ -16,7 +16,7 @@ Suggests: affy, MSnbase, ggplot2, lattice, yaqcaffy,
 	  MAQCsubsetAFX, RforProteomics, AnnotationDbi,
 	  mzR
 License: GPL-2
-URL: http://lgatto.github.com/qcmetrics/
+URL: https://github.com/lgatto/qcmetrics
 biocViews: Bioinformatics, QualityControl, Proteomics, 
 	   Microarray, MassSpectrometry, Visualisation
 VignetteBuilder: knitr
