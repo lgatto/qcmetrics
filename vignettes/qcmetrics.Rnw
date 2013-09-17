@@ -396,7 +396,7 @@ qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 
 \subsection{Processed $^{15}$N labelling data}\label{sec:n15}
 
-In this section, we describe a set of $^{15}$N metabolic labelling QC metrics. The data is available as an \Robject{MSnSet} instance and was processed with in-house tools. Briefly, MS$^2$ where search with the Mascot search engine and identification scores adjusted with Mascot Percolator. Heavy and light pairs were then searched in the survey scans and incorporation was estimated based on the peptide sequence and the profile of the heavy form (the \Robject{inc} feature variable). Heavy and light peptides isotopic envelope areas were finally integrated to obtain unlabelled and $^{15}$N quantitation data. The \Robject{psm} object provides such data for PSMs (peptide spectrum matches) with a posterior error probability < 0.05 that can be uniquely matched to proteins.
+In this section, we describe a set of $^{15}$N metabolic labelling QC metrics. The data is a phospho-enriched $^{15}$N labelled \textit{Arabidopsis thaliana} sample available as an \Robject{MSnSet} instance and was processed with in-house tools. Briefly, MS$^2$ where search with the Mascot search engine and identification scores adjusted with Mascot Percolator. Heavy and light pairs were then searched in the survey scans and incorporation was estimated based on the peptide sequence and the profile of the heavy form (the \Robject{inc} feature variable). Heavy and light peptides isotopic envelope areas were finally integrated to obtain unlabelled and $^{15}$N quantitation data. The \Robject{psm} object provides such data for PSMs (peptide spectrum matches) with a posterior error probability < 0.05 that can be uniquely matched to proteins.
 
 We first load the \Rpackage{MSnbase} package (required to support the \Robject{MSnSet} data structure) and example data that is distributed with the \Rpackage{qcmetrics} package. We will make use of the \Rpackage{ggplot2} plotting package.
 
@@ -492,9 +492,9 @@ show(qclfc) <- function(object) {
     cat(" * PSM log2 fold-changes\n")
     print(summary(qcdata(object, "lfc.psm")))
     cat(" * Modified peptide log2 fold-changes\n")
+    print(summary(qcdata(object, "lfc.modpep")))
     cat(" * Peptide log2 fold-changes\n")
     print(summary(qcdata(object, "lfc.pep")))
-    print(summary(qcdata(object, "lfc.modpep")))
     cat(" * Protein log2 fold-changes\n")
     print(summary(qcdata(object, "lfc.prot")))    
     invisible(NULL)
@@ -528,7 +528,7 @@ A good quality experiment is expected to have a tight distribution centred aroun
 
 \bigskip
 
-Our last QC item inspects the number of features that have been identified in the experiment. We also investigate how many peptides (with or without considering the modification) have been observed at the PSM level. Here, we do not specify any expected values as the number of observed features is experiment specific; the QC status is left as \Robject{NA}.
+Our last QC item inspects the number of features that have been identified in the experiment. We also investigate how many peptides (with or without considering the modification) have been observed at the PSM level and the number of unique peptides per protein. Here, we do not specify any expected values as the number of observed features is experiment specific; the QC status is left as \Robject{NA}.
 
 <<qcnb, tidy=FALSE>>=
 ## number of features
@@ -542,6 +542,8 @@ qcdata(qcnb, "peptab") <-
     table(fData(psm)$Peptide_Sequence)
 qcdata(qcnb, "modpeptab") <-
     table(fData(psm)$modseq)
+qcdata(qcnb, "upep.per.prot") <- 
+    fData(psm)$Number_Of_Unique_Peptides
 @
 
 The counts are displayed in the new \Rfunction{show} and plotted as bar charts in the \Rfunction{plot} methods.
@@ -553,12 +555,14 @@ show(qcnb) <- function(object) {
 }
 plot(qcnb) <- function(object) {
     par(mar = c(5, 4, 2, 1))
-    layout(matrix(c(1, 2, 1, 3), ncol = 2))
+    layout(matrix(c(1, 2, 1, 3, 1, 4), ncol = 3))
     barplot(qcdata(object, "count"), horiz = TRUE, las = 2)
     barplot(table(qcdata(object, "modpeptab")),
             xlab = "Modified peptides")
     barplot(table(qcdata(object, "peptab")),
             xlab = "Peptides")
+    barplot(table(qcdata(object, "upep.per.prot")),
+            xlab = "Unique peptides per protein ")
 }
 @
 
