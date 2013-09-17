@@ -9,7 +9,7 @@
   An example data for 15N metabolic labelling, distributed as an
   \code{MSnSet} to illustrate 15N QC. }
 
-\usage{data(psm)}
+\usage{data(n15psm)}
 
 \references{
   See \code{MSnSet} and the \code{MSnbase-demo} vignette in the
