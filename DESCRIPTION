@@ -11,6 +11,7 @@ Description: The package provides a framework for generic
 	     control reports in various formats. 
 Imports: Biobase, methods, knitr, tools, Nozzle.R1, 
 	 xtable, pander
-Suggests: affy, MSnbase, ggplot2, lattice, yaqcaffy, MAQCsubsetAFX
+Suggests: affy, MSnbase, ggplot2, lattice, yaqcaffy, 
+	  MAQCsubsetAFX, RforProteomics, AnnotationDbi
 License: GPL-2
 VignetteBuilder: knitr
