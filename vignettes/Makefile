@@ -32,8 +32,8 @@ endif
 
 vig:
 	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
-##	bibtex qcmetrics
-##	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
+	bibtex qcmetrics
+	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
 	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
 
 
