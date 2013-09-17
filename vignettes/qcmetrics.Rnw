@@ -188,15 +188,22 @@ The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to
 
 \subsection{Microarray degradation}\label{sec:marray}
 
-We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} \citep{Gautier:2004} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package \citep{yaqcaffy}. The first code chunk retrieves the data and computes the QC data.
+We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} \citep{Gautier:2004} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package \citep{yaqcaffy}. The first code chunk demonstrate how to load the data and compute the QC data\footnote{%%
+  The pre-computed objects can be directly loaded \Rfunction{load(system.file("extdata/deg.rda", package = "qcmetrics"))} and \Rfunction{load(system.file("extdata/deg.rda", package = "qcmetrics"))}.}.
 
-<<maqcdata, cache=TRUE>>=
+
+<<maqcdata, eval=FALSE>>=
 library("MAQCsubsetAFX")
 data(refA)
 library("affy")
 deg <- AffyRNAdeg(refA)
 library("yaqcaffy")
 yqc <- yaqc(refA)
+@
+
+<<maqcdata0, echo=FALSE>>=
+load(system.file("extdata/deg.rda", package = "qcmetrics"))
+load(system.file("extdata/yqc.rda", package = "qcmetrics"))
 @
 
 We then create two \Robject{QcMetric} instances, one for each of our quality metrics. 
