@@ -190,7 +190,7 @@ The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to
 
 We will use the \Robject{refA} Affymetrix arrays from the \Rpackage{MAQCsubsetAFX} package as an example data and investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from \Rpackage{affy} \citep{Gautier:2004} and the actin and GAPDH $\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy} package \citep{yaqcaffy}. The first code chunk retrieves the data and computes the QC data.
 
-<<maqcdata, cache = TRUE>>=
+<<maqcdata, cache=TRUE>>=
 library("MAQCsubsetAFX")
 data(refA)
 library("affy")
@@ -322,8 +322,12 @@ maqcm <- rnaqc(refA, type = "pdf")
 \subsection{Proteomics raw data}\label{sec:prot}
 
 To illustrate a simple QC analysis for proteomics data, we will download data set \texttt{PXD00001} from the ProteomeXchange repository in the \texttt{mzXML} format \citep{Pedrioli:2004}. The MS$^2$ spectra from that mass-spectrometry run are then read into \R\footnote{%%
-  In the interest of time, this code chunk has been pre-computed and a subset (1 in 3) of the \Robject{exp} instance is distributed with the package. The data is loaded with \Sexpr{load(system.file("extdata/exp.rda", package = "qcmetrics")).} %% 
+  In the interest of time, this code chunk has been pre-computed and a subset (1 in 3) of the \Robject{exp} instance is distributed with the package. The data is loaded with \Rfunction{load(system.file("extdata/exp.rda", package = "qcmetrics"))}.} %% 
 and stored as an \Robject{MSnExp} experiment using the \Rfunction{readMSData} function from the \Rpackage{MSnbase} package \citep{Gatto:2012}. 
+
+<<protdata0, echo=FALSE>>=
+load(system.file("extdata/exp.rda", package = "qcmetrics"))
+@
 
 <<protdata, eval=FALSE>>=
 library("RforProteomics")
