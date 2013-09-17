@@ -57,6 +57,14 @@ setReplaceMethod("plot",
 setMethod("qcenv", c("QcMetric"), 
           function(object) object@qcdata)
 
+setReplaceMethod("qcenv",
+                 signature(object="QcMetric", value="environement"),
+                 function(object, value) {
+                     object@qcdata <- value
+                     object
+                 })
+
+
 setMethod("qcdata", c("QcMetric", "missing"), 
           function(object) ls(object@qcdata))
 

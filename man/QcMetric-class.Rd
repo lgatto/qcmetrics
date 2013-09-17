@@ -10,6 +10,7 @@
 \alias{plot<-,QcMetric,function-method}
 \alias{plot<-}
 \alias{qcenv,QcMetric-method}
+\alias{qcenv<-,QcMetric,evironment-method}
 \alias{qcdata<-,QcMetric,ANY-method}
 \alias{qcdata,QcMetric,character-method}
 \alias{qcdata,QcMetric,missing-method}
@@ -71,11 +72,14 @@
     \item{qcdata<-}{\code{signature(object = "QcMetric", var)}: creates
       or overwrites (with a message) the data variable \code{var} by
       assigning the RHS value. If \code{var} is missing and the RHS
-      expression is an environment, the all the variables associated
-      \code{object} are replaces with those in the \code{value}
-      environment. }
+      expression is an environment, then \code{qcdata} is reset with all
+      the variables in \code{value}. }
     \item{qcenc}{\code{signature(object = "QcMetric")}: return the
       \code{environment} that stores the QC data. }
+    \item{qcenv<-}{\code{signature(object = "QcMetric")}:
+      Set all variable in the RHS \code{environment} as \code{qcdata}
+      variables. Equivalent to \code{qcdata(object) <- x} where \code{x}
+      is an environment. } 
     \item{show}{\code{signature(object = "QcMetric")}: shows a textual
       summary of \code{object}. The default \code{show} implementation
       is available as the \code{qcshow{object, qcdata}} function. The
