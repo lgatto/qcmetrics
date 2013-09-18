@@ -1,1 +1,11 @@
 #+TITLE: A General Framework for Quality Control Metrics
+
+The =qcmetrics= package provides a general framework to develope quality control (QC) pipelines for any type of data that can be imported into =R=. The application of =qcmetrics= can be schematised in 4 points
+
+1. Identify a set of quality metrics of interest and implement them and their visualisation method into individual =QcMetric= instances.
+2. Bundles the =QcMetric= items into a =QcMetrics= instance. 
+3. Automatically generate reports in pdf of html using the =qcReport= function using the =QcMetrics= object of step 2 as input.
+4. Optionally, reports can be customised. 
+5. Wrap the above steps into a wrapper function or a new QC package for production use.
+
+QC pipelines and packages will be described and disseminated through the [[https://github.com/lgatto/qcmetrics/wiki][wiki]].
