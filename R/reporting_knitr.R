@@ -12,7 +12,8 @@ reporting_rmd <- function(object,
     con <- file(out, "w")
     on.exit(close(con))
     title <- sub("qcmetrics", "`qcmetrics`", title)
-    title <- paste0("", title)
+    title <- paste0("", title,
+                    "\n===========================================\n\n")
     author <- paste0("Author: ", author, "\n")
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
@@ -29,6 +30,7 @@ reporting_rmd <- function(object,
     }
     if (sessioninfo) {
         si <- c("Session information",
+                "-------------------------\n",
                 "```{r echo=FALSE}",
                 "sessionInfo()",
                 "```")
@@ -53,7 +55,8 @@ reporting_html <- function(object,
     out <- paste(reportname, ext, sep = ".")
     con <- file(out, "w")
     title <- sub("qcmetrics", "`qcmetrics`", title)
-    title <- paste0("", title)
+    title <- paste0("", title,
+                    "\n===========================================\n\n")
     author <- paste0("Author: ", author, "\n")
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
@@ -69,6 +72,7 @@ reporting_html <- function(object,
     }
     if (sessioninfo) 
         writeLines(c("Session information",
+                     "-------------------------\n",
                      "```{r echo=FALSE}",
                      "sessionInfo()",
                      "```"),
@@ -176,7 +180,8 @@ reporting_tex <- function(object,
 
 
 Qc2Rmd <- function(object, i) {
-    c(paste0("", name(object[[i]])),
+    c(paste0("", name(object[[i]]),
+             "\n-------------------------\n"),
       paste0("```{r ", name(object[[i]]), ", echo=FALSE}"),
       paste0("show(object[[", i, "]])"),
       "```",
@@ -244,4 +249,49 @@ Qc2Tex3 <- function(object, i) {
               "\\end{figure}",
               "\\clearpage")
     c(sec, cont)
+}
+
+
+## metadata_tex <-
+##     metadata_pdf <- function(object) {
+##         mdsec <- c("\\section{Meta-data}",
+##                    "\\begin{itemize}")
+##         n <- length(object)
+##         if (is.null(names(object@metadata)))
+##             names(object@metadata) <-
+##                 paste0("Meta-data ", 1:length(n))        
+##         for (i in seq_along(n)) 
+##             mdsec <- c(mdsec,
+##                        "\\item names(object@metadata)[i]\n",
+##                        '<<>>=',                       
+##                        "print(metadata(object)[[i]])",
+##                        "@")
+##         c(mdsec, "\\end{itemize}")
+##     }
+
+## metadata_rmd <-
+##     metadata_html <- function(object) {
+##         mdsec <- c("Meta-data",
+##                    "-----------------------------\n"
+##         n <- length(object)
+##         if (is.null(names(object@metadata)))
+##             names(object@metadata) <-
+##                 paste0("Meta-data ", 1:length(n))        
+##         for (i in seq_along(n)) 
+##             mdsec <- c(mdsec,
+##                        "names(object@metadata)[i]\n", 
+##                        "print(metadata(object)[[i]])")
+##         c(mdsec, "\\end{itemize}")
+##     }
+
+
+metadata_txt <- function(x) {
+    x <- metadata(x)
+    nms <- names(x)
+    if (is.null(nms))
+        nms <- paste0("Meta-data ", 1:length(x))
+    for (i in seq_along(x)) {        
+        cat(nms[i], "\n ")
+        print(x[[i]])        
+    }
 }
