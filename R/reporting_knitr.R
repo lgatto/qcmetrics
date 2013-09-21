@@ -66,6 +66,7 @@ reporting_html <- function(object,
                    con)
     if (summary) { ## only difference with Rmd type
         writeLines("QC summary", con)
+        writeLines("-----------------------------\n", con)
         writeLines(print(xtable(as(object, 'data.frame')),
                          type = 'html',
                          print.results = FALSE),
