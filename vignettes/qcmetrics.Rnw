@@ -433,11 +433,12 @@ $^{15}$N experiments of good quality are characterised with high incorporation r
 
 \bigskip
 
-The second metric inspects the log$_2$ fold-changes of the PSMs, unique peptides with modifications, unique peptide sequences (not taking 
-
-modifications into account) and proteins. These respective data sets are computed with the \Rfunction{combineFeatures} function (see \Rfunction{?combineFeatures} for details).
+The second metric inspects the log$_2$ fold-changes of the PSMs, unique peptides with modifications, unique peptide sequences (not taking modifications into account) and proteins. These respective data sets are computed with the \Rfunction{combineFeatures} function (see \Rfunction{?combineFeatures} for details).
 
 <<combinefeatures, tidy = FALSE>>=
+fData(psm)$modseq <- ## pep seq + PTM
+    paste(fData(psm)$Peptide_Sequence, 
+          fData(psm)$Variable_Modifications, sep = "+")
 pep <- combineFeatures(psm,
                        as.character(fData(psm)$Peptide_Sequence), 
                        "median", verbose = FALSE)

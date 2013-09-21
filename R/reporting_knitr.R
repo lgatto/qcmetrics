@@ -308,7 +308,7 @@ metadata_tex <-
                                   paste0(object[[i]], collapse = " ")))
             } else {
                 mdsec <- c(mdsec,
-                           paste0("\\item[", names(object)[i], "]"),
+                           paste0("\\item[", names(object)[i], "]\\"),
                            '<<echo=FALSE>>=',
                            paste0("mdata(object)[[", i, "]]"),
                            "@")

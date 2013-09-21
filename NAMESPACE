@@ -32,4 +32,5 @@ export(QcMetric,
        Qc2Tex2,
        Qc2Tex3,
        Qc2Rmd,
-       rnadeg)
+       rnadeg,
+       n15qc)
