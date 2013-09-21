@@ -1,6 +1,8 @@
 CHANGES IN VERSION 0.99.1
 -------------------------
  o Updated github README file <2013-09-18 Wed>
+ o Added Arnoud's suggestions to vig <2013-09-21 Sat>
+ o rnadeg wrapper function available in the package <2013-09-21 Sat>
 
 CHANGES IN VERSION 0.99.0
 -------------------------

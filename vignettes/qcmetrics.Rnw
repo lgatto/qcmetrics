@@ -269,45 +269,14 @@ In addition to the report, it is of course advised to store the actual \Robject{
 Once an appropriate set of quality metrics have been identified, the generation of the \Robject{QcMetrics} instances can be wrapped up for automation. 
 
 <<maqcwrap, tidy=FALSE>>=
-rnaqc <- function(input, status,
-                  type, reportname = "rnadegradation") {
-    if (is.character(input))
-        input <- ReadAffy(input)
-    ## first QC item
-    qc1 <- QcMetric(name = "Affy RNA degradation slopes")
-    qcdata(qc1, "deg") <- AffyRNAdeg(refA)
-    plot(qc1) <- function(object) {
-        x <- qcdata(object, "deg")
-        nms <- x$sample.names
-        plotAffyRNAdeg(x, col = 1:length(nms))
-        legend("topleft", nms, lty = 1, cex = 0.8, 
-               col = 1:length(nms), bty = "n")
-    }
-    if (!missing(status))
-        status(qc1) <- status[1]
-    ## second QC item
-    qc2 <- QcMetric(name = "Affy RNA degradation ratios")
-    qcdata(qc2, "yqc") <- yaqc(refA)
-    plot(qc2) <- function(object) {
-        par(mfrow = c(1, 2))
-        yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all")
-    }
-    if (!missing(status))
-        status(qc2) <- status[2]
-    ## bundle into QcMetrics 
-    qcm <- QcMetrics(qcdata = list(qc1, qc2))    
-    if (!missing(type))    
-        qcReport(qcm, reportname, type = type,
-                 title = "Affymetrix RNA degradation report")
-    invisible(qcm)
-}
+rnadeg
 @
 
 
 If is now possible to generate a \Robject{QcMetrics} object from a set of CEL files or directly from an \Robject{affybatch} object. The \code{status} argument allows to directly set the statuses of the individual QC items; these can also be set later, as illustrated below. If a report type is specified, the corresponding report is generated. 
 
 <<qcwrap2, eval = FALSE>>=
-maqcm <- rnaqc(refA)
+maqcm <- rnadeg(refA)
 @
 
 <<qcwrapstatus0, echo=FALSE>>=
@@ -323,7 +292,7 @@ status(maqcm)
 The report can be generated manually with \code{qcReport(maqcm)} or directly with the wrapper function as follows:
 
 <<qcwrap3, eval = FALSE>>=
-maqcm <- rnaqc(refA, type = "pdf")
+maqcm <- rnadeg(refA, type = "pdf")
 @
 
 \subsection{Proteomics raw data}\label{sec:prot}
@@ -676,12 +645,12 @@ While the examples presented in section \ref{sec:pipeline} and in particular the
 While the detailed description of package development is out of the scope of this document, it is of interest to provide an overview of the development of a QC package. Taking the wrapper function, it could be used the create the package structure
 
 <<qcpkg0, eval=FALSE>>=
-package.skeleton("RnaDegQC", list = "rnaqc")
+package.skeleton("RnaDegQC", list = "rnadeg")
 @
 
-The \texttt{DESCRIPTION} file would need to be updated. The packages \Rpackage{qcmetrics}, \Rpackage{affy} and \Rpackage{yaqcaffy} would need to be specified as dependencies in the \texttt{Imports:} line and imported in the \texttt{NAMESPACE} file. The documentation file \texttt{RnaDegQC/man/rnaqc.Rd} and the (optional) \texttt{RnaDegQC/man/RnaDegQC-packge.Rd} would need to be updated. 
+The \texttt{DESCRIPTION} file would need to be updated. The packages \Rpackage{qcmetrics}, \Rpackage{affy} and \Rpackage{yaqcaffy} would need to be specified as dependencies in the \texttt{Imports:} line and imported in the \texttt{NAMESPACE} file. The documentation file \texttt{RnaDegQC/man/rnadeg.Rd} and the (optional) \texttt{RnaDegQC/man/RnaDegQC-packge.Rd} would need to be updated. 
 
-Alternatively, the \Rfunction{rnaqc} function could be modularised so that QC items would be created and returned by dedicated constructors like \Rfunction{makeRnaDegSlopes} and \Rfunction{makeRnaDegRatios}. This would provide other developers with the means to re-use some components of the pipeline by using the package. 
+Alternatively, the \Rfunction{rnadeg} function could be modularised so that QC items would be created and returned by dedicated constructors like \Rfunction{makeRnaDegSlopes} and \Rfunction{makeRnaDegRatios}. This would provide other developers with the means to re-use some components of the pipeline by using the package. 
 
 \subsection{A QC pipeline repository}
 
