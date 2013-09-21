@@ -2,6 +2,7 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{QcMetadata-class}
+\alias{class:QcMetadata}
 \alias{QcMetadata}
 \alias{metadata,QcMetadata-method}
 \alias{mdata,QcMetadata-method}
@@ -42,8 +43,13 @@ Laurent Gatto <lg390@cam.ac.uk>
 
 
 \examples{
-QcMetadata(metadata = list(name = "John Doe"),
-           lab = "Big Lab in Big Uni")
+QcMetadata(metadata =
+           list(name = "John Doe",
+                lab = "Big Lab in Big Uni"))
+## less typing
+qmd <- QcMetadata(list(name = "John Doe",
+                       lab = "Big Lab in Big Uni"))
+mdata(qmd)
 }
 
 \keyword{classes}

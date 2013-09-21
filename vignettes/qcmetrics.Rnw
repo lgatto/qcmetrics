@@ -169,13 +169,14 @@ plot(qc)
 
 \subsection{The \Robject{QcMetrics} class}
 
-A \Robject{QcMetrics} object is essentially just a list of individual \Robject{QcMetric} instances. It is also possible to set a list of meta-data to describe the source of the QC metrics.
+A \Robject{QcMetrics} object is essentially just a list of individual \Robject{QcMetric} instances. It is also possible to set a list of meta-data variables to describe the source of the QC metrics. The meta-data can be passed as an \Robject{QcMetadata} object (the way it is stored in the \Robject{QcMetrics} instance) or directly as a (preferably named) \Robject{list}. The \Robject{QcMetadata} is itself a \Robject{list} and can be accessed and set with \Rfunction{metadata} or \Rfunction{mdata}.
 
 <<qcmetrics>>=
 qcm <- QcMetrics(qcdata = list(qc))
 qcm
 metadata(qcm) <- list(metadata1 = 123,
                       metadata2 = "abc")
+mdata(qcm) ## or metadata(qcm)
 @
 
 The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to generate reports, as described in more details below. 

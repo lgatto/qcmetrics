@@ -1,7 +1,7 @@
 .QcMetadata <- setClass("QcMetadata",
                         slots = list(metadata = "list"))
 
-QcMetadata <- function(metadata = object) {
+QcMetadata <- function(metadata) {
     stopifnot(class(metadata) == "list")
     .QcMetadata(metadata = metadata)
 }
@@ -9,8 +9,9 @@ QcMetadata <- function(metadata = object) {
 setMethod("show", "QcMetadata",
           function(object) {
               cat("Object of class \"", class(object), "\"\n", sep="")
-              n <- length(object@metadata)              
-              cat(" containing", n , "variables.\n")          
+              n <- length(object@metadata)
+              if (n == 0) n <- "no"
+              cat(" containing", n , "variables.\n")              
           })
 
 

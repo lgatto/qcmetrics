@@ -49,7 +49,7 @@
 \section{Slots}{
   \describe{
     \item{\code{metadata}:}{Object of class
-      \code{\linkS4class{"QcMetadata"}} storing the 
+      \code{\linkS4class{QcMetadata}} storing the 
       metadata of the \code{object}. This list would typically contain
       the input file the data was read from, the date the object was
       generated, ... or fully fledged \emph{minimum information}
@@ -124,5 +124,15 @@ qcm
 
 qcm[1] ## a QcMetrics instance
 qcm[[1]] ## a single QcMetric
+
+metadata(qcm)
+metadata(qcm) <- QcMetadata(list(name = "Prof. Who",
+                                 lab = "Cabin University"))
+## or, shorter but equivalent
+metadata(qcm) <- list(name = "Prof. Who",
+                      lab = "Cabin University")
+
+metadata(qcm)
+
 }
 \keyword{classes}
