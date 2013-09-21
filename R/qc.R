@@ -26,19 +26,19 @@ rnadeg <- function(input, status,
         input <- ReadAffy(input)
     ## first QC item
     qc1 <- QcMetric(name = "Affy RNA degradation slopes")
-    qcdata(qc1, "deg") <- AffyRNAdeg(refA)
+    qcdata(qc1, "deg") <- AffyRNAdeg(input)
     plot(qc1) <- function(object) {
         x <- qcdata(object, "deg")
         nms <- x$sample.names
-        plotAffyRNAdeg(x, col = 1:length(nms))
+        plotAffyRNAdeg(x, cols = 1:length(nms))
         legend("topleft", nms, lty = 1, cex = 0.8, 
-               col = 1:length(nms), bty = "n")
+               cols = 1:length(nms), bty = "n")
     }
     if (!missing(status))
         status(qc1) <- status[1]
     ## second QC item
     qc2 <- QcMetric(name = "Affy RNA degradation ratios")
-    qcdata(qc2, "yqc") <- yaqc(refA)
+    qcdata(qc2, "yqc") <- yaqc(input)
     plot(qc2) <- function(object) {
         par(mfrow = c(1, 2))
         yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all")
