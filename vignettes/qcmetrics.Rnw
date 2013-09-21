@@ -371,7 +371,7 @@ plot(qc2) <- function(object) {
 @
 
 <<protqc3, cache=TRUE, messages=FALSE, tidy=FALSE, warnings=FALSE>>=
-qc3 <- QcMetric(name = "M/Z delta plot")
+qc3 <- QcMetric(name = "m/z delta plot")
 qcdata(qc3, "pmz") <- plotMzDelta(exp, plot = FALSE,
                                   verbose = FALSE)
 plot(qc3) <- function(object) 
@@ -412,7 +412,7 @@ qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 
 \subsection{Processed $^{15}$N labelling data}\label{sec:n15}
 
-In this section, we describe a set of $^{15}$N metabolic labelling QC metrics. The data is a phospho-enriched $^{15}$N labelled \textit{Arabidopsis thaliana} sample available as an \Robject{MSnSet} instance and was processed with in-house tools. Briefly, MS$^2$ where search with the Mascot search engine and identification scores adjusted with Mascot Percolator. Heavy and light pairs were then searched in the survey scans and incorporation was estimated based on the peptide sequence and the profile of the heavy form (the \Robject{inc} feature variable). Heavy and light peptides isotopic envelope areas were finally integrated to obtain unlabelled and $^{15}$N quantitation data. The \Robject{psm} object provides such data for PSMs (peptide spectrum matches) with a posterior error probability \textless 0.05 that can be uniquely matched to proteins.
+In this section, we describe a set of $^{15}$N metabolic labelling QC metrics \citep{Krijgsveld:2003}. The data is a phospho-enriched $^{15}$N labelled \textit{Arabidopsis thaliana} sample prepared as described in \cite{Groen:2013}. The data was processed with in-house tools and is available as an \Robject{MSnSet} instance. Briefly, MS$^2$ spectra where search with the Mascot engine and identification scores adjusted with Mascot Percolator. Heavy and light pairs were then searched in the survey scans and $^{15}$N incorporation was estimated based on the peptide sequence and the isotopic envelope of the heavy member of the pair (the \Robject{inc} feature variable). Heavy and light peptides isotopic envelope areas were finally integrated to obtain unlabelled and $^{15}$N quantitation data. The \Robject{psm} object provides such data for PSMs (peptide spectrum matches) with a posterior error probability \textless 0.05 that can be uniquely matched to proteins.
 
 We first load the \Rpackage{MSnbase} package (required to support the \Robject{MSnSet} data structure) and example data that is distributed with the \Rpackage{qcmetrics} package. We will make use of the \Rpackage{ggplot2} plotting package.
 

@@ -40,8 +40,8 @@ vig:
 ## manual building
 vig2: 
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('qcmetrics.Rnw');"
-##	bibtex qcmetrics
-##	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
+	bibtex qcmetrics
+	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
 	"$(R_HOME)/bin/R" CMD pdflatex qcmetrics.tex
 
 
