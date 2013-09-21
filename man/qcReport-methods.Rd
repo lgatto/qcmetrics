@@ -42,6 +42,7 @@
 	type = "character",
 	author = "character",
 	title = "character",
+	metadata = "logical",
 	summary = "logical",
 	sessioninfo = "logical",
 	template = "character",
@@ -59,14 +60,16 @@
       using the package \code{Nozzle.R1} package.) A custom \code{title}
       can be provided; default is "Quality control report generated with
       qcmetrics". If no \code{author} is provided, the default value
-      (\code{Sys.getenv("USRE")}) is used. The addition of a summary
-      section and the session information can be controlled with the
-      \code{summary} and \code{sessioninformation} arguments, both
-      defaulting to \code{TRUE}. It is possible to supply custom
-      templates using the \code{template} arguments. Intermediate files
-      are deleted, unless \code{clean} is set to \code{FALSE} and
-      verbose output can be turned on by setting \code{quiet} to
-      \code{FALSE}.
+      (\code{Sys.getenv("USRE")}) is used. The addition of a meta-data
+      section, a summary section and the session information can be
+      controlled with the \code{metadata}, \code{summary} and
+      \code{sessioninformation} arguments. The meta-data section is
+      added to the report when present and the other have \code{TRUE} as
+      default.
+      It is possible to supply custom templates using the
+      \code{template} arguments. Intermediate files are deleted, unless 
+      \code{clean} is set to \code{FALSE} and verbose output can be turned
+      on by setting \code{quiet} to \code{FALSE}. 
 
       The \code{reporter} and \code{qcto} arguments are used to convert
       \code{QcMetric} and \code{QcMetrics} objects into report

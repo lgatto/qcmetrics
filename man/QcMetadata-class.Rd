@@ -5,10 +5,16 @@
 \alias{class:QcMetadata}
 \alias{QcMetadata}
 \alias{metadata,QcMetadata-method}
+\alias{metadata<-,QcMetadata,list-method}
+\alias{mdata<-,QcMetadata,list-method}
 \alias{mdata,QcMetadata-method}
 \alias{show,QcMetadata-method}
 \alias{print,QcMetadata-method}
 \alias{length,QcMetadata-method}
+\alias{[,QcMetadata-method}
+\alias{[[,QcMetadata-method}
+\alias{names,QcMetadata-method}
+\alias{names<-,QcMetadata,character-method}
 
 \title{The \code{"QcMetadata"} class}
 
@@ -32,6 +38,10 @@
 
 \section{Methods}{
   \describe{
+    \item{[}{\code{signature(x = "QcMetadata")}: subsets \code{x} as a
+      new \code{QcMetadata} instance. }
+    \item{[[}{\code{signature(x = "QcMetadata")}: extracts a single
+      element of \code{x}. }
     \item{metadata}{\code{signature(object = "QcMetadata")}: return the
       \code{object}'s metadata list. Also available as \code{mdata}. }
     \item{metadata<-}{\code{signature(object = "QcMetadata", value =
@@ -39,6 +49,8 @@
       \code{mdata}. }
     \item{length}{\code{signature(x = "QcMetadata")}: returns the number
       of meta-data variables.}
+    \item{names}{\code{signature(x = "QcMetadata")}: returns the names
+      of the meta-data variables. }    
   }
 }
 

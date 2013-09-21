@@ -2,6 +2,7 @@ reporting_rmd <- function(object,
                           reportname = reportname,
                           author = author,
                           title = title,
+                          meta = meta,
                           summary = summary,
                           sessioninfo = sessioninfo,
                           qcto) {
@@ -44,6 +45,7 @@ reporting_html <- function(object,
                            reportname = reportname,
                            author = author,
                            title = title,
+                           meta = meta, 
                            summary = summary,
                            sessioninfo = sessioninfo,
                            template,
@@ -103,6 +105,7 @@ reporting_pdf <- function(object,
                           reportname = reportname,
                           author = author,
                           title = title,
+                          meta = meta,
                           summary = summary,
                           sessioninfo = sessioninfo,
                           template = template,
@@ -116,6 +119,7 @@ reporting_pdf <- function(object,
                          reportname = reportname,
                          author = author,
                          title = title,
+                         meta = meta,
                          summary = summary,
                          sessioninfo = sessioninfo,
                          template = template,
@@ -136,6 +140,7 @@ reporting_tex <- function(object,
                           reportname = reportname,
                           author = author,
                           title = title,
+                          meta = meta,
                           summary = summary,
                           sessioninfo = sessioninfo,
                           template = template,
@@ -155,9 +160,12 @@ reporting_tex <- function(object,
     title <- paste0('\\title{', title, '}')
     author <- paste0('\\author{', author, '}')
     mktitle <- "\\maketitle"
+    mtd <- c()
+    if (meta) mtd <- c(metadata_tex(mdata(object)),
+                       "\\newpage")
     ex <- lapply(seq_len(length(object)),
                  function(i) qcto(object, i))
-    ex <- append(list(mktitle, parent), ex)
+    ex <- append(list(mktitle, parent, mtd), ex)
     if (summary)
         ex <- append(ex, 
                      c("\\clearpage",
@@ -254,23 +262,6 @@ Qc2Tex3 <- function(object, i) {
 }
 
 
-metadata_tex <-
-    metadata_pdf <- function(object) {
-        mdsec <- c("\\section{Meta-data}",
-                   "\\begin{itemize}")
-        n <- length(object)
-        if (is.null(names(object@metadata)))
-            names(object@metadata) <-
-                paste0("Meta-data ", 1:length(n))        
-        for (i in seq_along(n)) 
-            mdsec <- c(mdsec,
-                       "\\item names(object@metadata)[i]\n",
-                       '<<>>=',                       
-                       "print(metadata(object)[[i]])",
-                       "@")
-        c(mdsec, "\\end{itemize}")
-    }
-
 ## metadata_rmd <-
 ##     metadata_html <- function(object) {
 ##         mdsec <- c("Meta-data",
@@ -287,13 +278,28 @@ metadata_tex <-
 ##     }
 
 
-metadata_txt <- function(x) {
-    x <- metadata(x)
-    nms <- names(x)
-    if (is.null(nms))
-        nms <- paste0("Meta-data ", 1:length(x))
-    for (i in seq_along(x)) {        
-        cat(nms[i], "\n ")
-        print(x[[i]])        
+metadata_tex <-
+    metadata_pdf <- function(object) {
+        stopifnot(class(object) == "QcMetadata")
+        mdsec <- "\\section{Meta-data}\n"
+        n <- length(object)
+        if (is.null(names(object)))
+            names(object) <-
+                paste0("Meta-data ", 1:n)
+        mdsec <- c(mdsec, "\\begin{description}")
+        for (i in seq_len(n)) {            
+            if (is.vector(metadata(object)[[i]])) {
+                mdsec <- c(mdsec,
+                           paste0("\\item[",
+                                  names(object)[i], "] ",
+                                  paste0(object[[i]], collapse = " ")))
+            } else {
+                mdsec <- c(mdsec,
+                           paste0("\\item[", names(object)[i], "]"),
+                           '<<echo=FALSE>>=',
+                           paste0("mdata(object)[[", i, "]]"),
+                           "@")
+            }
+        }
+        c(mdsec, "\\end{description}")
     }
-}

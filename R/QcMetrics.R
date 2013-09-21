@@ -52,6 +52,9 @@ setReplaceMethod("qcdata",
 setMethod("metadata", "QcMetrics",
           function(object) object@metadata)
 
+setMethod("mdata", "QcMetrics",
+          function(object) metadata(object))
+
 setReplaceMethod("metadata",
                  signature(object="QcMetrics", value="list"),
                  function(object, value) {
@@ -60,7 +63,22 @@ setReplaceMethod("metadata",
                      object
                  })
 
+setReplaceMethod("mdata",
+                 signature(object="QcMetrics", value="list"),
+                 function(object, value) {
+                     value <- QcMetadata(metadata = value)
+                     metadata(object) <- value
+                     object
+                 })
+
 setReplaceMethod("metadata",
+                 signature(object="QcMetrics", value="QcMetadata"),
+                 function(object, value) {
+                     object@metadata <- value
+                     object
+                 })
+
+setReplaceMethod("mdata",
                  signature(object="QcMetrics", value="QcMetadata"),
                  function(object, value) {
                      object@metadata <- value

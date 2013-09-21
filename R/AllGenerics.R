@@ -11,8 +11,8 @@ setGeneric("qcdata<-", function(object, ..., value) standardGeneric("qcdata<-"))
 
 setGeneric("metadata", function(object, ...) standardGeneric("metadata"))
 setGeneric("metadata<-", function(object, value) standardGeneric("metadata<-"))
-setGeneric("mdata", function(object, ...) metadata(object, ...))
-setGeneric("mdata<-", function(object, value) metadata(object) <- value)
+setGeneric("mdata", function(object, ...) standardGeneric("mdata"))
+setGeneric("mdata<-", function(object, value) standardGeneric("mdata<-"))
 
 setGeneric("show<-", function(object, value) standardGeneric("show<-"))
 setGeneric("plot<-", function(object, value) standardGeneric("plot<-"))

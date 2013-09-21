@@ -4,6 +4,7 @@ setMethod("qcReport", "QcMetrics",
                    type = c("pdf", "tex", "nozzle", "Rmd", "html"),
                    author = Sys.getenv("USER"),
                    title = "Quality control report generated with qcmetrics",
+                   meta = length(mdata(object)) > 0,
                    summary = TRUE,
                    sessioninfo = TRUE,
                    template = NULL,
@@ -15,26 +16,26 @@ setMethod("qcReport", "QcMetrics",
               if (length(object) == 0) {
                   message("Empty 'QcMetrics' input. No report generated")
                   return(NULL)
-              }              
+              }
               type <- match.arg(type)
               if (!missing(reporter)) {
                   out <- reporter
               } else {
                   out <- switch(type,
                                 Rmd = reporting_rmd(object, reportname,
-                                    author, title,
+                                    author, title, meta,
                                     summary, sessioninfo,
                                     qcto),
                                 html = reporting_html(object, reportname,
-                                    author, title,
+                                    author, title, meta,
                                     summary, sessioninfo,
                                     template, clean, quiet, qcto),
                                 tex = reporting_tex(object, reportname,
-                                    author, title,
+                                    author, title, meta,
                                     summary, sessioninfo,
                                     template, quiet, qcto),
                                 pdf = reporting_pdf(object, reportname,
-                                    author, title,
+                                    author, title, meta,
                                     summary, sessioninfo,                  
                                     template,
                                     clean, quiet, qcto, ...),
@@ -43,8 +44,4 @@ setMethod("qcReport", "QcMetrics",
               message("Report written to ", out)   
               invisible(out)
           })
-
-
-
-
 
