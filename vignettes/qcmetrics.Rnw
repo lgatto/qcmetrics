@@ -176,7 +176,7 @@ qcm <- QcMetrics(qcdata = list(qc))
 qcm
 metadata(qcm) <- list(metadata1 = 123,
                       metadata2 = "abc")
-mdata(qcm) ## or metadata(qcm)
+qcm
 @
 
 The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to generate reports, as described in more details below. 
