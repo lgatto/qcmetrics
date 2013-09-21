@@ -563,7 +563,19 @@ qcReport(n15qcm, reportname = "n15qcreport",
          clean = FALSE)
 @
 
+
+We provide with the package the \Rfunction{n15qc} wrapper function that automates the above pipeline. The names of the feature variable columns and the thresholds for the two first QC items are provided as arguments. In case no report name is given, a custom title with date and time is used, to avoid overwriting existing reports. 
+
+
+% \begin{small}
+% <<n15qcwrapper, tidy=FALSE>>=
+% n15qc
+% @
+% \end{small}
+
 \includepdf[pages=-,nup=2x2, frame=TRUE]{n15qcreport.pdf}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section

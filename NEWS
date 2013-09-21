@@ -8,6 +8,7 @@ CHANGES IN VERSION 0.99.1
  o added metadata section in knitr reports <2013-09-21 Sat>
  o selectively import pander::pander.table to fix warning 
    uppon installation <2013-09-21 Sat>
+ o added n15qc wrapper <2013-09-21 Sat>
 
 CHANGES IN VERSION 0.99.0
 -------------------------
