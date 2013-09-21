@@ -9,8 +9,14 @@
 \alias{length,QcMetrics-method}
 \alias{metadata,QcMetrics-method}
 \alias{metadata<-,QcMetrics,list-method}
+\alias{metadata<-,QcMetrics,QcMetadata-method}
 \alias{metadata}
 \alias{metadata<-}
+\alias{mdata,QcMetrics-method}
+\alias{mdata<-,QcMetrics,list-method}
+\alias{mdata<-,QcMetrics,QcMetadata-method}
+\alias{mdata}
+\alias{mdata<-}
 \alias{name,QcMetrics-method}
 \alias{name<-,QcMetrics,character-method}
 \alias{name}
@@ -42,7 +48,8 @@
 
 \section{Slots}{
   \describe{
-    \item{\code{metadata}:}{Object of class \code{"list"} storing the
+    \item{\code{metadata}:}{Object of class
+      \code{\linkS4class{"QcMetadata"}} storing the 
       metadata of the \code{object}. This list would typically contain
       the input file the data was read from, the date the object was
       generated, ... or fully fledged \emph{minimum information}
@@ -59,10 +66,14 @@
       \code{QcMetric} instance.  }
     \item{length}{\code{signature(x = "QcMetrics")}: returns the number
       of \code{QcMetric} instances populate \code{x}.}
-    \item{metadata}{\code{signature(object = "QcMetrics")}: return the
-      \code{object}'s metadata list. }
+   \item{metadata}{\code{signature(object = "QcMetrics")}: return the
+      \code{object}'s metadata list. Also available as \code{mdata}. }
+    \item{metadata<-}{\code{signature(object = "QcMetrics", value =
+	"list")}: sets the objects metadata. Also available as
+      \code{mdata}. }
     \item{metadata<-}{\code{signature(object = "QcMetric", value =
-	"list")}: sets the objects metadata. }
+	"QcMetadata")}: sets the objects metadata. Also available as 
+      \code{mdata}. }
     \item{name}{\code{signature(object = "QcMetrics")}: returns a
       \code{character} vector of length \code{length(object)} with the names
       of the \code{QcMetric} instances. }

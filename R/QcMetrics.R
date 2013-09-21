@@ -1,6 +1,6 @@
 QcMetrics <- setClass("QcMetrics",
          slots = list(
-             metadata = "list",
+             metadata = "QcMetadata",
              qcdata = "list"),
          validity = function(object) {
              msg <- validMsg(NULL, NULL)
@@ -53,6 +53,14 @@ setMethod("metadata", "QcMetrics",
 
 setReplaceMethod("metadata",
                  signature(object="QcMetrics", value="list"),
+                 function(object, value) {
+                     value <- QcMetadata(metadata = value)
+                     metadata(object) <- value
+                     object
+                 })
+
+setReplaceMethod("metadata",
+                 signature(object="QcMetrics", value="QcMetadata"),
                  function(object, value) {
                      object@metadata <- value
                      object
