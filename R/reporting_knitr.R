@@ -18,6 +18,8 @@ reporting_rmd <- function(object,
     author <- paste0("Author: ", author, "\n")
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
+    if (meta)
+        writeLines(metadata_rmd(mdata(object)), con)    
     for (i in 1:length(object))
         writeLines(qcto(object, i),
                    con)
@@ -63,6 +65,8 @@ reporting_html <- function(object,
     author <- paste0("Author: ", author, "\n")
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
+    if (meta)
+        writeLines(metadata_rmd(mdata(object)), con)
     for (i in 1:length(object))
         writeLines(qcto(object, i),
                    con)
@@ -262,22 +266,31 @@ Qc2Tex3 <- function(object, i) {
 }
 
 
-## metadata_rmd <-
-##     metadata_html <- function(object) {
-##         mdsec <- c("Meta-data",
-##                    "-----------------------------\n")
-##         n <- length(object)
-##         if (is.null(names(object@metadata)))
-##             names(object@metadata) <-
-##                 paste0("Meta-data ", 1:length(n))        
-##         for (i in seq_along(n))
-##             mdsec <- c(mdsec,
-##                        "names(object@metadata)[i]\n", 
-##                        "print(metadata(object)[[i]])")
-##         c(mdsec, "\\end{itemize}")
-##     }
-
-
+metadata_rmd <-
+    metadata_html <- function(object) {
+        stopifnot(class(object) == "QcMetadata")
+        mdsec <- c("Meta-data",
+                   "-----------------------------\n")
+        n <- length(object)
+        if (is.null(names(object)))
+            names(object) <-
+                paste0("Meta-data ", 1:n)
+        for (i in seq_len(n)) {
+            if (is.vector(metadata(object)[[i]])) {
+                mdsec <- c(mdsec,
+                           paste0("- **", names(object)[i], "** ",
+                                  paste0(object[[i]], collapse = " ")))
+            } else {
+                mdsec <- c(mdsec,
+                           paste0("- **", names(object)[i], "**"),
+                           "```{r echo=FALSE}",
+                           paste0("mdata(object)[[", i, "]]"),
+                           "```")
+            }
+        }
+        c(mdsec, "\n")
+    }
+     
 metadata_tex <-
     metadata_pdf <- function(object) {
         stopifnot(class(object) == "QcMetadata")

@@ -1,8 +1,8 @@
 import(methods)
 import(knitr)
 import(xtable)
-import(pander)
 import(Nozzle.R1)
+importFrom(pander, pandoc.table)
 importFrom(Biobase, validMsg)
 importFrom(tools, texi2pdf)
 
