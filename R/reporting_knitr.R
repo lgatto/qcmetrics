@@ -22,6 +22,7 @@ reporting_rmd <- function(object,
                    con)
     if (summary) {
         writeLines("QC summary", con)
+        writeLines("-----------------------------\n", con)
         smry <- c("```{r echo=FALSE}",
                   "library('pander')",
                   "pandoc.table(as(object, 'data.frame'))",
@@ -252,32 +253,32 @@ Qc2Tex3 <- function(object, i) {
 }
 
 
-## metadata_tex <-
-##     metadata_pdf <- function(object) {
-##         mdsec <- c("\\section{Meta-data}",
-##                    "\\begin{itemize}")
-##         n <- length(object)
-##         if (is.null(names(object@metadata)))
-##             names(object@metadata) <-
-##                 paste0("Meta-data ", 1:length(n))        
-##         for (i in seq_along(n)) 
-##             mdsec <- c(mdsec,
-##                        "\\item names(object@metadata)[i]\n",
-##                        '<<>>=',                       
-##                        "print(metadata(object)[[i]])",
-##                        "@")
-##         c(mdsec, "\\end{itemize}")
-##     }
+metadata_tex <-
+    metadata_pdf <- function(object) {
+        mdsec <- c("\\section{Meta-data}",
+                   "\\begin{itemize}")
+        n <- length(object)
+        if (is.null(names(object@metadata)))
+            names(object@metadata) <-
+                paste0("Meta-data ", 1:length(n))        
+        for (i in seq_along(n)) 
+            mdsec <- c(mdsec,
+                       "\\item names(object@metadata)[i]\n",
+                       '<<>>=',                       
+                       "print(metadata(object)[[i]])",
+                       "@")
+        c(mdsec, "\\end{itemize}")
+    }
 
 ## metadata_rmd <-
 ##     metadata_html <- function(object) {
 ##         mdsec <- c("Meta-data",
-##                    "-----------------------------\n"
+##                    "-----------------------------\n")
 ##         n <- length(object)
 ##         if (is.null(names(object@metadata)))
 ##             names(object@metadata) <-
 ##                 paste0("Meta-data ", 1:length(n))        
-##         for (i in seq_along(n)) 
+##         for (i in seq_along(n))
 ##             mdsec <- c(mdsec,
 ##                        "names(object@metadata)[i]\n", 
 ##                        "print(metadata(object)[[i]])")

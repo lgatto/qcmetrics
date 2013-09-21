@@ -23,7 +23,7 @@ setMethod("metadata", "QcMetadata",
 
 
 setReplaceMethod("metadata",
-                 signature(object="QcMetrics", value="list"),
+                 signature(object="QcMetadata", value="list"),
                  function(object, value) {
                      object@metadata <- value
                      object
