@@ -14,11 +14,12 @@ QcMetrics <- setClass("QcMetrics",
 setMethod("show", "QcMetrics",
           function(object) {
               cat("Object of class \"", class(object), "\"\n", sep="")
-              n <- length(object@qcdata)
-              cat(" containing", n ,
-                  ifelse(n == 1,
-                         "QC metric.\n",
-                         "QC metrics.\n"))
+              n <- length(qcdata(object))
+              m <- length(mdata(object))
+              if (n == 0) n <- "no"
+              if (m == 0) n <- "no"                  
+              cat(" containing", n, "QC metrics.\n")
+              cat(" and", m, "meta-data variables.\n")              
           })
 
 setMethod("status", "QcMetrics",

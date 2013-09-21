@@ -7,11 +7,15 @@
 \alias{metadata,QcMetadata-method}
 \alias{mdata,QcMetadata-method}
 \alias{show,QcMetadata-method}
+\alias{print,QcMetadata-method}
+\alias{length,QcMetadata-method}
 
 \title{The \code{"QcMetadata"} class}
 
 \description{
-  The \code{QcMetadata} class is a simple inteface to metadata. 
+  The \code{QcMetadata} class is a simple inteface to metadata. The
+  objects can be displayed with \code{show} for a summary and
+  \code{print} for the content.
 }
 
 
@@ -33,6 +37,8 @@
     \item{metadata<-}{\code{signature(object = "QcMetadata", value =
 	"list")}: sets the objects metadata. Also available as
       \code{mdata}. }
+    \item{length}{\code{signature(x = "QcMetadata")}: returns the number
+      of meta-data variables.}
   }
 }
 
@@ -50,6 +56,8 @@ QcMetadata(metadata =
 qmd <- QcMetadata(list(name = "John Doe",
                        lab = "Big Lab in Big Uni"))
 mdata(qmd)
+show(qmd)
+print(qmd)
 }
 
 \keyword{classes}

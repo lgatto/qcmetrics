@@ -17,6 +17,7 @@ exportMethods(status, "status<-",
               metadata, "metadata<-",
               mdata, "mdata<-",
               show, plot,
+              print,
               "show<-", "plot<-",
               "[", "[[",
               qcReport)

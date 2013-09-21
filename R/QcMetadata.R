@@ -14,6 +14,9 @@ setMethod("show", "QcMetadata",
               cat(" containing", n , "variables.\n")              
           })
 
+setMethod("print", "QcMetadata",
+          function(x) metadata_txt(x))
+
 
 setMethod("metadata", "QcMetadata",
           function(object) object@metadata)
@@ -25,3 +28,6 @@ setReplaceMethod("metadata",
                      object@metadata <- value
                      object
                  })
+
+setMethod("length", "QcMetadata",
+          function(x) length(mdata(x)))

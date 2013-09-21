@@ -132,7 +132,8 @@ metadata(qcm) <- QcMetadata(list(name = "Prof. Who",
 metadata(qcm) <- list(name = "Prof. Who",
                       lab = "Cabin University")
 
-metadata(qcm)
-
+metadata(qcm) ## or mdata(qcm)
+print(mdata(qcm))
 }
+
 \keyword{classes}
