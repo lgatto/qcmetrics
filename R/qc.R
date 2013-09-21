@@ -32,7 +32,7 @@ rnadeg <- function(input, status,
         nms <- x$sample.names
         plotAffyRNAdeg(x, cols = 1:length(nms))
         legend("topleft", nms, lty = 1, cex = 0.8, 
-               cols = 1:length(nms), bty = "n")
+               col = 1:length(nms), bty = "n")
     }
     if (!missing(status))
         status(qc1) <- status[1]
