@@ -633,6 +633,7 @@ qcReport(maqcm, reportname = "rnadeg2", qcto = Qc2Tex2)
 %% \includepdf[pages=1-2,nup=2x2, frame=TRUE]{rnadeg2.pdf}
 \includepdfmerge[nup=2x2, frame=TRUE]{rnadeg2.pdf, 1-2, rnadeg3.pdf, 1-2}
 
+% \subsubsection*{The meta-data section}
 
 \subsection{New report types}
 
