@@ -106,7 +106,7 @@ opts_chunk$set(fig.align = 'center',
                tidy = FALSE,
                eval = TRUE,
                stop_on_error = 1L,
-               comment = NA)
+               comment = "##")
 options(replace.assign = TRUE, 
         width = 55)
 
@@ -387,10 +387,10 @@ In this section, we describe a set of $^{15}$N metabolic labelling QC metrics \c
 We first load the \Rpackage{MSnbase} package (required to support the \Robject{MSnSet} data structure) and example data that is distributed with the \Rpackage{qcmetrics} package. We will make use of the \Rpackage{ggplot2} plotting package.
 
 <<n15ex>>=
+library("ggplot2")
 library("MSnbase")
 data(n15psm)
 psm
-library("ggplot2")
 @
  
 The first QC item examines the $^{15}$N incorporation rate, available in the \Robject{inc} feature variable. We also defined a median incorporation rate threshold \Robject{tr} equal to 97.5 that is used to set the QC status. 
