@@ -43,6 +43,7 @@
 	author = "character",
 	title = "character",
 	metadata = "logical",
+	toc = "logical",
 	summary = "logical",
 	sessioninfo = "logical",
 	template = "character",
@@ -60,12 +61,14 @@
       using the package \code{Nozzle.R1} package.) A custom \code{title}
       can be provided; default is "Quality control report generated with
       qcmetrics". If no \code{author} is provided, the default value
-      (\code{Sys.getenv("USRE")}) is used. The addition of a meta-data
-      section, a summary section and the session information can be
-      controlled with the \code{metadata}, \code{summary} and
-      \code{sessioninformation} arguments. The meta-data section is
+      (\code{Sys.getenv("USER")}) is used. The addition of a table of
+      contents (default is \code{FALSE}), a metadata section, a summary
+      section and the session information can be controlled with the
+      \code{toc}, \code{metadata}, \code{summary} and
+      \code{sessioninformation} arguments. The metadata section is
       added to the report when present and the other have \code{TRUE} as
-      default.
+      default. 
+      
       It is possible to supply custom templates using the
       \code{template} arguments. Intermediate files are deleted, unless 
       \code{clean} is set to \code{FALSE} and verbose output can be turned

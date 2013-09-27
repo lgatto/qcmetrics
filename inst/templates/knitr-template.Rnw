@@ -32,6 +32,8 @@
 
 \Sexpr{author}
 
+\Sexpr{toc}
+
 \begin{document}
 
 

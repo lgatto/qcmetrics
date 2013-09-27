@@ -110,6 +110,7 @@ reporting_pdf <- function(object,
                           author = author,
                           title = title,
                           meta = meta,
+                          toc = toc,
                           summary = summary,
                           sessioninfo = sessioninfo,
                           template = template,
@@ -124,6 +125,7 @@ reporting_pdf <- function(object,
                          author = author,
                          title = title,
                          meta = meta,
+                         toc = toc,
                          summary = summary,
                          sessioninfo = sessioninfo,
                          template = template,
@@ -145,6 +147,7 @@ reporting_tex <- function(object,
                           author = author,
                           title = title,
                           meta = meta,
+                          toc = toc,
                           summary = summary,
                           sessioninfo = sessioninfo,
                           template = template,
@@ -164,12 +167,18 @@ reporting_tex <- function(object,
     title <- paste0('\\title{', title, '}')
     author <- paste0('\\author{', author, '}')
     mktitle <- "\\maketitle"
+    if (toc) {
+        toc <- paste0('\\tableofcontents',
+                      '\\newpage')
+    } else {
+        toc <- ''
+    }
     mtd <- c()
     if (meta) mtd <- c(metadata_tex(mdata(object)),
                        "\\newpage")
     ex <- lapply(seq_len(length(object)),
                  function(i) qcto(object, i))
-    ex <- append(list(mktitle, parent, mtd), ex)
+    ex <- append(list(mktitle, toc, parent, mtd), ex)
     if (summary)
         ex <- append(ex, 
                      c("\\clearpage",

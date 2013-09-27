@@ -17,9 +17,9 @@ setMethod("show", "QcMetrics",
               n <- length(qcdata(object))
               m <- length(mdata(object))
               if (n == 0) n <- "no"
-              if (m == 0) n <- "no"                  
+              if (m == 0) m <- "no"                  
               cat(" containing", n, "QC metrics.\n")
-              cat(" and", m, "meta-data variables.\n")              
+              cat(" and", m, "metadata variables.\n")              
           })
 
 setMethod("status", "QcMetrics",
@@ -50,7 +50,7 @@ setReplaceMethod("qcdata",
                  })
 
 setMethod("metadata", "QcMetrics",
-          function(object) object@metadata)
+          function(object) metadata(object@metadata))
 
 setMethod("mdata", "QcMetrics",
           function(object) metadata(object))
@@ -58,7 +58,17 @@ setMethod("mdata", "QcMetrics",
 setReplaceMethod("metadata",
                  signature(object="QcMetrics", value="list"),
                  function(object, value) {
-                     value <- QcMetadata(metadata = value)
+                     checkMetaDataListNames(value)
+                     oldmd <- object@metadata@metadata
+                     oldnms <- names(oldmd)                     
+                     newnms <- names(value)
+                     l <- unique(c(oldnms, newnms))
+                     finalmd <- vector(mode = "list", length = length(l))
+                     names(finalmd) <- l
+                     finalmd[oldnms] <- oldmd
+                     finalmd[newnms] <- value
+                     checkMetaDataListNames(finalmd)
+                     value <- QcMetadata(metadata = finalmd)                     
                      metadata(object) <- value
                      object
                  })
@@ -66,7 +76,6 @@ setReplaceMethod("metadata",
 setReplaceMethod("mdata",
                  signature(object="QcMetrics", value="list"),
                  function(object, value) {
-                     value <- QcMetadata(metadata = value)
                      metadata(object) <- value
                      object
                  })

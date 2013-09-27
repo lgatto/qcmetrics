@@ -55,7 +55,7 @@
       generated, ... or fully fledged \emph{minimum information}
       descriptions (see \code{\linkS4class{MIAxE}}), when available. }    
     \item{\code{qcdata}:}{Object of class \code{"list"} storing all the
-      indivisual \code{\link{QcMetric}} instances. }
+      individual \code{\link{QcMetric}} instances. }
   }
 }
 \section{Methods}{
@@ -86,7 +86,7 @@
     \item{status}{\code{signature(object = "QcMetrics")}: returns a
       vector of quality statuses (\code{logicals}).}
     \item{status<-}{\code{signature(object = "QcMetrics", value =
-	"logical")}: sets the quality statuses. Lenght of \code{value}
+	"logical")}: sets the quality statuses. Length of \code{value}
       and \code{object} must be identical. }    
     \item{as}{\code{signature(object = "QcMetrics", "data.frame")}:
       coerces \code{object} as a \code{length(object)} by 2 data frame
@@ -131,9 +131,11 @@ metadata(qcm) <- QcMetadata(list(name = "Prof. Who",
 ## or, shorter but equivalent
 metadata(qcm) <- list(name = "Prof. Who",
                       lab = "Cabin University")
-
 metadata(qcm) ## or mdata(qcm)
-print(mdata(qcm))
+## update metadata
+metadata(qcm) <- list(lab = "Big lab", ## updated
+                      uni = "Cabin University") ## added
+mdata(qcm)
 }
 
 \keyword{classes}

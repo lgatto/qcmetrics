@@ -19,7 +19,7 @@
 \title{The \code{"QcMetadata"} class}
 
 \description{
-  The \code{QcMetadata} class is a simple inteface to metadata. The
+  The \code{QcMetadata} class is a simple interface to metadata. The
   objects can be displayed with \code{show} for a summary and
   \code{print} for the content.
 }
@@ -32,7 +32,8 @@
 \section{Slots}{
   \describe{
     \item{\code{metadata}:}{Object of class \code{"list"} that stores
-      the metadata variables. }
+      the metadata variables. The list must be named. \code{NA} and
+      empty characters are not allowed. }
   }
 }
 
@@ -48,9 +49,9 @@
 	"list")}: sets the objects metadata. Also available as
       \code{mdata}. }
     \item{length}{\code{signature(x = "QcMetadata")}: returns the number
-      of meta-data variables.}
+      of metadata variables.}
     \item{names}{\code{signature(x = "QcMetadata")}: returns the names
-      of the meta-data variables. }    
+      of the metadata variables. }    
   }
 }
 

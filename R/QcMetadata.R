@@ -1,8 +1,19 @@
 .QcMetadata <- setClass("QcMetadata",
                         slots = list(metadata = "list"))
 
+checkMetaDataListNames <- function(metadata) {
+    nms <- names(metadata)
+    if (is.null(nms)) 
+        stop("Your metadata must be named.")    
+    nonms <- (nms == "") | is.na(nms)
+    if (any(nonms))
+        stop("Empty names or NA are not permitted.")
+    return(TRUE)
+}
+
 QcMetadata <- function(metadata) {
     stopifnot(class(metadata) == "list")
+    checkMetaDataListNames(metadata)
     .QcMetadata(metadata = metadata)
 }
 
@@ -19,7 +30,7 @@ setMethod("print", "QcMetadata",
               x <- metadata(x)
               nms <- names(x)
               if (is.null(nms))
-                  nms <- paste0("Meta-data ", 1:length(x))
+                  nms <- paste0("Metadata ", 1:length(x))
               for (i in seq_along(x)) {        
                   cat(nms[i], "\n ")
                   print(x[[i]])        

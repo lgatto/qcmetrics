@@ -5,7 +5,7 @@
 ##' See the \code{qcmetrics} vignette for an explanation of the
 ##' function and an example.
 ##'
-##' @title A simple RNA degradation QC for Affymetric arrays
+##' @title A simple RNA degradation QC for Affymetrix arrays
 ##' @param input A \code{character} of CEL file names or an
 ##' instance of class \code{affybatch}. 
 ##' @param status A \code{logical} of length 2 to set the
@@ -15,7 +15,7 @@
 ##' @param reportname The name of the report.
 ##' @return Invisibly return the \code{QcMetrics} for the \code{input}.
 ##' @seealso \code{\link{QcMetric}} and \code{\link{QcMetrics}} for
-##' details about the QC infrastrucutre and \code{\link{qcReport}}
+##' details about the QC infrastructure and \code{\link{qcReport}}
 ##' for information about the report generation. 
 ##' @author Laurent Gatto
 rnadeg <- function(input, status,
