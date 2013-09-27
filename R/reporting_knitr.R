@@ -19,7 +19,7 @@ reporting_rmd <- function(object,
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
     if (meta)
-        writeLines(metadata_rmd(mdata(object)), con)    
+        writeLines(metadata_rmd(object@metadata), con)    
     for (i in 1:length(object))
         writeLines(qcto(object, i),
                    con)
@@ -66,7 +66,7 @@ reporting_html <- function(object,
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
     if (meta)
-        writeLines(metadata_rmd(mdata(object)), con)
+        writeLines(metadata_rmd(object@metadata), con)
     for (i in 1:length(object))
         writeLines(qcto(object, i),
                    con)
@@ -174,7 +174,7 @@ reporting_tex <- function(object,
         toc <- ''
     }
     mtd <- c()
-    if (meta) mtd <- c(metadata_tex(mdata(object)),
+    if (meta) mtd <- c(metadata_tex(object@metadata),
                        "\\newpage")
     ex <- lapply(seq_len(length(object)),
                  function(i) qcto(object, i))
