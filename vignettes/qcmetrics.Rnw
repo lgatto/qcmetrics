@@ -13,7 +13,7 @@
 \onehalfspacing
 
 \usepackage[final]{pdfpages}
-\includepdfset{nup=2x2, frame=TRUE}
+\includepdfset{nup=2x2, pages=-, frame=TRUE}
 \usepackage{marginnote}
 \usepackage{wasysym}
 
@@ -114,7 +114,7 @@ suppressPackageStartupMessages(library("qcmetrics"))
 suppressPackageStartupMessages(library("MAQCsubsetAFX"))
 suppressPackageStartupMessages(library("yaqcaffy"))
 suppressPackageStartupMessages(library("affy"))
-## suppressPackageStartupMessages(library("AnnotationDbi"))
+suppressPackageStartupMessages(library("AnnotationDbi"))
 suppressPackageStartupMessages(library("RforProteomics"))
 suppressPackageStartupMessages(library("mzR"))
 suppressPackageStartupMessages(library("MSnbase"))
@@ -131,7 +131,7 @@ set.seed(1)
 
 Quality control (QC) is an essential step in any analytical process. Data of poor quality can at best lead to the absence of positive results or, much worse, false positives that stem from uncaught faulty and noisy data and much wasted resources in pursuing red herrings.  
 
-Quality is often a relative concept that depends on the nature of the biological sample, the experimental settings, the analytical process and other factors. Research and development in the area of QC has generally lead to two types of work being disseminated. Firstly, the comparison of samples of variable quality and the identification of metrics that correlate with the quality of the data. These quality metrics could then, in later experiments, be used to assess their quality. Secondly, the design of domain-specific software to facilitate the collection, visualisation and interpretation of various QC metrics is also an area that has seen much development. QC is a prime example where standardisation and automation are of great benefit. While a great variety of QC metrics, software and pipelines have been described for any assay commonly used in modern biology, we present here a different tool for QC, whose main features are flexibility and versatility. The \Rpackage{qcmetrics} package is a general framework for QC that can accommodate any type of data. It provides a flexible framework to implement QC items that store relevant QC metrics with a specific visualisation mechanism. These individual items can be bundled into higher level QC containers that can be readily used to generate reports in various formats. As a result, it becomes easy to develop complete custom pipelines from scratch and automate the generation of reports. The pipelines can be easily be updated to accommodate new QC items of better visualisation techniques. 
+Quality is often a relative concept that depends on the nature of the biological sample, the experimental settings, the analytical process and other factors. Research and development in the area of QC has generally lead to two types of work being disseminated. Firstly, the comparison of samples of variable quality and the identification of metrics that correlate with the quality of the data. These quality metrics could then, in later experiments, be used to assess their quality. Secondly, the design of domain-specific software to facilitate the collection, visualisation and interpretation of various QC metrics is also an area that has seen much development. QC is a prime example where standardisation and automation are of great benefit. While a great variety of QC metrics, software and pipelines have been described for any assay commonly used in modern biology, we present here a different tool for QC, whose main features are flexibility and versatility. The \Rpackage{qcmetrics} package is a general framework for QC that can accommodate any type of data. It provides a flexible framework to implement QC items that store relevant QC metrics with a specific visualisation mechanism. These individual items can be bundled into higher level QC containers that can be readily used to generate reports in various formats. As a result, it becomes easy to develop complete custom pipelines from scratch and automate the generation of reports. The pipelines can be easily updated to accommodate new QC items of better visualisation techniques. 
 
 Section \ref{sec:qcclasses} provides an overview of the framework. In section \ref{sec:pipeline}, we use microarray (subsection \ref{sec:marray}) and proteomics data (subsection \ref{sec:prot}) to demonstrate the elaboration of QC pipelines: how to create individual QC objects, how to bundle them to create sets of QC metrics and how to generate reports in multiple formats. We also show how the above steps can be fully automated through simple wrapper functions in section \ref{sec:wrapper}. Although kept simple in the interest of time and space, these examples are meaningful and relevant. In section \ref{sec:report}, we provide more detail about the report generation process, how reports can be customised and how new exports can be contributed. We proceed in section \ref{sec:qcpkg} to the consolidation of QC pipelines using \R  and elaborate on the development of dedicated QC packages with \Rpackage{qcmetrics}. 
 
@@ -170,15 +170,26 @@ plot(qc)
 
 \subsection{The \Robject{QcMetrics} class}
 
-A \Robject{QcMetrics} object is essentially just a list of individual \Robject{QcMetric} instances. It is also possible to set a list of metadata variables to describe the source of the QC metrics. The metadata can be passed as an \Robject{QcMetadata} object (the way it is stored in the \Robject{QcMetrics} instance) or directly as a (preferably named) \Robject{list}. The \Robject{QcMetadata} is itself a \Robject{list} and can be accessed and set with \Rfunction{metadata} or \Rfunction{mdata}.
+A \Robject{QcMetrics} object is essentially just a list of individual \Robject{QcMetric} instances. It is also possible to set a list of metadata variables to describe the source of the QC metrics. The metadata can be passed as an \Robject{QcMetadata} object (the way it is stored in the \Robject{QcMetrics} instance) or directly as a named \Robject{list}. The \Robject{QcMetadata} is itself a \Robject{list} and can be accessed and set with \Rfunction{metadata} or \Rfunction{mdata}. When accessed, it is returned and displayed as a \code{list}.
 
 <<qcmetrics>>=
 qcm <- QcMetrics(qcdata = list(qc))
 qcm
-metadata(qcm) <- list(metadata1 = 123,
-                      metadata2 = "abc")
+metadata(qcm) <- list(author = "Prof. Who",
+                      lab = "Big lab")
 qcm
+mdata(qcm)
 @
+
+The metadata can be updated with the same interface. If new named items are passed, the metadata is updated by addition of the new elements. If a named item is already present, its value gets updated.
+
+<<qcmdataupdate>>=
+metadata(qcm) <- list(author = "Prof. Who",
+                      lab = "Cabin lab",
+                      University = "Universe-ity")
+mdata(qcm)
+@
+
 
 The \Robject{QcMetrics} can then be passed to the \Rfunction{qcReport} method to generate reports, as described in more details below. 
 
@@ -262,7 +273,7 @@ The resulting report is shown below. Each \Robject{QcMetric} item generates a se
 
 In addition to the report, it is of course advised to store the actual \Robject{QcMetrics} object. This is most easily done with the \R \Rfunction{save}/\Rfunction{load} and \Rfunction{saveRDS}/\Rfunction{readRDS} functions. As the data and visualisation methods are stored together, it is possible to reproduce the figures from the report or further explore the data at a later stage.
 
-\includepdf[pages=-]{rnadeg.pdf}
+\includepdf{rnadeg.pdf}
 
 \clearpage
 
@@ -313,7 +324,7 @@ library("MSnbase")
 exp <- readMSData(msfile, verbose = FALSE)
 @
 
-The \Robject{QcMetrics} will consist of 3 items, namely a chromatogram constructed with the MS$^2$ spectra precursor's intensities, a figure illustrating the precursor charges in the MS space and an $\frac{m}{z}$ delta plot illustrates the suitability of MS$^2$ spectra for identification (see \Rfunction{?plotMzDelta} or \citep{Foster:2011}). 
+The \Robject{QcMetrics} will consist of 3 items, namely a chromatogram constructed with the MS$^2$ spectra precursor's intensities, a figure illustrating the precursor charges in the MS space and an $\frac{m}{z}$ delta plot illustrating the suitability of MS$^2$ spectra for identification (see \Rfunction{?plotMzDelta} or \citep{Foster:2011}). 
 
 
 <<protqc1, cache=TRUE, tidy=FALSE>>=
@@ -378,7 +389,7 @@ The status column of the summary table is empty as we have not set the QC items 
 qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
 @
 
-\includepdf[pages=-]{protqc.pdf}
+\includepdf{protqc.pdf}
 
 \subsection{Processed $^{15}$N labelling data}\label{sec:n15}
 
@@ -579,8 +590,7 @@ We provide with the package the \Rfunction{n15qc} wrapper function that automate
 % @
 % \end{small}
 
-\includepdf[pages=-]{n15qcreport.pdf}
-
+\includepdf{n15qcreport.pdf}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -589,7 +599,7 @@ We provide with the package the \Rfunction{n15qc} wrapper function that automate
 
 \section{Report generation}\label{sec:report}
 
-The report generation is handled by dedicated packages, in particular the \Rpackage{knitr} \citep{Xie:2013} and \Rpackage{markdown} \citep{markdown}. 
+The report generation is handled by dedicated packages, in particular \Rpackage{knitr} \citep{Xie:2013} and \Rpackage{markdown} \citep{markdown}. 
 
 \subsection{Custom reports}
 
@@ -636,8 +646,7 @@ qcReport(maqcm, reportname = "rnadeg3", clean = FALSE, qcto = Qc2Tex3)
 qcReport(maqcm, reportname = "rnadeg2", qcto = Qc2Tex2)
 @
 
-%% \includepdf[pages=1-2,nup=2x2, frame=TRUE]{rnadeg2.pdf}
-\includepdfmerge[nup=2x2]{rnadeg2.pdf, 1-2, rnadeg3.pdf, 1-2}
+\includepdfmerge{rnadeg2.pdf, 1-2, rnadeg3.pdf, 1-2}
 
 % \subsubsection*{The metadata section}
 

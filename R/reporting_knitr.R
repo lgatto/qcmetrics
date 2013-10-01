@@ -278,12 +278,12 @@ Qc2Tex3 <- function(object, i) {
 metadata_rmd <-
     metadata_html <- function(object) {
         stopifnot(class(object) == "QcMetadata")
-        mdsec <- c("Meta-data",
+        mdsec <- c("Metadata",
                    "-----------------------------\n")
         n <- length(object)
         if (is.null(names(object)))
             names(object) <-
-                paste0("Meta-data ", 1:n)
+                paste0("Metadata ", 1:n)
         for (i in seq_len(n)) {
             if (is.vector(metadata(object)[[i]])) {
                 mdsec <- c(mdsec,
@@ -303,11 +303,11 @@ metadata_rmd <-
 metadata_tex <-
     metadata_pdf <- function(object) {
         stopifnot(class(object) == "QcMetadata")
-        mdsec <- "\\section{Meta-data}\n"
+        mdsec <- "\\section{Metadata}\n"
         n <- length(object)
         if (is.null(names(object)))
             names(object) <-
-                paste0("Meta-data ", 1:n)
+                paste0("Metadata ", 1:n)
         mdsec <- c(mdsec, "\\begin{description}")
         for (i in seq_len(n)) {            
             if (is.vector(metadata(object)[[i]])) {

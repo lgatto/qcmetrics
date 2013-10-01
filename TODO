@@ -9,6 +9,7 @@ Dear Emacs, please make this -*-org-*- mode
 - [ ] add wrapper functions for the proteomics and 15N use cases
  
 ** Reporting [4/7]
+- [ ] TODO Bioc reportintools
 - [X] TODO Add metadata section
 - [ ] TODO allow customisaton of meta-data section
 - [ ] TODO Add a =save= arg to qcReport to save =object= and provide link in report.

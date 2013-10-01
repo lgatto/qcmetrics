@@ -32,9 +32,9 @@
 
 \Sexpr{author}
 
-\Sexpr{toc}
-
 \begin{document}
+
+\Sexpr{toc}
 
 
 \end{document}

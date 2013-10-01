@@ -1,6 +1,6 @@
 \name{rnadeg}
 \alias{rnadeg}
-\title{A simple RNA degradation QC for Affymetric arrays}
+\title{A simple RNA degradation QC for Affymetrix arrays}
 \usage{
   rnadeg(input, status, type,
     reportname = "rnadegradation")
@@ -34,7 +34,7 @@
 }
 \seealso{
   \code{\link{QcMetric}} and \code{\link{QcMetrics}} for
-  details about the QC infrastrucutre and
+  details about the QC infrastructure and
   \code{\link{qcReport}} for information about the report
   generation.
 }
