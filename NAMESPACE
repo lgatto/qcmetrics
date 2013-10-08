@@ -1,0 +1,36 @@
+import(methods)
+import(knitr)
+import(xtable)
+import(Nozzle.R1)
+importFrom(pander, pandoc.table)
+importFrom(Biobase, validMsg)
+importFrom(tools, texi2pdf)
+
+exportClasses(QcMetric,
+              QcMetrics,
+              QcMetadata)
+
+exportMethods(status, "status<-",
+              name, "name<-",
+              qcdata, "qcdata<-",
+              qcenv, "qcenv<-",
+              metadata, "metadata<-",
+              mdata, "mdata<-",
+              names, "names<-",
+              show, plot,
+              print,
+              "show<-", "plot<-",
+              "[", "[[",
+              qcReport)
+
+export(QcMetric, 
+       QcMetrics,
+       QcMetadata,
+       qcshow,
+       as.data.frame.QcMetrics,
+       Qc2Tex,
+       Qc2Tex2,
+       Qc2Tex3,
+       Qc2Rmd,
+       rnadeg,
+       n15qc)
