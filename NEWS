@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.1.1
+------------------------
+ o added ReportWriting biocView [2013-11-29 Fri]
+
+CHANGES IN VERSION 1.1.0
+------------------------
+ o new devel version
+
 CHANGES IN VERSION 0.99.3
 -------------------------
  o fixed template - toc after begin document <2013-10-01 Tue>
