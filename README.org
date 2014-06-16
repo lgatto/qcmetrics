@@ -5,7 +5,7 @@
 The =qcmetrics= package provides a general framework to develope
 quality control (QC) pipelines for any type of data that can be
 imported into =R=. The application of =qcmetrics= can be schematised
-in 4 points
+in 5 points
 
 1. Identify a set of quality metrics of interest and implement them
    and their visualisation method into individual =QcMetric=
