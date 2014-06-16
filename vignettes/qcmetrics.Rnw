@@ -515,7 +515,7 @@ The status column of the summary table is empty as we have not set the
 QC items statuses yet.
 
 <<protreport, eval=FALSE>>=
-qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
+qcReport(protqcm, reportname = "protqc")
 @
 
 \includepdf{protqc.pdf}
