@@ -66,12 +66,12 @@
       \code{QcMetric} instance.  }
     \item{length}{\code{signature(x = "QcMetrics")}: returns the number
       of \code{QcMetric} instances populate \code{x}.}
-   \item{metadata}{\code{signature(object = "QcMetrics")}: return the
+   \item{metadata}{\code{signature(x = "QcMetrics")}: return the
       \code{object}'s metadata list. Also available as \code{mdata}. }
-    \item{metadata<-}{\code{signature(object = "QcMetrics", value =
+    \item{metadata<-}{\code{signature(x = "QcMetrics", value =
 	"list")}: sets the objects metadata. Also available as
       \code{mdata}. }
-    \item{metadata<-}{\code{signature(object = "QcMetric", value =
+    \item{metadata<-}{\code{signature(x = "QcMetric", value =
 	"QcMetadata")}: sets the objects metadata. Also available as 
       \code{mdata}. }
     \item{name}{\code{signature(object = "QcMetrics")}: returns a
