@@ -9,8 +9,8 @@ setGeneric("qcenv<-", function(object, value) standardGeneric("qcenv<-"))
 setGeneric("qcdata", function(object, x) standardGeneric("qcdata"))
 setGeneric("qcdata<-", function(object, ..., value) standardGeneric("qcdata<-"))
 
-setGeneric("metadata", function(object, ...) standardGeneric("metadata"))
-setGeneric("metadata<-", function(object, value) standardGeneric("metadata<-"))
+## setGeneric("metadata", function(object, ...) standardGeneric("metadata"))
+## setGeneric("metadata<-", function(object, value) standardGeneric("metadata<-"))
 setGeneric("mdata", function(object, ...) standardGeneric("mdata"))
 setGeneric("mdata<-", function(object, value) standardGeneric("mdata<-"))
 

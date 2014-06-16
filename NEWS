@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.1.2
+------------------------
+ o using S4Vectors' metadata and metadata<- [2014-06-16 Mon]
+
 CHANGES IN VERSION 1.1.1
 ------------------------
  o added ReportWriting biocView [2013-11-29 Fri]
