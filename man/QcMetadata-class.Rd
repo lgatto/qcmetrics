@@ -43,9 +43,9 @@
       new \code{QcMetadata} instance. }
     \item{[[}{\code{signature(x = "QcMetadata")}: extracts a single
       element of \code{x}. }
-    \item{metadata}{\code{signature(object = "QcMetadata")}: return the
+    \item{metadata}{\code{signature(x = "QcMetadata")}: return the
       \code{object}'s metadata list. Also available as \code{mdata}. }
-    \item{metadata<-}{\code{signature(object = "QcMetadata", value =
+    \item{metadata<-}{\code{signature(x = "QcMetadata", value =
 	"list")}: sets the objects metadata. Also available as
       \code{mdata}. }
     \item{length}{\code{signature(x = "QcMetadata")}: returns the number

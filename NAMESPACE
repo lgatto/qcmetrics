@@ -4,6 +4,7 @@ import(xtable)
 import(Nozzle.R1)
 importFrom(pander, pandoc.table)
 importFrom(Biobase, validMsg)
+importFrom(S4Vectors, metadata, "metadata<-")
 importFrom(tools, texi2pdf)
 
 exportClasses(QcMetric,

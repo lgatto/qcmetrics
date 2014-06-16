@@ -50,16 +50,16 @@ setReplaceMethod("qcdata",
                  })
 
 setMethod("metadata", "QcMetrics",
-          function(object) metadata(object@metadata))
+          function(x) metadata(x@metadata))
 
 setMethod("mdata", "QcMetrics",
           function(object) metadata(object))
 
 setReplaceMethod("metadata",
-                 signature(object="QcMetrics", value="list"),
-                 function(object, value) {
+                 signature(x="QcMetrics", value="list"),
+                 function(x, value) {
                      checkMetaDataListNames(value)
-                     oldmd <- object@metadata@metadata
+                     oldmd <- x@metadata@metadata
                      oldnms <- names(oldmd)                     
                      newnms <- names(value)
                      l <- unique(c(oldnms, newnms))
@@ -68,9 +68,9 @@ setReplaceMethod("metadata",
                      finalmd[oldnms] <- oldmd
                      finalmd[newnms] <- value
                      checkMetaDataListNames(finalmd)
-                     value <- QcMetadata(metadata = finalmd)                     
-                     metadata(object) <- value
-                     object
+                     value <- QcMetadata(metadata = finalmd)
+                     metadata(x) <- value
+                     x
                  })
 
 setReplaceMethod("mdata",
@@ -81,10 +81,10 @@ setReplaceMethod("mdata",
                  })
 
 setReplaceMethod("metadata",
-                 signature(object="QcMetrics", value="QcMetadata"),
-                 function(object, value) {
-                     object@metadata <- value
-                     object
+                 signature(x="QcMetrics", value="QcMetadata"),
+                 function(x, value) {
+                     x@metadata <- value
+                     x
                  })
 
 setReplaceMethod("mdata",

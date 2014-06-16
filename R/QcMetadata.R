@@ -38,16 +38,16 @@ setMethod("print", "QcMetadata",
           })
 
 setMethod("metadata", "QcMetadata",
-          function(object) object@metadata)
+          function(x) x@metadata)
 
 setMethod("mdata", "QcMetadata",
           function(object) metadata(object))
 
 setReplaceMethod("metadata",
-                 signature(object="QcMetadata", value="list"),
-                 function(object, value) {
-                     object@metadata <- value
-                     object
+                 signature(x="QcMetadata", value="list"),
+                 function(x, value) {
+                     x@metadata <- value
+                     x
                  })
 
 setReplaceMethod("mdata",
