@@ -1,7 +1,6 @@
 #+TITLE: A General Framework for Quality Control Metrics
 
 * About 
-
 The =qcmetrics= package provides a general framework to develope
 quality control (QC) pipelines for any type of data that can be
 imported into =R=. The application of =qcmetrics= can be schematised
