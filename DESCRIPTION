@@ -13,7 +13,7 @@ Imports: Biobase, methods, knitr, tools, Nozzle.R1,
 	 xtable, pander, S4Vectors
 Suggests: affy, MSnbase, ggplot2, lattice, yaqcaffy, 
 	  MAQCsubsetAFX, RforProteomics, AnnotationDbi,
-	  mzR, hgu133plus2cdf
+	  mzR, hgu133plus2cdf, BiocStyle
 License: GPL-2
 URL: https://github.com/lgatto/qcmetrics
 biocViews: Software, Bioinformatics, QualityControl, Proteomics, 

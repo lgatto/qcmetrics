@@ -1,83 +1,29 @@
-%\VignetteEngine{knitr}
+%\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{The 'qcmetrics' infrastructure for quality control and reporting}
 %\VignetteKeywords{Bioinformatics, proteomics, genomics, transcriptomics, mass-spectrometry, Quality control, reporting}
 %\VignettePackage{qcmetrics}
 
-\documentclass[12pt,a4paper,english]{scrartcl}
-% \usepackage{amsmath,amsfonts,amssymb}
-% \usepackage{tikz}
-\usepackage{hyperref}
-\usepackage[authoryear,round]{natbib}
-\usepackage[auth-sc]{authblk}
-\usepackage{setspace}
-\onehalfspacing
+\documentclass[12pt, oneside]{article}
 
 \usepackage[final]{pdfpages}
 \includepdfset{nup=2x2, pages=-, frame=TRUE}
-\usepackage{marginnote}
 \usepackage{wasysym}
 
-% caption formatting
-\setcapindent{0em}
-\setkomafont{captionlabel}{\sffamily\bfseries}
-\setkomafont{caption}{\sffamily}
+<<style, eval=TRUE, echo=FALSE, results="asis">>=
+BiocStyle::latex()
+@
 
-\renewcommand\Authands{ and }
-
-\newcommand{\R}{\texttt{R} }
-\newcommand{\code}[1]{{\texttt{#1}}}
-\newcommand{\Rfunction}[1]{{\texttt{#1}}}
-\newcommand{\Robject}[1]{{\texttt{#1}}}
-\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
-\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
-%% colors
-\definecolor{Red}{rgb}{0.7,0,0}
-\definecolor{Blue}{rgb}{0,0,0.8}
-
-\usepackage{geometry}
-\geometry{verbose,
-  tmargin = 2.5cm,
-  bmargin = 2.5cm,
-  lmargin = 3.0cm,
-  rmargin = 3.0cm}
-
-\usepackage{hyperref}
-\usepackage{breakurl}
-\hypersetup{%
-  pdfusetitle,
-  bookmarks = {true},
-  bookmarksnumbered = {true},
-  bookmarksopen = {true},
-  bookmarksopenlevel = 2,
-  unicode = {true},
-  breaklinks = {false},
-  hyperindex = {true},
-  colorlinks = {true},
-  linktocpage = {true},
-  plainpages = {false},
-  linkcolor = {Blue},
-  citecolor = {Blue},
-  urlcolor = {Red},
-  pdfstartview = {Fit},
-  pdfpagemode = {UseOutlines},
-  pdfview = {XYZ null null null}
-}
-
+\bioctitle[\Biocpkg{qcmetrics}]{The \Biocpkg{qcmetrics} infrastructure
+  for quality control and automatic reporting}
 
 \author{
-  Laurent Gatto\thanks{\email{lg390@cam.ac.uk}}
+  Laurent Gatto\footnote{\email{lg390@cam.ac.uk}}\\  
+  Computational Proteomics Unit\footnote{\url{http://cpu.sysbiol.cam.ac.uk}}\\
+  University of Cambridge, UK
 }
 
-
-\affil{
-  Computational Proteomics Unit\\
-  Cambridge Center for Proteomics\\
-  University of Cambridge
-}
 
 \begin{document}
-
-\title{The \Rpackage{qcmetrics} infrastructure for quality control and automatic reporting}
 
 \maketitle
 
@@ -85,7 +31,7 @@
 \vskip 0.3in minus 0.1in
 \hrule
 \begin{abstract}
-  The \Rpackage{qcmetrics} package is a framework that provides simple
+  The \Biocpkg{qcmetrics} package is a framework that provides simple
   data containers for quality metrics and support for automatic report
   generation. This document briefly illustrates the core data
   structures and then demonstrates the generation and automation of
@@ -153,7 +99,7 @@ prime example where standardisation and automation are of great
 benefit. While a great variety of QC metrics, software and pipelines
 have been described for any assay commonly used in modern biology, we
 present here a different tool for QC, whose main features are
-flexibility and versatility. The \Rpackage{qcmetrics} package is a
+flexibility and versatility. The \Biocpkg{qcmetrics} package is a
 general framework for QC that can accommodate any type of data. It
 provides a flexible framework to implement QC items that store
 relevant QC metrics with a specific visualisation mechanism. These
@@ -177,7 +123,7 @@ space, these examples are meaningful and relevant. In section
 process, how reports can be customised and how new exports can be
 contributed. We proceed in section \ref{sec:qcpkg} to the
 consolidation of QC pipelines using \R and elaborate on the
-development of dedicated QC packages with \Rpackage{qcmetrics}.
+development of dedicated QC packages with \Biocpkg{qcmetrics}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -241,7 +187,7 @@ is stored in the \Robject{QcMetrics} instance) or directly as a named
 \Robject{list}. The \Robject{QcMetadata} is itself a \Robject{list}
 and can be accessed and set with \Rfunction{metadata} or
 \Rfunction{mdata}. When accessed, it is returned and displayed as a
-\code{list}.
+\Robject{list}.
 
 <<qcmetrics>>=
 qcm <- QcMetrics(qcdata = list(qc))
@@ -276,11 +222,11 @@ method to generate reports, as described in more details below.
 \subsection{Microarray degradation}\label{sec:marray}
 
 We will use the \Robject{refA} Affymetrix arrays from the
-\Rpackage{MAQCsubsetAFX} package as an example data set and
+\Biocexptpkg{MAQCsubsetAFX} package as an example data set and
 investigate the RNA degradation using the \Rfunction{AffyRNAdeg} from
-\Rpackage{affy} \citep{Gautier:2004} and the actin and GAPDH
-$\frac{3'}{5'}$ ratios, as calculated in the \Rpackage{yaqcaffy}
-package \citep{yaqcaffy}. The first code chunk demonstrate how to load
+\Biocpkg{affy} \cite{Gautier:2004} and the actin and GAPDH
+$\frac{3'}{5'}$ ratios, as calculated in the \Biocpkg{yaqcaffy}
+package \cite{yaqcaffy}. The first code chunk demonstrate how to load
 the data and compute the QC data\footnote{%%
   The pre-computed objects can be directly loaded with
   \Rfunction{load(system.file("extdata/deg.rda", package =
@@ -386,7 +332,7 @@ rnadeg
 
 It is now possible to generate a \Robject{QcMetrics} object from a set
 of CEL files or directly from an \Robject{affybatch} object. The
-\code{status} argument allows to directly set the statuses of the
+\Robject{status} argument allows to directly set the statuses of the
 individual QC items; these can also be set later, as illustrated
 below. If a report type is specified, the corresponding report is
 generated.
@@ -405,7 +351,7 @@ status(maqcm)
 (status(maqcm) <- c(TRUE, FALSE))
 @
 
-The report can be generated manually with \code{qcReport(maqcm)} or
+The report can be generated manually with \Rfunction{qcReport(maqcm)} or
 directly with the wrapper function as follows:
 
 <<qcwrap3, eval = FALSE>>=
@@ -416,7 +362,7 @@ maqcm <- rnadeg(refA, type = "pdf")
 
 To illustrate a simple QC analysis for proteomics data, we will
 download data set \texttt{PXD00001} from the ProteomeXchange
-repository in the \texttt{mzXML} format \citep{Pedrioli:2004}. The
+repository in the \texttt{mzXML} format \cite{Pedrioli:2004}. The
 MS$^2$ spectra from that mass-spectrometry run are then read into
 \R\footnote{%%
   In the interest of time, this code chunk has been pre-computed and a
@@ -425,8 +371,8 @@ MS$^2$ spectra from that mass-spectrometry run are then read into
   \Rfunction{load(system.file("extdata/exp.rda", package =
     "qcmetrics"))}.} %%
 and stored as an \Robject{MSnExp} experiment using the
-\Rfunction{readMSData} function from the \Rpackage{MSnbase} package
-\citep{Gatto:2012}.
+\Rfunction{readMSData} function from the \Biocpkg{MSnbase} package
+\cite{Gatto:2012}.
 
 <<protdata0, echo=FALSE>>=
 load(system.file("extdata/exp.rda", package = "qcmetrics"))
@@ -444,7 +390,7 @@ constructed with the MS$^2$ spectra precursor's intensities, a figure
 illustrating the precursor charges in the MS space and an
 $\frac{m}{z}$ delta plot illustrating the suitability of MS$^2$
 spectra for identification (see \Rfunction{?plotMzDelta} or
-\citep{Foster:2011}).
+\cite{Foster:2011}).
 
 
 <<protqc1, cache=TRUE, tidy=FALSE>>=
@@ -523,7 +469,7 @@ qcReport(protqcm, reportname = "protqc")
 \subsection{Processed $^{15}$N labelling data}\label{sec:n15}
 
 In this section, we describe a set of $^{15}$N metabolic labelling QC
-metrics \citep{Krijgsveld:2003}. The data is a phospho-enriched
+metrics \cite{Krijgsveld:2003}. The data is a phospho-enriched
 $^{15}$N labelled \textit{Arabidopsis thaliana} sample prepared as
 described in \cite{Groen:2013}. The data was processed with in-house
 tools and is available as an \Robject{MSnSet} instance. Briefly,
@@ -538,10 +484,10 @@ data. The \Robject{psm} object provides such data for PSMs (peptide
 spectrum matches) with a posterior error probability \textless 0.05
 that can be uniquely matched to proteins.
 
-We first load the \Rpackage{MSnbase} package (required to support the
+We first load the \Biocpkg{MSnbase} package (required to support the
 \Robject{MSnSet} data structure) and example data that is distributed
-with the \Rpackage{qcmetrics} package. We will make use of the
-\Rpackage{ggplot2} plotting package.
+with the \Biocpkg{qcmetrics} package. We will make use of the
+\CRANpkg{ggplot2} plotting package.
 
 <<n15ex>>=
 library("ggplot2")
@@ -783,8 +729,8 @@ and time is used, to avoid overwriting existing reports.
 \section{Report generation}\label{sec:report}
 
 The report generation is handled by dedicated packages, in particular
-\Rpackage{knitr} \citep{Xie:2013} and \Rpackage{markdown}
-\citep{markdown}.
+\CRANpkg{knitr} \cite{Xie:2013} and \CRANpkg{markdown}
+\cite{markdown}.
 
 \subsection{Custom reports}
 
@@ -809,18 +755,18 @@ report, i.e the sections corresponding the the individual
 \Robject{QcMetric} instances bundled in a \Robject{QcMetrics} input
 (described in more details below) is then inserted into the template
 and weaved, or more specifically \Rfunction{knit}'ted into a
-\texttt{tex} document that is (if \code{type=pdf}) compiled into a
+\texttt{tex} document that is (if \Robject{type=pdf}) compiled into a
 \texttt{pdf} document.
 
 The generation of the \texttt{html} report is enabled by the creation
 of a \R markdown file (\texttt{Rmd}) that is then converted with
-\Rpackage{knitr} and \Rpackage{markdown} into \texttt{html}. The
+\CRANpkg{knitr} and \CRANpkg{markdown} into \texttt{html}. The
 \texttt{Rmd} syntax being much simpler, no \texttt{Rmd} template is
 needed. It is possible to customise the final \texttt{html} output by
 providing a \texttt{css} definition as \Robject{template} argument
 when calling \Rfunction{qcReport}.
 
-Initial support for the \Rpackage{Nozzle.R1} package \citep{nozzle} is
+Initial support for the \CRANpkg{Nozzle.R1} package \cite{nozzle} is
 available with type \texttt{nozzle}.
 
 \subsubsection*{\Robject{QcMetric} sections}
@@ -889,7 +835,7 @@ A reporting function is a function that
 \item Optionally includes the QC item sections into addition header
   and footer, either by writing these directly or by inserting the
   sections into an appropriate template. The reporting functions that
-  are available in \Rpackage{qcmetrics} can be found in
+  are available in \Biocpkg{qcmetrics} can be found in
   \Rfunction{?qcReport}: \Rfunction{reporting\_tex} for type
   \texttt{tex}, \Rfunction{reporting\_pdf} for type \texttt{pdf},
   \ldots These functions should use the same arguments as
@@ -931,7 +877,7 @@ package.skeleton("RnaDegQC", list = "rnadeg")
 @
 
 The \texttt{DESCRIPTION} file would need to be updated. The packages
-\Rpackage{qcmetrics}, \Rpackage{affy} and \Rpackage{yaqcaffy} would
+\Biocpkg{qcmetrics}, \Biocpkg{affy} and \Biocpkg{yaqcaffy} would
 need to be specified as dependencies in the \texttt{Imports:} line and
 imported in the \texttt{NAMESPACE} file. The documentation file
 \texttt{RnaDegQC/man/rnadeg.Rd} and the (optional)
@@ -946,11 +892,11 @@ package.
 
 \subsection{A QC pipeline repository}
 
-The wiki on the \Rpackage{qcmetrics} github
+The wiki on the \Biocpkg{qcmetrics} github
 page\footnote{\url{https://github.com/lgatto/qcmetrics}} can be edited
 by any github user and will be used to cite, document and share QC
 functions, pipelines and packages, in particular those that make use
-of the \Rpackage{qcmetrics} infrastructure.
+of the \Biocpkg{qcmetrics} infrastructure.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -967,11 +913,11 @@ wealth of
 packages\footnote{\url{http://bioconductor.org/packages/release/BiocViews.html\#\_\_\_QualityControl}}
 that provide functionalities for QC.
 
-The \Rpackage{qcmetrics} package is different than existing \R
+The \Biocpkg{qcmetrics} package is different than existing \R
 packages and QC systems in general. It proposes a unique
 domain-independent framework to design QC pipelines and is thus suited
 for any use case. The examples presented in this document illustrated
-the application of \Rpackage{qcmetrics} on data containing single or
+the application of \Biocpkg{qcmetrics} on data containing single or
 multiple samples or experimental runs from different technologies. It
 is also possible to automate the generation of QC metrics for a set of
 repeated (and growing) analyses of standard samples to establish
@@ -982,7 +928,7 @@ popularisation of integrative approaches that combine multiple types
 of data in novel ways stresses out the need for flexible QC
 development.
 
-\Rpackage{qcmetrics} is a versatile software that allows rapid and
+\Biocpkg{qcmetrics} is a versatile software that allows rapid and
 easy QC pipeline prototyping and development and supports
 straightforward migration to production level systems through its well
 defined packaging mechanism.
@@ -991,8 +937,6 @@ defined packaging mechanism.
 %% sample QC, and how to distinguish them in the latter case?
 
 \clearpage
-
-\singlespacing
 
 \section*{Acknowledgements}\label{sec:ack} 
 
@@ -1012,7 +956,6 @@ All software and respective versions used to produce this document are listed be
 toLatex(sessionInfo())
 @
 
-\bibliographystyle{plainnat}
 \bibliography{qcmetrics}
 
 \end{document}
