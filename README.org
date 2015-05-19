@@ -37,11 +37,12 @@ QC pipelines and packages will be described and disseminated through the [[https
       add a reporter argument to qcReport to provide custom reporting fuctions.
 
 ** Applications [3/4]
-Illustrate the usage of =qcmetrics= on different types of data. 
+Illustrate the recipes/usage of =qcmetrics= on different types of data. 
 - [X] Short QC pipelines for raw proteomics data
 - [X] RNA degradation
 - [X] Document the creation of new packages using =qcmetrics=.
 - [ ] Add an example for RNASeq, see =ShortReads=
+- [ ] QuaMeter idfree quality control
 
 ** Serialisation [1/2] 
 - [X] Objects can of course be serialised with =save=, =saveRDS=.
