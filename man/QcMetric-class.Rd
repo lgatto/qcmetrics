@@ -6,6 +6,8 @@
 \alias{QcMetric}
 \alias{name<-,QcMetric,character-method}
 \alias{name,QcMetric-method}
+\alias{description<-,QcMetric,character-method}
+\alias{description,QcMetric-method}
 \alias{plot,QcMetric,missing-method}
 \alias{plot<-,QcMetric,function-method}
 \alias{plot<-}
@@ -40,8 +42,10 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{name}:}{Object of class \code{"character"} describing
-      the \code{object}. }
+    \item{\code{name}:}{Object of class \code{"character"} of length 1
+      naming the \code{object}. }
+    \item{\code{description}:}{Object of class \code{"character"} of
+      arbitrary length describing the qc metric in more details. }    
     \item{\code{qcdata}:}{Object of class \code{"environment"} that
       stores the actual data. }
     \item{\code{plot}:}{Object of class \code{"function"} to graphically
@@ -58,8 +62,12 @@
 \section{Methods}{
   \describe{
     \item{name}{\code{signature(object = "QcMetric")}: retrieves the
-      description of the \code{object}. }	
+      name of the \code{object}. }	
     \item{name<-}{\code{signature(object = "QcMetric", value =
+	"character")}: set the name of the \code{object}. }
+    \item{description}{\code{signature(object = "QcMetric")}: retrieves the
+      description of the \code{object}. }	
+    \item{description<-}{\code{signature(object = "QcMetric", value =
 	"character")}: set the description of the \code{object}. }
     \item{status}{\code{signature(object = "QcMetric")}: retrieves the
       status of the \code{object}. }
@@ -121,6 +129,7 @@ qcdata(qc)
 all.equal(qcdata(qc, "qc1"), x)
 all.equal(qcdata(qc, "qc2"), 1:10)
 name(qc) <- "My test QcMetric"
+description(qc) <- "This qc metric describes bla bla bla, indicating possible issues in the third step of protocol bla bla bla."
 status(qc) <- FALSE
 qc
 

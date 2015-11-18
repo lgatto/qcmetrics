@@ -20,17 +20,17 @@
 ##' @author Laurent Gatto
 rnadeg <- function(input, status,
                    type, reportname = "rnadegradation") {
-    suppressPackageStartupMessages(library("affy"))
-    suppressPackageStartupMessages(library("yaqcaffy"))
+    requireNamespace("affy")
+    requireNamespace("yaqcaffy")
     if (is.character(input))
-        input <- ReadAffy(input)
+        input <- affy::ReadAffy(input)
     ## first QC item
     qc1 <- QcMetric(name = "Affy RNA degradation slopes")
-    qcdata(qc1, "deg") <- AffyRNAdeg(input)
+    qcdata(qc1, "deg") <- affy::AffyRNAdeg(input)
     plot(qc1) <- function(object) {
         x <- qcdata(object, "deg")
         nms <- x$sample.names
-        plotAffyRNAdeg(x, cols = 1:length(nms))
+        affy::plotAffyRNAdeg(x, cols = 1:length(nms))
         legend("topleft", nms, lty = 1, cex = 0.8, 
                col = 1:length(nms), bty = "n")
     }
@@ -38,7 +38,7 @@ rnadeg <- function(input, status,
         status(qc1) <- status[1]
     ## second QC item
     qc2 <- QcMetric(name = "Affy RNA degradation ratios")
-    qcdata(qc2, "yqc") <- yaqc(input)
+    qcdata(qc2, "yqc") <- yaqc::yaqc(input)
     plot(qc2) <- function(object) {
         par(mfrow = c(1, 2))
         yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all")
@@ -94,7 +94,8 @@ n15qc <- function(object,
                   reportname) {
     stopifnot(inherits(object, "MSnSet"))
     stopifnot(all(fcol %in% fvarLabels(object)))
-    suppressPackageStartupMessages(library(ggplot2))
+    requireNamespace("ggplot2")
+    requireNamespace("MSnbase")
     
     ## incorporation rate QC metric
     qcinc <- QcMetric(name = "15N incorporation rate")
