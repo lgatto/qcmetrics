@@ -38,7 +38,7 @@ rnadeg <- function(input, status,
         status(qc1) <- status[1]
     ## second QC item
     qc2 <- QcMetric(name = "Affy RNA degradation ratios")
-    qcdata(qc2, "yqc") <- yaqc::yaqc(input)
+    qcdata(qc2, "yqc") <- yaqcaffy::yaqc(input)
     plot(qc2) <- function(object) {
         par(mfrow = c(1, 2))
         yaqcaffy:::.plotQCRatios(qcdata(object, "yqc"), "all")
