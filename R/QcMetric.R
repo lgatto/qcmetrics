@@ -1,6 +1,10 @@
 qcshow <- function(object, qcdata = TRUE) {
     cat("Object of class \"", class(object), "\"\n", sep="")
-    cat(" Name:", object@name, "\n")                 
+    cat(" Name:", object@name, "\n")
+    if (length(object@description)) {
+        cat (" Description:\n")
+        writeLines(strwrap(paste(object@description, collapse = " ")))
+    }
     cat(" Status:", object@status, "\n")
     if (qcdata) {
         cat(" Data: ")
@@ -14,6 +18,7 @@ qcshow <- function(object, qcdata = TRUE) {
 .QcMetric <- setClass("QcMetric",
                       slots = list(
                           name = "character",
+                          description = "character",
                           qcdata = "environment",
                           plot = "function",
                           show = "function",
@@ -25,12 +30,13 @@ qcshow <- function(object, qcdata = TRUE) {
                           plot = function(x, ...) {
                               warning("No specific plot function defined")
                               invisible(NULL)
-                          }, 
+                          },
                           show = qcshow))
 
 QcMetric <- function(...) {
     ans <- .QcMetric(...)
     ans@qcdata <- new.env(parent=emptyenv())
+    object@name <- object@name[1]
     ans
 }
 
@@ -44,7 +50,7 @@ setReplaceMethod("show",
                      return(object)
                  })
 
-setMethod("plot", c("QcMetric", "missing"), 
+setMethod("plot", c("QcMetric", "missing"),
           function(x, y, ...) x@plot(x, ...))
 
 setReplaceMethod("plot",
@@ -54,7 +60,7 @@ setReplaceMethod("plot",
                      object
                  })
 
-setMethod("qcenv", c("QcMetric"), 
+setMethod("qcenv", c("QcMetric"),
           function(object) object@qcdata)
 
 setReplaceMethod("qcenv",
@@ -65,16 +71,16 @@ setReplaceMethod("qcenv",
                  })
 
 
-setMethod("qcdata", c("QcMetric", "missing"), 
+setMethod("qcdata", c("QcMetric", "missing"),
           function(object) ls(object@qcdata))
 
-setMethod("qcdata", c("QcMetric", "character"), 
+setMethod("qcdata", c("QcMetric", "character"),
           function(object, x) {
               objs <- qcdata(object)
               if (!x %in% objs)
                   stop("No qcdata '", x, "' in object.")
-              get(x, envir = object@qcdata)}
-          )
+              get(x, envir = object@qcdata)
+          })
 
 setReplaceMethod("qcdata",
                  signature(object="QcMetric", value="ANY"),
@@ -86,7 +92,7 @@ setReplaceMethod("qcdata",
                          if (var %in% objs)
                              message("Overwriting variable 'var'.")
                          assign(var,
-                                value = value, 
+                                value = value,
                                 envir = object@qcdata)
                      }
                      object
@@ -110,6 +116,11 @@ setReplaceMethod("name", signature(object="QcMetric", value="character"),
                      object
                  })
 
+setMethod("description", "QcMetric",
+          function(object) object@description)
 
-
-
+setReplaceMethod("description", signature(object="QcMetric", value="character"),
+                 function(object, value) {
+                     object@description <- value
+                     object
+                 })
