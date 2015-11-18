@@ -17,7 +17,7 @@ in 5 points
 5. Wrap the above steps into a wrapper function or a new QC package
    for production use.
 
-QC pipelines and packages will be described and disseminated through the [[https://github.com/lgatto/qcmetrics/wiki][wiki]].
+QC pipelines and packages will be described and disseminated through the [wiki](https://github.com/lgatto/qcmetrics/wiki).
 
 * TODO
 
