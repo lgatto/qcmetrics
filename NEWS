@@ -1,3 +1,6 @@
+CHANGES IN VERSION 1.9.2
+------------------------
+
 CHANGES IN VERSION 1.9.1
 ------------------------
  o QcMetric objects now have a description slots, and associated
