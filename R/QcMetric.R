@@ -36,7 +36,7 @@ qcshow <- function(object, qcdata = TRUE) {
 QcMetric <- function(...) {
     ans <- .QcMetric(...)
     ans@qcdata <- new.env(parent=emptyenv())
-    object@name <- object@name[1]
+    ans@name <- ans@name[1]
     ans
 }
 
