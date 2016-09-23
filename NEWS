@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.11.3
+-------------------------
+ o Ammend biocViews <2016-09-23 Fri>
+
 CHANGES IN VERSION 1.9.1
 ------------------------
  o QcMetric objects now have a description slots, and associated
