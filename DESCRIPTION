@@ -1,7 +1,7 @@
 Package: qcmetrics
 Type: Package
 Title: A Framework for Quality Control
-Version: 1.11.2
+Version: 1.11.3
 Author: Laurent Gatto
 Maintainer: Laurent Gatto <lg390@cam.ac.uk>
 Description: The package provides a framework for generic quality
@@ -16,8 +16,7 @@ Suggests: affy, MSnbase, ggplot2, lattice, yaqcaffy,
 	  mzR, hgu133plus2cdf, BiocStyle
 License: GPL-2
 URL: https://github.com/lgatto/qcmetrics
-biocViews: Software, Bioinformatics, QualityControl, Proteomics, 
-	   Microarray, MassSpectrometry, Visualisation, 
-	   ReportWriting
+biocViews: Software, QualityControl, Proteomics, Microarray,
+	   MassSpectrometry, Visualization, ReportWriting
 VignetteBuilder: knitr
 
