@@ -1,0 +1,19 @@
+language: r
+cache: packages
+sudo: false
+
+r:
+  - bioc-devel
+  - bioc-release
+
+r_packages:
+  - covr
+  
+after_success:
+  - Rscript -e 'library(covr); codecov()'
+
+notifications:
+  email:
+    on_success: lg390@cam.ac.uk
+    on_failure: lg390@cam.ac.uk
+
