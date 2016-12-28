@@ -14,12 +14,16 @@ before_install:
 addons:
   apt:
     packages:
+      - texlive-latex-base
       - texlive-latex-extra
       - texlive-latex-recommended
       - texlive-fonts-extra
       - texlive-fonts-recommended
       - texlive-font-utils
-      - texlive-extra-utils      
+      - texlive-extra-utils
+      - texlive-generic-recommended
+      - texlive-science
+      - texlive-pictures
       - libnetcdf-dev
       - netcdf-bin # libnetcdf-dev doesn't contain nc-config in ubuntu 12.04 (in 16.04 it is part of libnetcdf-dev)
 
