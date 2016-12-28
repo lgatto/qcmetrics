@@ -7,6 +7,13 @@ importFrom(Biobase, validMsg, description, "description<-")
 importFrom(S4Vectors, metadata, "metadata<-")
 importFrom(tools, texi2pdf)
 
+importFrom("grDevices", "dev.off", "pdf", "png")
+importFrom("graphics", "abline", "barplot", "layout", "legend",
+           "lines", "par", "rect")
+importFrom("stats", "density", "median")
+		   
+
+
 exportClasses(QcMetric,
               QcMetrics,
               QcMetadata)
