@@ -1,0 +1,36 @@
+---
+title: "The 'qcmetrics' infrastructure for quality control and reporting"
+author: 
+- name: Laurent Gatto
+  affiliation: Computational Proteomics Unit, Cambridge, UK
+package: qcmetrics
+abstract: >
+  The `r Biocparallel("qcmetrics")` package is a framework that provides simple
+  data containers for quality metrics and support for automatic report
+  generation. This document briefly illustrates the core data
+  structures and then demonstrates the generation and automation of
+  quality control reports for microarray and proteomics data.
+output:
+  BiocStyle::html_document2:
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{The 'qcmetrics' infrastructure for quality control and reporting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteKeywords{Bioinformatics, proteomics, genomics, transcriptomics, mass-spectrometry, Quality control, reporting}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r env, echo=FALSE}
+suppressPackageStartupMessages(library("BiocStyle"))
+```
+
+The full vignette is available in pdf format on the `r
+Biocpkg("qcmetrics")` Bioconductor landing page at 
+
+  http://www.bioconductor.org/packages/devel/bioc/vignettes/qcmetrics/inst/doc/qcmetrics.pdf
+
+# Session information
+
+```{r si, echo=FALSE}
+print(sessionInfo(), locale = FALSE)
+```
