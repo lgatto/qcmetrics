@@ -3,7 +3,9 @@
 
 # A General Framework for Quality Control Metrics
 
-
+```{r env, echo=FALSE}
+suppressPackageStartupMessages(library("BiocStyle"))
+```
 
 ## About 
 
@@ -27,11 +29,10 @@ the [wiki](https://github.com/lgatto/qcmetrics/wiki).
 
 ## Installation
 
-*[qcmetrics](http://bioconductor.org/packages/qcmetrics)* is a Bioconductor package and should in
+`r Biocpkg("qcmetrics")` is a Bioconductor package and should in
 installed with
 
-
-```r
+```{r inst, eval=FALSE}
 ## try http:// if https:// URLs are not supported
 source("https://bioconductor.org/biocLite.R")
 biocLite("qcmetrics")
