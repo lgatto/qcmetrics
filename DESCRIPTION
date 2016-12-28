@@ -18,6 +18,7 @@ Suggests: affy, MSnbase, ggplot2, lattice, yaqcaffy,
 	  mzR, hgu133plus2cdf, BiocStyle
 License: GPL-2
 URL: https://github.com/lgatto/qcmetrics
+BugReports: https://github.com/lgatto/qcmetrics/issues
 biocViews: Software, QualityControl, Proteomics, Microarray,
 	   MassSpectrometry, Visualization, ReportWriting
 VignetteBuilder: knitr
