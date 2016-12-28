@@ -15,7 +15,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-vignette">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -55,15 +55,21 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
-    <div id="a-general-framework-for-quality-control-metrics" class="section level1">
+  <div class="col-md-9">
+    
+
+    
+    
+<div class="contents">
+
+<div id="a-general-framework-for-quality-control-metrics" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#a-general-framework-for-quality-control-metrics" class="anchor"> </a>A General Framework for Quality Control Metrics</h1></div>
 <div id="about" class="section level2">
 <h2 class="hasAnchor">
 <a href="#about" class="anchor"> </a>About</h2>
 <p>The <code>qcmetrics</code> package provides a general framework to develope quality control (QC) pipelines for any type of data that can be imported into <code>R</code>. The application of <code>qcmetrics</code> can be schematised in 5 points</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Identify a set of quality metrics of interest and implement them and their visualisation method into individual <code>QcMetric</code> instances.</li>
 <li>Bundles the <code>QcMetric</code> items into a <code>QcMetrics</code> instance.</li>
 <li>Automatically generate reports in pdf of html using the <code>qcReport</code> function using the <code>QcMetrics</code> object of step 2 as input.</li>
@@ -72,53 +78,24 @@
 </ol>
 <p>QC pipelines and packages will be described and disseminated through the <a href="https://github.com/lgatto/qcmetrics/wiki">wiki</a>.</p>
 </div>
-<div id="todo" class="section level2">
+<div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#todo" class="anchor"> </a>TODO</h2>
-<div id="reporting" class="section level4">
-<h4 class="hasAnchor">
-<a href="#reporting" class="anchor"> </a>Reporting</h4>
-<ul>
-<li>[ ] TODO Bioc reportinTools</li>
-<li>[X] TODO Add metadata section</li>
-<li>[ ] TODO allow customisaton of meta-data section</li>
-<li>[ ] TODO Add a <code>save</code> arg to qcReport to save <code>object</code> and provide link in report.</li>
-<li>[ ] Improve nozzle report</li>
-<li>[ ] Dynamic reports could be created using <code>shiny</code>.</li>
-<li>[ ] Also look at arrayQualityMetrics report.</li>
-<li>[X] Report customisation</li>
-<li>[X] pdf via different template</li>
-<li>[X] html via css</li>
-<li>[X] html, pdf</li>
-<li>[X] externalise the report-generating code into functions and add a reporter argument to qcReport to provide custom reporting fuctions.</li>
-</ul>
+<a href="#installation" class="anchor"> </a>Installation</h2>
+<p><em><a href="http://bioconductor.org/packages/qcmetrics">qcmetrics</a></em> is a Bioconductor package and should in installed with</p>
+<pre class="sourceCode r"><code class="sourceCode r">## try http:// if https:// URLs are not supported
+<span class="kw">source</span>(<span class="st">"https://bioconductor.org/biocLite.R"</span>)
+<span class="kw">biocLite</span>(<span class="st">"qcmetrics"</span>)</code></pre>
 </div>
-<div id="applications" class="section level4">
-<h4 class="hasAnchor">
-<a href="#applications" class="anchor"> </a>Applications</h4>
-<p>Illustrate the recipes/usage of <code>qcmetrics</code> on different types of data.</p>
-<ul>
-<li>[X] Short QC pipelines for raw proteomics data</li>
-<li>[X] RNA degradation</li>
-<li>[X] Document the creation of new packages using <code>qcmetrics</code>.</li>
-<li>[ ] Add an example for RNASeq, see <code>ShortReads</code>
-</li>
-<li>[ ] QuaMeter idfree quality control</li>
-</ul>
-</div>
-<div id="serialisation" class="section level4">
-<h4 class="hasAnchor">
-<a href="#serialisation" class="anchor"> </a>Serialisation</h4>
-<ul>
-<li>[X] Objects can of course be serialised with <code>save</code>, <code>saveRDS</code>.</li>
-<li>[ ] See if it is possible to interface with the <code>qcML</code> standard.</li>
-</ul>
+<div id="bugs-and-question" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugs-and-question" class="anchor"> </a>Bugs and question</h2>
+<p>Either file a <a href="https://github.com/lgatto/qcmetrics/issues">GitHub issue</a> or use the <a href="https://support.bioconductor.org/">Bioconductor support forum</a>.</p>
 </div>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/lgatto/qcmetrics">https://​github.com/​lgatto/​qcmetrics</a>
@@ -130,7 +107,17 @@
 <ul class="list-unstyled">
 <li>Laurent Gatto <br><small class="roles"> Author, maintainer </small> </li>
 </ul>
+<html><body>
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/lgatto/qcmetrics">
+  <img src="https://travis-ci.org/lgatto/qcmetrics.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://codecov.io/gh/lgatto/qcmetrics">
+  <img src="https://codecov.io/gh/lgatto/qcmetrics/branch/master/graph/badge.svg" alt="codecov"></a></li>
+</ul>
+</body></html>
 </div>
+
 </div>
 
 
