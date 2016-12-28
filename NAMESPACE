@@ -11,8 +11,6 @@ importFrom("grDevices", "dev.off", "pdf", "png")
 importFrom("graphics", "abline", "barplot", "layout", "legend",
            "lines", "par", "rect")
 importFrom("stats", "density", "median")
-		   
-
 
 exportClasses(QcMetric,
               QcMetrics,

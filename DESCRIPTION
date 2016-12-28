@@ -2,7 +2,9 @@ Package: qcmetrics
 Type: Package
 Title: A Framework for Quality Control
 Version: 1.13.0
-Author: Laurent Gatto
+Authors@R: person(given = "Laurent", family = "Gatto",
+                  email = "lg390@cam.ac.uk",
+	          role = c("aut","cre"))
 Maintainer: Laurent Gatto <lg390@cam.ac.uk>
 Description: The package provides a framework for generic quality
 	     control of data. It permits to create, manage and
