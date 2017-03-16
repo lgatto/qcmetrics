@@ -92,7 +92,7 @@ Qc2Nozzle <- function(qcm, i, reportdir) {
     print(plot(qcm[[i]]))
     dev.off()    
     ## TODO - replacing the placeholder with the real output of qcm[[i]]
-    qcShow <- newParagraph("placeholder for show(qcm[[i]]")
+    qcShow <- newParagraph("placeholder: show(qcm[[i]])")
     qcfig <- newFigure(file.path("figure", paste0("qcreport_fig", i, ".png")),
                        fileHighRes = file.path("figure", paste0("qcreport_fig", i, ".pdf")))
     ## section
