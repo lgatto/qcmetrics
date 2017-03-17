@@ -1,30 +1,3 @@
-# metadata_text was copied from reporting_knitR
-# TODO: change it to metadata_nozzle 
-metadata_tex <- function(object) {
-  stopifnot(class(object) == "QcMetadata")
-  mdsec <- "\\section{Metadata}\n"
-  n <- length(object)
-  if (is.null(names(object)))
-    names(object) <-
-    paste0("Metadata ", 1:n)
-  mdsec <- c(mdsec, "\\begin{description}")
-  for (i in seq_len(n)) {            
-    if (is.vector(metadata(object)[[i]])) {
-      mdsec <- c(mdsec,
-                 paste0("\\item[",
-                        names(object)[i], "] ",
-                        paste0(object[[i]], collapse = " ")))
-    } else {
-      mdsec <- c(mdsec,
-                 paste0("\\item[", names(object)[i], "]\\"),
-                 '<<echo=FALSE>>=',
-                 paste0("mdata(object)[[", i, "]]"),
-                 "@")
-    }
-  }
-  c(mdsec, "\\end{description}")
-}
-
 reporting_nozzle <- function(object,
                              reportname = reportname,
                              author = author,
@@ -40,10 +13,12 @@ reporting_nozzle <- function(object,
     if (author != "") nozreport <- setMaintainerName(nozreport, author)
     
     if (meta) {
-      ## TODO: replace latex format with native nozzle format
       metaSec <- newSection("Meta Info")
-      metaDat <- newParagraph(metadata_rmd(object@metadata))
-      metaSec <- addTo(metaSec, metaDat)
+      for (item in 1:length(capture.output(metadata(object)))) {
+        metaDat <- newParagraph(capture.output(metadata(object))[item])
+        metaSec <- addTo(metaSec, metaDat)
+      }
+      
       nozreport <- addTo(nozreport, metaSec)
     }
     
@@ -63,13 +38,10 @@ reporting_nozzle <- function(object,
     
     if(sessioninfo){
       sessInfoSec <- newSection( "Session Info" )
-      # html conversion yet incomplete 
-      PreHTML <- toLatex(sessionInfo(), locale = FALSE)
-      generateHTML <- gsub("item", "<br><br>", PreHTML) 
-      sesInfoPar <- newHtml(generateHTML)
-      #alternative session info generation:
-      #sesInfoPar <- newParagraph(toLatex(sessionInfo(), locale = FALSE))
-      sessInfoSec <- addTo(sessInfoSec, sesInfoPar)
+      for(item in 1:length(capture.output(show(sessionInfo())))){
+        sesInfoPar <- newParagraph(capture.output(show(sessionInfo()))[item])
+        sessInfoSec <- addTo(sessInfoSec, sesInfoPar)
+      }
       nozreport <- addTo(nozreport,
                          sessInfoSec)
     }
@@ -92,11 +64,16 @@ Qc2Nozzle <- function(qcm, i, reportdir) {
     print(plot(qcm[[i]]))
     dev.off()    
     ## TODO - replacing the placeholder with the real output of qcm[[i]]
-    qcShow <- newParagraph("placeholder: show(qcm[[i]])")
+    sec <- newSection(name(qcm[[i]]), class = "results")
+    
+    for(item in 1:length(capture.output(show(maqcm[[1]])))){
+      qcShow <- newParagraph(capture.output(show(maqcm[[1]]))[item])
+      sec <- addTo(sec, qcShow)
+    }
+    
     qcfig <- newFigure(file.path("figure", paste0("qcreport_fig", i, ".png")),
                        fileHighRes = file.path("figure", paste0("qcreport_fig", i, ".pdf")))
     ## section
-    sec <- newSection(name(qcm[[i]]), class = "results")
-    sec <- addTo(sec, qcShow, qcfig )
+    sec <- addTo(sec, qcfig )
     return(sec)
 }
