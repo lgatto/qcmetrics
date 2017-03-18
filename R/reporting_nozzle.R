@@ -25,7 +25,7 @@ reporting_nozzle <- function(object,
     for (i in 1:length(object))                              
         nozreport <- addTo(nozreport, Qc2Nozzle(object, i, reportname))
     
-    if (summary){
+    if (summary) {
       library(xtable)
       table <- xtable(as(object, 'data.frame'))
       QCsummary <- newSection("QC summary")
@@ -36,9 +36,9 @@ reporting_nozzle <- function(object,
       nozreport <- addTo(nozreport, QCsummary)
     }
     
-    if(sessioninfo){
+    if (sessioninfo) {
       sessInfoSec <- newSection( "Session Info" )
-      for(item in 1:length(capture.output(show(sessionInfo())))){
+      for (item in 1:length(capture.output(show(sessionInfo())))) {
         sesInfoPar <- newParagraph(capture.output(show(sessionInfo()))[item])
         sessInfoSec <- addTo(sessInfoSec, sesInfoPar)
       }
@@ -66,8 +66,8 @@ Qc2Nozzle <- function(qcm, i, reportdir) {
     ## TODO - replacing the placeholder with the real output of qcm[[i]]
     sec <- newSection(name(qcm[[i]]), class = "results")
     
-    for(item in 1:length(capture.output(show(maqcm[[1]])))){
-      qcShow <- newParagraph(capture.output(show(maqcm[[1]]))[item])
+    for (item in 1:length(capture.output(show(maqcm[[i]])))) {
+      qcShow <- newParagraph(capture.output(show(maqcm[[i]]))[item])
       sec <- addTo(sec, qcShow)
     }
     
