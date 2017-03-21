@@ -40,7 +40,9 @@ setMethod("qcReport", "QcMetrics",
                                     toc, summary, sessioninfo,                  
                                     template,
                                     clean, quiet, qcto, ...),
-                                nozzle = reporting_nozzle(object, reportname))
+                                nozzle = reporting_nozzle(object, reportname,
+                                                          author, title, meta,
+                                                          summary, sessioninfo))
               }
               message("Report written to ", out)   
               invisible(out)
