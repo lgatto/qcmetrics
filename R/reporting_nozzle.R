@@ -14,10 +14,18 @@ reporting_nozzle <- function(object,
     
     if (meta) {
       metaSec <- newSection("Meta Info")
-      for (item in 1:length(capture.output(metadata(object)))) {
-        metaDat <- newParagraph(capture.output(metadata(object))[item])
-        metaSec <- addTo(metaSec, metaDat)
-      }
+      metaDataFrame <- as.data.frame(metadata(object))
+      rownames(metaDataFrame) <- NULL
+      metaTable <- xtable(metaDataFrame)
+      metaDat <- newHtml(print(metaTable, type = 'html', include.rownames = FALSE))
+      metaSec <- addTo(metaSec, metaDat)
+      
+      ## alternative routine without xtable output
+      # metaSec <- newSection("Meta Info")
+      # for (item in 1:length(capture.output(metadata(object)))) {
+      #   metaDat <- newParagraph(capture.output(metadata(object))[item])
+      #   metaSec <- addTo(metaSec, metaDat)
+      # }
       
       nozreport <- addTo(nozreport, metaSec)
     }
@@ -31,8 +39,7 @@ reporting_nozzle <- function(object,
       QCsummary <- newSection("QC summary")
       QCtable <- newHtml(print(table, type = 'html'))
       QCsummary <- addTo(QCsummary, QCtable)
-      #TODO: change it to native table format
-      #QCtable <- newTable((as(object, 'data.frame')))
+      #TODO: change it to native table format without html
       nozreport <- addTo(nozreport, QCsummary)
     }
     
@@ -40,12 +47,12 @@ reporting_nozzle <- function(object,
       sessInfoSec <- newSection( "Session Info" )
       for (item in 1:length(capture.output(show(sessionInfo())))) {
         sesInfoPar <- newParagraph(capture.output(show(sessionInfo()))[item])
-        sessInfoSec <- addTo(sessInfoSec, sesInfoPar)
+        # the if statement below makes sure that empty lines get a '>' instead. 
+        if (capture.output(show(sessionInfo()))[item] == "") sesInfoPar <- newParagraph('>') 
+        sessInfoSec <- addTo(sessInfoSec, sesInfoPar) 
       }
-      nozreport <- addTo(nozreport,
-                         sessInfoSec)
+      nozreport <- addTo(nozreport, sessInfoSec)
     }
-
     out <- file.path(reportname, "index")
     writeReport(nozreport, filename = out)
     out <- paste0(out, ".html")
@@ -63,7 +70,6 @@ Qc2Nozzle <- function(qcm, i, reportdir) {
     pdf(figpdf)
     print(plot(qcm[[i]]))
     dev.off()    
-    ## TODO - replacing the placeholder with the real output of qcm[[i]]
     sec <- newSection(name(qcm[[i]]), class = "results")
     
     for (item in 1:length(capture.output(show(maqcm[[i]])))) {
