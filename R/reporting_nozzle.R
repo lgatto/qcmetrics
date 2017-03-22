@@ -13,45 +13,42 @@ reporting_nozzle <- function(object,
     if (author != "") nozreport <- setMaintainerName(nozreport, author)
     
     if (meta) {
-      metaSec <- newSection("Meta Info")
+      metaSection <- newSection("Meta Info")
       metaDataFrame <- as.data.frame(metadata(object))
       rownames(metaDataFrame) <- NULL
       metaTable <- xtable(metaDataFrame)
-      metaDat <- newHtml(print(metaTable, type = 'html', include.rownames = FALSE))
-      metaSec <- addTo(metaSec, metaDat)
+      metaHTML <- newHtml(print(metaTable, type = 'html', include.rownames = FALSE))
+      metaSection <- addTo(metaSection, metaHTML)
       
       ## alternative routine without xtable output
-      # metaSec <- newSection("Meta Info")
+      # metaSection <- newSection("Meta Info")
       # for (item in 1:length(capture.output(metadata(object)))) {
       #   metaDat <- newParagraph(capture.output(metadata(object))[item])
-      #   metaSec <- addTo(metaSec, metaDat)
+      #   metaSection <- addTo(metaSection, metaDat)
       # }
       
-      nozreport <- addTo(nozreport, metaSec)
+      nozreport <- addTo(nozreport, metaSection)
     }
     
     for (i in 1:length(object))                              
         nozreport <- addTo(nozreport, Qc2Nozzle(object, i, reportname))
     
     if (summary) {
-      library(xtable)
-      table <- xtable(as(object, 'data.frame'))
-      QCsummary <- newSection("QC summary")
-      QCtable <- newHtml(print(table, type = 'html'))
-      QCsummary <- addTo(QCsummary, QCtable)
-      #TODO: change it to native table format without html
-      nozreport <- addTo(nozreport, QCsummary)
+      sumTable <- xtable(as(object, 'data.frame'))
+      sumSection <- newSection("QC summary")
+      sumHTML <- newHtml(print(sumTable, type = 'html'))
+      sumSection <- addTo(sumSection, sumHTML)
+      nozreport <- addTo(nozreport, sumSection)
     }
     
     if (sessioninfo) {
-      sessInfoSec <- newSection( "Session Info" )
+      infoSection <- newSection( "Session Info" )
       for (item in 1:length(capture.output(show(sessionInfo())))) {
-        sesInfoPar <- newParagraph(capture.output(show(sessionInfo()))[item])
-        # the if statement below makes sure that empty lines get a '>' instead. 
-        if (capture.output(show(sessionInfo()))[item] == "") sesInfoPar <- newParagraph('>') 
-        sessInfoSec <- addTo(sessInfoSec, sesInfoPar) 
+        infoParagraph <- newParagraph(capture.output(show(sessionInfo()))[item])
+        if (capture.output(show(sessionInfo()))[item] == "") infoParagraph <- newParagraph('>') 
+        infoSection <- addTo(infoSection, infoParagraph) 
       }
-      nozreport <- addTo(nozreport, sessInfoSec)
+      nozreport <- addTo(nozreport, infoSection)
     }
     out <- file.path(reportname, "index")
     writeReport(nozreport, filename = out)
