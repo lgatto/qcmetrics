@@ -5,3 +5,6 @@ vignettes/figure
 vignettes/TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
 NEWS.md
 README.Rmd
+.travis.yml
+docs
+vignettes/wasysym.sty
