@@ -1,16 +1,16 @@
+
 [![Build Status](https://travis-ci.org/lgatto/qcmetrics.svg?branch=master)](https://travis-ci.org/lgatto/qcmetrics)
 [![codecov](https://codecov.io/gh/lgatto/qcmetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/lgatto/qcmetrics)
 
+
 # A General Framework for Quality Control Metrics
-
-
 
 ## About 
 
 The `qcmetrics` package provides a general framework to develope
 quality control (QC) pipelines for any type of data that can be
-imported into `R`. The application of `qcmetrics` can be schematised
-in 5 points
+imported into `R`. The application of `qcmetrics` can be summarised in
+5 points
 
 1. Identify a set of quality metrics of interest and implement them
    and their visualisation method into individual `QcMetric`
