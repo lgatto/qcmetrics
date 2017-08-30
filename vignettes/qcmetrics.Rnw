@@ -5,13 +5,13 @@
 
 \documentclass[12pt, oneside]{article}
 
-\usepackage[final]{pdfpages}
-\includepdfset{nup=2x2, pages=-, frame=TRUE}
-\usepackage{wasysym}
-
 <<style, eval=TRUE, echo=FALSE, results="asis">>=
 BiocStyle::latex()
 @
+
+\usepackage[final]{pdfpages}
+\includepdfset{nup=2x2, pages=-, frame=TRUE}
+\usepackage{wasysym}
 
 \bioctitle[\Biocpkg{qcmetrics}]{The \Biocpkg{qcmetrics} infrastructure
   for quality control and automatic reporting}
