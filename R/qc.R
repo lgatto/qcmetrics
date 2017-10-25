@@ -92,10 +92,10 @@ n15qc <- function(object,
                   lfctr = c(-0.5, 0.5),
                   type,
                   reportname) {
-    stopifnot(inherits(object, "MSnSet"))
-    stopifnot(all(fcol %in% fvarLabels(object)))
     requireNamespace("ggplot2")
     requireNamespace("MSnbase")
+    stopifnot(inherits(object, "MSnSet"))
+    stopifnot(all(fcol %in% fvarLabels(object)))
     
     ## incorporation rate QC metric
     qcinc <- QcMetric(name = "15N incorporation rate")
