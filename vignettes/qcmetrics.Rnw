@@ -38,6 +38,7 @@
 
 \title{The \Biocpkg{qcmetrics} infrastructure for quality control and automatic reporting}
 
+
 \author{
   Laurent Gatto\\ 
   Computational Proteomics Unit\\
