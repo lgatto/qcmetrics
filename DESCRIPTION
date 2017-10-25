@@ -1,7 +1,7 @@
 Package: qcmetrics
 Type: Package
 Title: A Framework for Quality Control
-Version: 1.15.0
+Version: 1.15.1
 Authors@R: person(given = "Laurent", family = "Gatto",
                   email = "lg390@cam.ac.uk",
 	          role = c("aut","cre"))

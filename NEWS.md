@@ -1,4 +1,15 @@
-# qcmetrics 1.13
+# qcmetrics 1.15
+
+## CHANGES IN VERSION 1.15.1
+- Don't user BiocStyle for vignette to allow to knit documents from
+  within the vignette. This was needed to fix the error at build
+  time. <2017-10-25 Wed>
+
+## CHANGES IN VERSION 1.15.0
+- Bioconductor devel
+
+## CHANGES IN VERSION 1.14.0
+- Bioconductor release
 
 ## CHANGES IN VERSION 1.13.1
 
