@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title> 15N example data  — psm • qcmetrics</title>
+<title>15N example data — psm • qcmetrics</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -77,7 +79,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1> 15N example data </h1>
+    <h1>15N example data</h1>
     </div>
 
     
@@ -85,7 +87,7 @@
   <code>MSnSet</code> to illustrate 15N QC.</p>
     
 
-    <pre><span class='fu'>data</span>(<span class='no'>n15psm</span>)</pre>
+    <pre class="usage"><span class='fu'>data</span>(<span class='no'>n15psm</span>)</pre>
         
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -111,11 +113,10 @@
 #&gt; <span class='message'>    table, tapply, union, unique, unsplit, which, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Biobase</span></div><div class='output co'>#&gt; <span class='message'>Welcome to Bioconductor</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    Vignettes contain introductory material; view with</span>
-#&gt; <span class='message'>    &#39;browseVignettes()&#39;. To cite Bioconductor, see</span>
-#&gt; <span class='message'>    &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: mzR</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Rcpp</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocParallel</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: ProtGenerics</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>This is MSnbase version 2.1.7 </span>
-#&gt; <span class='message'>  Read &#39;?MSnbase&#39; and references therein for information</span>
-#&gt; <span class='message'>  about the package and how to get started.</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>    'browseVignettes()'. To cite Bioconductor, see</span>
+#&gt; <span class='message'>    'citation("Biobase")', and for packages 'citation("pkgname")'.</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: mzR</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Rcpp</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocParallel</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: ProtGenerics</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>This is MSnbase version 2.3.14 </span>
+#&gt; <span class='message'>  Visit https://lgatto.github.io/MSnbase/ to get started.</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘MSnbase’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    smooth</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
@@ -130,13 +131,13 @@
 #&gt;   featureNames: 3 5 ... 4499 (1772 total)
 #&gt;   fvarLabels: Protein_Accession Protein_Description ... inc (21 total)
 #&gt;   fvarMetadata: labelDescription
-#&gt; experimentData: use &#39;experimentData(object)&#39;
+#&gt; experimentData: use 'experimentData(object)'
 #&gt;   pubMedIds: 23681576 
 #&gt; Annotation:  
 #&gt; - - - Processing information - - -
 #&gt; Subset [22540,2][1999,2] Tue Sep 17 01:34:09 2013 
 #&gt; Removed features with more than 0 NAs: Tue Sep 17 01:34:09 2013 
-#&gt; Dropped featureData&#39;s levels Tue Sep 17 01:34:09 2013 
+#&gt; Dropped featureData's levels Tue Sep 17 01:34:09 2013 
 #&gt;  MSnbase version: 1.9.7 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

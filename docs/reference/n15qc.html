@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -88,16 +90,20 @@
   details.</p>
     
 
-    <pre><span class='fu'>n15qc</span>(<span class='no'>object</span>,
+    <pre class="usage"><span class='fu'>n15qc</span>(<span class='no'>object</span>,
     <span class='kw'>fcol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Protein_Accession"</span>, <span class='st'>"Peptide_Sequence"</span>, <span class='st'>"Number_Of_Unique_Peptides"</span>, <span class='st'>"Variable_Modifications"</span>, <span class='st'>"inc"</span>),
     <span class='kw'>inctr</span> <span class='kw'>=</span> <span class='fl'>97.5</span>, <span class='kw'>lfctr</span> <span class='kw'>=</span> <span class='fu'>c</span>(-<span class='fl'>0.5</span>, <span class='fl'>0.5</span>), <span class='no'>type</span>, <span class='no'>reportname</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>object</dt>
-      <dd>An <code>MSnSet</code> to be quality controlled.</dd>
-      <dt>fcol</dt>
-      <dd>The name of the feature variables for the
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>An <code>MSnSet</code> to be quality controlled.</p></td>
+    </tr>
+    <tr>
+      <th>fcol</th>
+      <td><p>The name of the feature variables for the
   protein identifiers (accession numbers for example), the
   peptide sequences, the number of unique peptides for each
   identified protein, the variable modifications identified
@@ -105,25 +111,34 @@
   must be provided in that order. Defaults are
   <code>Protein_Accession</code>, <code>Peptide_Sequence</code>,
   <code>Number_Of_Unique_Peptides</code>,
-  <code>Variable_Modifications</code>, and <code>inc</code>.</dd>
-      <dt>inctr</dt>
-      <dd>The minimum level of median incorporation
+  <code>Variable_Modifications</code>, and <code>inc</code>.</p></td>
+    </tr>
+    <tr>
+      <th>inctr</th>
+      <td><p>The minimum level of median incorporation
   rate to set the QC item status to <code>TRUE</code>. Default is
-  97.5.</dd>
-      <dt>lfctr</dt>
-      <dd>The range of accepted median PSM log2
+  97.5.</p></td>
+    </tr>
+    <tr>
+      <th>lfctr</th>
+      <td><p>The range of accepted median PSM log2
   fold-change for the QC item status to be set to
-  <code>TRUE</code>. Default is <code>c(-0.5, 0.5)</code>.</dd>
-      <dt>type</dt>
-      <dd>The type of report to be saved. If missing
+  <code>TRUE</code>. Default is <code>c(-0.5, 0.5)</code>.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>The type of report to be saved. If missing
   (default), no report is generated. See
-  <code><a href='qcReport-methods.html'>qcReport</a></code> for details.</dd>
-      <dt>reportname</dt>
-      <dd>The name of the report, in case a
+  <code><a href='qcReport-methods.html'>qcReport</a></code> for details.</p></td>
+    </tr>
+    <tr>
+      <th>reportname</th>
+      <td><p>The name of the report, in case a
   <code>type</code> is defined. If missing (default), the report
   will be names <code>n15qcreport</code> followed by the
-  generation data and time.</dd>
-    </dl>
+  generation data and time.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
