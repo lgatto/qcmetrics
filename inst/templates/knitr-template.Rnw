@@ -28,9 +28,9 @@
 
 \makeatother
 
-\Sexpr{title}
+\title{\Sexpr{title}}
 
-\Sexpr{author}
+\author{\Sexpr{author}}
 
 \begin{document}
 
