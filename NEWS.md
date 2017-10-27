@@ -1,5 +1,10 @@
 # qcmetrics 1.15
 
+## CHANGES IN VERSION 1.15.2
+- Merge PR by aoles to re-use BiocStyle (see commit
+  381d01d1c4dcced040f77a447962cd7865cb7417 for details)
+  <2017-10-27 Fri>
+
 ## CHANGES IN VERSION 1.15.1
 - Don't user BiocStyle for vignette to allow to knit documents from
   within the vignette. This was needed to fix the error at build
