@@ -164,8 +164,6 @@ reporting_tex <- function(object,
                 paste0('set_parent("', template , '")'),
                 '@')
     title <- sub("qcmetrics", "\\\\texttt{qcmetrics}", title)
-    title <- paste0('\\title{', title, '}')
-    author <- paste0('\\author{', author, '}')
     mktitle <- "\\maketitle"
     if (toc) {
         toc <- paste0('\\tableofcontents',
@@ -194,6 +192,7 @@ reporting_tex <- function(object,
                             "toLatex(sessionInfo())",
                             "@")))                 
     ## generate tex file
+    opts_knit$set(out.format = "latex")
     out <- knit(text = unlist(ex),
                 output = paste0(reportname, ".tex"),
                 quiet = quiet)

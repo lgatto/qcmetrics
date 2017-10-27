@@ -22,6 +22,26 @@ setMethod("qcReport", "QcMetrics",
               if (!missing(reporter)) {
                   out <- reporter
               } else {
+                  ## dump all current knitr settings and restore them afterwards
+                  opts <-
+                      c("knit_hooks", "opts_chunk", "opts_hooks", "opts_knit")
+                  vals <-
+                      sapply(opts, function (name)
+                          .subset2(get(name), "get")())
+                  on.exit(mapply(
+                      function(name, vals)
+                          .subset2(get(name), "restore")(vals),
+                      opts,
+                      vals,
+                      SIMPLIFY = FALSE,
+                      USE.NAMES = FALSE
+                  ),
+                  add = TRUE)
+                  
+                  ## reset to knitr defaults
+                  lapply(opts, function(name)
+                      .subset2(get(name), "restore")())
+                
                   out <- switch(type,
                                 Rmd = reporting_rmd(object, reportname,
                                     author, title, meta,
