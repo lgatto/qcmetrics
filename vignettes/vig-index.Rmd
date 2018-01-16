@@ -12,7 +12,7 @@ abstract: >
   automation of quality control reports for microarray and proteomics
   data.  
 output:
-  BiocStyle::html_document2:
+  BiocStyle::html_document:
     toc_float: true
 vignette: >
   %\VignetteIndexEntry{Index file for the qcmetrics package vignette}
