@@ -1,3 +1,8 @@
+# qcmetrics 1.17
+
+## CHANGES IN VERSION 1.17.1
+- Remove deprecated html_document2 <2018-01-16 Tue>
+
 # qcmetrics 1.15
 
 ## CHANGES IN VERSION 1.15.2
