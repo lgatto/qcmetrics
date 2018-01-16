@@ -1,3 +1,8 @@
+CHANGES IN VERSION 1.17.1
+-------------------------
+- Remove deprecated html_document2 <2018-01-16 Tue>
+
+
 CHANGES IN VERSION 1.15.2
 -------------------------
 - Merge PR by aoles to re-use BiocStyle (see commit
