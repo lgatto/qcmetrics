@@ -33,8 +33,9 @@ installed with
 
 ```r
 ## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("qcmetrics")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("qcmetrics")
 ```
 
 ## Bugs and question
