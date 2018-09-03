@@ -33,9 +33,15 @@ the [wiki](https://github.com/lgatto/qcmetrics/wiki).
 installed with
 
 ```{r inst, eval=FALSE}
-## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("qcmetrics")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("qcmetrics")
+```
+
+If you prefer to install the development version (not recommended)
+
+```{r instdevel, eval=FALSE}
+BiocManager::install("qcmetrics", version = "devel")
 ```
 
 ## Bugs and question
