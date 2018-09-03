@@ -1,4 +1,4 @@
-# qcmetrics 1.17
+# qcmetrics 1.19
 
 ## CHANGES IN VERSION 1.19.2
 - Use BiocManager::install <2018-09-03 Mon>
@@ -10,8 +10,12 @@
 ## CHANGES IN VERSION 1.19.0
 - New version for Bioc devel
 
+# qcmetrics 1.18
+
 ## CHANGES IN VERSION 1.18.0
 - New version for Bioc release
+
+# qcmetrics 1.17
 
 ## CHANGES IN VERSION 1.17.1
 - Remove deprecated html_document2 <2018-01-16 Tue>
