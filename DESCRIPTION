@@ -1,7 +1,11 @@
 Package: qcmetrics
 Type: Package
 Title: A Framework for Quality Control
+<<<<<<< HEAD
 Version: 1.19.1
+=======
+Version: 1.17.2
+>>>>>>> master
 Authors@R: person(given = "Laurent", family = "Gatto",
                   email = "lg390@cam.ac.uk",
 	          role = c("aut","cre"))
@@ -22,4 +26,4 @@ BugReports: https://github.com/lgatto/qcmetrics/issues
 biocViews: Software, QualityControl, Proteomics, Microarray,
 	   MassSpectrometry, Visualization, ReportWriting
 VignetteBuilder: knitr
-
+RoxygenNote: 6.1.0

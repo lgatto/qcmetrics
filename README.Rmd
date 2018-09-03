@@ -33,10 +33,22 @@ the [wiki](https://github.com/lgatto/qcmetrics/wiki).
 installed with
 
 ```{r inst, eval=FALSE}
+<<<<<<< HEAD
 ## try http:// if https:// URLs are not supported
 if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
 BiocManager::install("qcmetrics")
+=======
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("qcmetrics")
+```
+
+If you prefer to install the development version (not recommended)
+
+```{r instdevel, eval=FALSE}
+BiocManager::install("qcmetrics", version = "devel")
+>>>>>>> master
 ```
 
 ## Bugs and question
