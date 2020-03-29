@@ -1,3 +1,9 @@
+# qcmetrics 1.25
+
+## CHANGES IN VERSION 1.25.1
+
+- update email
+
 # qcmetrics 1.19
 
 ## CHANGES IN VERSION 1.19.2
@@ -110,7 +116,7 @@
 - new QcMetadata class <2013-09-21 Sat>
 - metadata and mdata synonym <2013-09-21 Sat>
 - added metadata section in knitr reports <2013-09-21 Sat>
-- selectively import pander::pander.table to fix warning 
+- selectively import pander::pander.table to fix warning
    uppon installation <2013-09-21 Sat>
 - added n15qc wrapper <2013-09-21 Sat>
 

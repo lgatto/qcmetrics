@@ -1,25 +1,24 @@
 Package: qcmetrics
 Type: Package
 Title: A Framework for Quality Control
-Version: 1.19.2
+Version: 1.25.1
 Authors@R: person(given = "Laurent", family = "Gatto",
-                  email = "lg390@cam.ac.uk",
-	          role = c("aut","cre"))
-Maintainer: Laurent Gatto <lg390@cam.ac.uk>
+		  email = "laurent.gatto@uclouvain.be",
+		  role = c("aut","cre"))
 Description: The package provides a framework for generic quality
 	     control of data. It permits to create, manage and
 	     visualise individual or sets of quality control metrics
 	     and generate quality control reports in various formats.
 Depends: R (>= 3.3)
-Imports: Biobase, methods, knitr, tools, Nozzle.R1, 
+Imports: Biobase, methods, knitr, tools, Nozzle.R1,
 	 xtable, pander, S4Vectors
-Suggests: affy, MSnbase, ggplot2, lattice, yaqcaffy, 
+Suggests: affy, MSnbase, ggplot2, lattice, yaqcaffy,
 	  MAQCsubsetAFX, RforProteomics, AnnotationDbi,
 	  mzR, hgu133plus2cdf, BiocStyle
 License: GPL-2
 URL: https://github.com/lgatto/qcmetrics
 BugReports: https://github.com/lgatto/qcmetrics/issues
-biocViews: Software, QualityControl, Proteomics, Microarray,
+biocViews: ImmunoOncology, Software, QualityControl, Proteomics, Microarray,
 	   MassSpectrometry, Visualization, ReportWriting
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
