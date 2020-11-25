@@ -1,3 +1,9 @@
+# qcmetrics 1.29
+
+## qcmetrics 1.29.0
+
+- The Bioc devel version
+
 # qcmetrics 1.25
 
 ## CHANGES IN VERSION 1.25.1
