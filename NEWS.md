@@ -1,5 +1,11 @@
 # qcmetrics 1.29
 
+## qcmetrics 1.29.1
+
+- Clean up (remove .gitignores for branch-specific .gitingore,
+  README.Rmd).
+- Remove dependency on yaqcaffy (that is being deprecated).
+
 ## qcmetrics 1.29.0
 
 - The Bioc devel version

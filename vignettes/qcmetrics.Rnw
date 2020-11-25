@@ -17,9 +17,7 @@ BiocStyle::latex()
   for quality control and automatic reporting}
 
 \author{
-  Laurent Gatto\footnote{\email{lg390@cam.ac.uk}}\\  
-  Computational Proteomics Unit\footnote{\url{http://cpu.sysbiol.cam.ac.uk}}\\
-  University of Cambridge, UK
+  Laurent Gatto
 }
 
 
@@ -62,7 +60,6 @@ options(replace.assign = TRUE,
 
 suppressPackageStartupMessages(library("qcmetrics"))
 suppressPackageStartupMessages(library("MAQCsubsetAFX"))
-suppressPackageStartupMessages(library("yaqcaffy"))
 suppressPackageStartupMessages(library("affy"))
 suppressPackageStartupMessages(library("AnnotationDbi"))
 suppressPackageStartupMessages(library("RforProteomics"))

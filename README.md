@@ -1,9 +1,4 @@
-[![Build Status](https://travis-ci.org/lgatto/qcmetrics.svg?branch=master)](https://travis-ci.org/lgatto/qcmetrics)
-[![codecov](https://codecov.io/gh/lgatto/qcmetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/lgatto/qcmetrics)
-
 # A General Framework for Quality Control Metrics
-
-
 
 ## About 
 
@@ -35,13 +30,6 @@ installed with
 if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
 BiocManager::install("qcmetrics")
-```
-
-If you prefer to install the development version (not recommended)
-
-
-```r
-BiocManager::install("qcmetrics", version = "devel")
 ```
 
 ## Bugs and question
