@@ -15,7 +15,7 @@ Imports: Biobase, methods, knitr, tools,
 Suggests: affy, MSnbase, ggplot2, lattice, 
 	  mzR, BiocStyle
 License: GPL-2
-URL: https://github.com/lgatto/qcmetrics
+URL: http://lgatto.github.io/qcmetrics/articles/qcmetrics.html
 BugReports: https://github.com/lgatto/qcmetrics/issues
 biocViews: ImmunoOncology, Software, QualityControl, Proteomics, Microarray,
 	   MassSpectrometry, Visualization, ReportWriting
