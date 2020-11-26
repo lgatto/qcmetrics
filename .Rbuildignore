@@ -9,3 +9,5 @@ README.Rmd
 docs
 vignettes/wasysym.sty
 ^docs$
+.github
+.git
