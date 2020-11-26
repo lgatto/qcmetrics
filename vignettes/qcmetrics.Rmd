@@ -1,0 +1,278 @@
+---
+title: "Index file for the qcmetrics package vignette"
+author: 
+- name: Laurent Gatto
+  affiliation: Computational Proteomics Unit, Cambridge, UK
+package: qcmetrics
+abstract: >
+  The `qcmetrics` package is a framework that
+  provides simple data containers for quality metrics and support for
+  automatic report generation. This document briefly illustrates the
+  core data structures and then demonstrates the generation and
+  automation of quality control reports for microarray and proteomics
+  data.  
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Index file for the qcmetrics package vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteKeywords{Bioinformatics, proteomics, genomics, transcriptomics, mass-spectrometry, Quality control, reporting}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r env, include=FALSE, echo=FALSE, cache=FALSE}
+suppressPackageStartupMessages(library("qcmetrics"))
+suppressPackageStartupMessages(library("MAQCsubsetAFX"))
+suppressPackageStartupMessages(library("affy"))
+suppressPackageStartupMessages(library("AnnotationDbi"))
+suppressPackageStartupMessages(library("RforProteomics"))
+suppressPackageStartupMessages(library("mzR"))
+suppressPackageStartupMessages(library("MSnbase"))
+set.seed(1)
+```
+
+
+# Introduction {#sec:intro}
+
+Quality control (QC) is an essential step in any analytical
+process. Data of poor quality can at best lead to the absence of
+positive results or, much worse, false positives that stem from
+uncaught faulty and noisy data and much wasted resources in pursuing
+red herrings.
+
+Quality is often a relative concept that depends on the nature of the
+biological sample, the experimental settings, the analytical process
+and other factors. Research and development in the area of QC has
+generally lead to two types of work being disseminated. Firstly, the
+comparison of samples of variable quality and the identification of
+metrics that correlate with the quality of the data. These quality
+metrics could then, in later experiments, be used to assess their
+quality. Secondly, the design of domain-specific software to
+facilitate the collection, visualisation and interpretation of various
+QC metrics is also an area that has seen much development. QC is a
+prime example where standardisation and automation are of great
+benefit. While a great variety of QC metrics, software and pipelines
+have been described for any assay commonly used in modern biology, we
+present here a different tool for QC, whose main features are
+flexibility and versatility. The `qcmetrics` package is a general
+framework for QC that can accommodate any type of data. It provides a
+flexible framework to implement QC items that store relevant QC
+metrics with a specific visualisation mechanism. These individual
+items can be bundled into higher level QC containers that can be
+readily used to generate reports in various formats. As a result, it
+becomes easy to develop complete custom pipelines from scratch and
+automate the generation of reports. The pipelines can be easily
+updated to accommodate new QC items of better visualisation
+techniques.
+
+Section \@ref(sec:qcclasses) provides an overview of the framework. In
+section \@ref(sec:pipeline), we use proteomics data (subsection
+\@ref(sec:prot)) to demonstrate the elaboration of QC pipelines: how
+to create individual QC objects, how to bundle them to create sets of
+QC metrics and how to generate reports in multiple formats. We also
+show how the above steps can be fully automated through simple wrapper
+functions in section \@ref(sec:wrapper). Although kept simple in the
+interest of time and space, these examples are meaningful and
+relevant. In section \@ref(sec:report), we provide more detail about
+the report generation process, how reports can be customised and how
+new exports can be contributed. We proceed in section \@ref(sec:qcpkg)
+to the consolidation of QC pipelines using R and elaborate on the
+development of dedicated QC packages with `qcmetrics`.
+
+# The QC classes {#sec:qcclasses}
+
+The package provides two types of QC containers. The `QcMetric` class
+stores data and visualisation functions for single metrics. Several
+such metrics can be bundled into `QcMetrics` instances, that can be
+used as input for automated report generation. Below, we will provide
+a quick overview of how to create respective `QcMetric` and
+`QcMetrics` instances. More details are available in the corresponding
+documentations.
+
+## The `QcMetric` class
+
+A QC metric is composed of a description (`name` in the code chunk
+below), some QC data (`qcdata`) and a `status` that defines if the
+metric is deemed of acceptable quality (coded as `TRUE`), bad quality
+(coded as `FALSE`) or not yet evaluated (coded as `NA`). Individual
+metrics can be displayed as a short textual summary or plotted. To do
+the former, one can use the default `show` method.
+
+```{r qcmetric}
+library("qcmetrics")
+qc <- QcMetric(name = "A test metric")
+qcdata(qc, "x") <- rnorm(100)
+qcdata(qc) ## all available qcdata
+summary(qcdata(qc, "x")) ## get x
+show(qc) ## or just qc
+status(qc) <- TRUE
+qc
+```
+
+Plotting `QcMetric` instances requires to implement a plotting method
+that is relevant to the data at hand. We can use a `plot` replacement
+method to define our custom function. The code inside the `plot` uses
+`qcdata` to extract the relevant QC data from `object` that is then
+passed as argument to `plot` and uses the adequate visualisation to
+present the QC data.
+
+
+```{r qcmetricplot}
+plot(qc)
+plot(qc) <- function(object, ... ) boxplot(qcdata(object, "x"), ...)
+plot(qc)
+```
+
+## The `QcMetrics` class
+
+A `QcMetrics` object is essentially just a list of individual
+\Robject{QcMetric} instances. It is also possible to set a list of
+metadata variables to describe the source of the QC metrics. The
+metadata can be passed as an `QcMetadata` object (the way it is stored
+in the `QcMetrics` instance) or directly as a named `list`. The
+`QcMetadata` is itself a `list` and can be accessed and set with
+`metadata` or `mdata`. When accessed, it is returned and displayed as
+a `list`.
+
+```{r}
+qcm <- QcMetrics(qcdata = list(qc))
+qcm
+metadata(qcm) <- list(author = "Prof. Who",
+                      lab = "Big lab")
+qcm
+mdata(qcm)
+```
+
+The metadata can be updated with the same interface. If new named
+items are passed, the metadata is updated by addition of the new
+elements. If a named item is already present, its value gets updated.
+
+```{r}
+metadata(qcm) <- list(author = "Prof. Who",
+                      lab = "Cabin lab",
+                      University = "Universe-ity")
+mdata(qcm)
+```
+
+The `QcMetrics` can then be passed to the `qcReport` method to
+generate reports, as described in more details below.
+
+
+# Creating QC pipelines {#sec:pipeline}
+
+## Microarray degradation {#sec:marray}
+
+The Microarray degradation section has been removed since the packages
+it was depending on have been deprecated.
+
+## Proteomics raw data {#sec:prot}
+
+
+
+To illustrate a simple QC analysis for proteomics data, we will
+download data set `PXD00001` from the ProteomeXchange repository in
+the mzXML format [@Pedrioli:2004]. The MS2 spectra from that
+mass-spectrometry run are then read into Rand stored as an `MSnExp`
+experiment using the `readMSData` function from the `MSnbase` package
+[@Gatto:2012].
+
+```{r, eval = FALSE}
+library("RforProteomics")
+msfile <- getPXD000001mzXML()
+library("MSnbase")
+exp <- readMSData(msfile, verbose = FALSE)
+```
+
+In the interest of time, this code chunk has been pre-computed
+and a subset (1 in 3) of the `exp` instance is distributed with
+the package. The data is loaded with
+
+```{r}
+load(system.file("extdata/exp.rda", package = "qcmetrics"))
+```
+	
+The `QcMetrics` will consist of 3 items, namely a chromatogram
+constructed with the MS2 spectra precursor's intensities, a figure
+illustrating the precursor charges in the MS space and an m/z delta
+plot illustrating the suitability of MS2 spectra for identification
+(see `?plotMzDelta` or [@Foster:2011]).
+
+```{r protqc1}
+qc1 <- QcMetric(name = "Chromatogram")
+x <- rtime(exp)
+y <- precursorIntensity(exp)
+o <- order(x)
+qcdata(qc1, "x") <- x[o]
+qcdata(qc1, "y") <- y[o]
+plot(qc1) <- function(object, ...)
+    plot(qcdata(object, "x"),
+         qcdata(object, "y"),
+         col = "darkgrey", type ="l",
+         xlab = "retention time",
+         ylab = "precursor intensity")
+```
+
+
+```{r protqc2, cache = TRUE}
+qc2 <- QcMetric(name = "MS space")
+qcdata(qc2, "p2d") <- plot2d(exp, z = "charge", plot = FALSE)
+plot(qc2) <- function(object) { 
+    require("ggplot2")
+    print(qcdata(object, "p2d"))
+}
+```
+
+```{r protqc3, cache = TRUE}
+qc3 <- QcMetric(name = "m/z delta plot")
+qcdata(qc3, "pmz") <- plotMzDelta(exp, plot = FALSE,
+                                  verbose = FALSE)
+plot(qc3) <- function(object) 
+    suppressWarnings(print(qcdata(object, "pmz")))
+```
+
+Note that we do not store the raw data in any of the above instances,
+but always pre-compute the necessary data or plots that are then
+stored as `qcdata`. If the raw data was to be needed in multiple
+`QcMetric` instances, we could re-use the same `qcdata` *environment*
+to avoid unnecessary copies using `qcdata(qc2) <- qcenv(qc1)` and
+implement different views through custom `plot` methods.
+
+Let's now combine the three items into a `QcMetrics` object, decorate
+it with custom metadata using the MIAPE information from the `MSnExp`
+object and generate a report.
+
+```{r protqcm}
+protqcm <- QcMetrics(qcdata = list(qc1, qc2, qc3))
+metadata(protqcm) <- list(
+    data = "PXD000001",
+    instrument = experimentData(exp)@instrumentModel,
+    source = experimentData(exp)@ionSource,
+    analyser = experimentData(exp)@analyser,
+    detector = experimentData(exp)@detectorType,
+    manufacurer = experimentData(exp)@instrumentManufacturer)
+```
+
+<!-- Running this one with echoing so that the auxiliary files,  -->
+<!-- in particular the figure directory does not get deleted, as  -->
+<!-- it is also created and needed by the vignette itself. -->
+
+```{r protreport0, echo = FALSE, message = FALSE}
+qcReport(protqcm, reportname = "protqc", clean=FALSE, quiet=TRUE)
+```
+
+The status column of the summary table is empty as we have not set the
+QC items statuses yet.
+
+```{r protreport, eval = FALSE}
+qcReport(protqcm, reportname = "protqc")
+```
+
+
+```{r, out.width="1\\linewidth", include=TRUE, fig.align="center", fig.cap="Proteomics QC report", echo=FALSE}
+knitr::include_graphics("./protqc.pdf")
+```
+
+## Processed N15 labelling data {#sec:n15}
+
