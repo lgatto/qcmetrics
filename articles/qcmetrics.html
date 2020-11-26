@@ -98,7 +98,7 @@
 <a href="#the-qcmetric-class" class="anchor"></a>The <code>QcMetric</code> class</h2>
 <p>A QC metric is composed of a description (<code>name</code> in the code chunk below), some QC data (<code>qcdata</code>) and a <code>status</code> that defines if the metric is deemed of acceptable quality (coded as <code>TRUE</code>), bad quality (coded as <code>FALSE</code>) or not yet evaluated (coded as <code>NA</code>). Individual metrics can be displayed as a short textual summary or plotted. To do the former, one can use the default <code>show</code> method.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lgatto/qcmetrics">"qcmetrics"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://lgatto.github.io/qcmetrics/articles/qcmetrics.html">"qcmetrics"</a></span><span class="op">)</span>
 <span class="va">qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"A test metric"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc</span>, <span class="st">"x"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>
 <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="co">## all available qcdata</span></code></pre></div>
@@ -453,7 +453,7 @@ N15 QC report
 ##         paste0("plot(object[[", i, "]])"), "@", "\\end{figure}", 
 ##         "\\clearpage")
 ## }
-## &lt;bytecode: 0x55d64699f1b0&gt;
+## &lt;bytecode: 0x55d560230570&gt;
 ## &lt;environment: namespace:qcmetrics&gt;</code></pre>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">qcmetrics</span><span class="fu">:::</span><span class="fu"><a href="../reference/Qc2Tex.html">Qc2Tex</a></span><span class="op">(</span><span class="va">n15qcm</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
@@ -548,7 +548,7 @@ Customised QC report
 ##  [4] rprojroot_2.0.2       digest_0.6.27         R6_2.5.0             
 ##  [7] plyr_1.8.6            mzID_1.29.0           evaluate_0.14        
 ## [10] highr_0.8             pillar_1.4.7          zlibbioc_1.37.0      
-## [13] rlang_0.4.9           preprocessCore_1.53.0 rmarkdown_2.5        
+## [13] rlang_0.4.9           preprocessCore_1.53.1 rmarkdown_2.5        
 ## [16] pkgdown_1.6.1.9000    textshaping_0.2.1     desc_1.2.0           
 ## [19] BiocParallel_1.25.1   stringr_1.4.0         pander_0.6.3         
 ## [22] munsell_0.5.0         compiler_4.1.0        xfun_0.19            
