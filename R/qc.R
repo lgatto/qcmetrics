@@ -37,6 +37,7 @@ n15qc <- function(object,
                   type,
                   reportname) {
     stopifnot(requireNamespace("MSnbase"))
+    stopifnot(requireNamespace("Biobase"))
     stopifnot(requireNamespace("ggplot2"))
     stopifnot(inherits(object, "MSnSet"))
     stopifnot(all(fcol %in% MSnbase::fvarLabels(object)))
@@ -168,7 +169,7 @@ n15qc <- function(object,
 
     qcm <- QcMetrics(qcdata = list(qcinc, qclfc, qcnb))    
     metadata(qcm) <- list(File = MSnbase::fileNames(object),
-                          Experiment = MSnbase::experimentData(object))                          
+                          Experiment = Biobase::experimentData(object))                          
     if (!missing(type)) {
         if (missing(reportname))
             reportname <- paste("n15qcreport",

@@ -13,7 +13,7 @@ Depends: R (>= 3.3)
 Imports: Biobase, methods, knitr, tools, 
 	 xtable, pander, S4Vectors
 Suggests: affy, MSnbase, ggplot2, lattice, 
-	  mzR, BiocStyle
+	  mzR, BiocStyle, Biobase
 License: GPL-2
 URL: https://github.com/lgatto/qcmetrics
 BugReports: https://github.com/lgatto/qcmetrics/issues
