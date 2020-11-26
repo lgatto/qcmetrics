@@ -1,7 +1,7 @@
 import(methods)
 import(knitr)
 import(xtable)
-import(Nozzle.R1)
+
 importFrom(pander, pandoc.table)
 importFrom(Biobase, validMsg, description, "description<-")
 importFrom(S4Vectors, metadata, "metadata<-")
@@ -39,5 +39,5 @@ export(QcMetric,
        Qc2Tex2,
        Qc2Tex3,
        Qc2Rmd,
-       rnadeg,
-       n15qc)
+       n15qc,
+       example_reports)

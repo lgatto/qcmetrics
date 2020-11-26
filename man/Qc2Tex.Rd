@@ -36,7 +36,7 @@ Qc2Rmd(object, i)
 
 
 \author{
-  Laurent Gatto <lg390@cam.ac.uk>
+  Laurent Gatto
 }
 
 \seealso{

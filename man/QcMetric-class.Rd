@@ -109,7 +109,7 @@
 }
 
 \author{
-  Laurent Gatto <lg390@cam.ac.uk>
+  Laurent Gatto
 }
 
 

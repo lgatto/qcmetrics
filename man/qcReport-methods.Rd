@@ -8,7 +8,7 @@
 \alias{reporting_tex}
 \alias{reporting_rmd}
 \alias{reporting_html}
-\alias{reporting_nozzle}
+\alias{example_reports}
 
 \title{ Automatic report generation }
 
@@ -21,14 +21,14 @@
 
 
 \details{
+
   The reporting functions take a \code{QcMetrics} instance as input,
   generate the source of the report and compile it into the final format
   that are currently available are \code{reporting_pdf},
-  \code{reporting_tex}, \code{reporting_rmd}, \code{reporting_html} and
-  \code{reporting_nozzle}.
+  \code{reporting_tex}, \code{reporting_rmd} and \code{reporting_html}.
   See \code{\link{qcto}} for details about the sectioning functions,
   that convert individual \code{QcMetric} objects into adequate report
-  sections. 
+  sections.
 
   The package vignette documents the report generation in more details
   and describes possibilities for customisation.
@@ -57,8 +57,7 @@
       \code{reportname} (default is \code{qcreprt})and \code{type}, the
       latter defining the output format and the extension. Possible
       types are \code{pdf} (default), "tex", "Rmd", "html" (all
-      generated using the package \code{knitr}) and "nozzle" (generated
-      using the package \code{Nozzle.R1} package.) A custom \code{title}
+      generated using the package \code{knitr}). A custom \code{title}
       can be provided; default is "Quality control report generated with
       qcmetrics". If no \code{author} is provided, the default value
       (\code{Sys.getenv("USER")}) is used. The addition of a table of
@@ -95,12 +94,12 @@ show(qcm)
 destdir <- tempdir()
 (report <- file.path(destdir, "testQCReport"))
 
-## pdf report
-qcReport(qcm, reportname = report)
 
 \dontrun{
-    ## use pdflatex to generate the pdf file
-    qcReport(qcm, reportname = report, texi2dvi = "pdflatex")
+  ## pdf report
+  qcReport(qcm, reportname = report)
+  ## use pdflatex to generate the pdf file
+  qcReport(qcm, reportname = report, texi2dvi = "pdflatex")
 }
 
 ## default html report

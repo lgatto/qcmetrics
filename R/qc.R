@@ -1,30 +1,3 @@
-##' A simple wrapper function that uses \code{affy}'s RNA degradation
-##' curves and \code{yaqcaffy}'s actin and GAPDH 3'/5' ratios to
-##' generate a simple RNA degradation \code{QcMetrics}
-##' results. Optionally generates a QC report.  See the
-##' \code{qcmetrics} vignette for an explanation of the function and
-##' an example.
-##'
-##' @title A simple RNA degradation QC for Affymetrix arrays
-##' @param input A \code{character} of CEL file names or an instance
-##'     of class \code{affybatch}.
-##' @param status A \code{logical} of length 2 to set the respective
-##'     \code{QcMetric}'s statuses.
-##' @param type The \code{type} of the report to be generated.  Is
-##'     missing, no report is generated.
-##' @param reportname The name of the report.
-##' @return Invisibly return the \code{QcMetrics} for the
-##'     \code{input}.
-##' @seealso \code{\link{QcMetric}} and \code{\link{QcMetrics}} for
-##'     details about the QC infrastructure and \code{\link{qcReport}}
-##'     for information about the report generation.
-##' @author Laurent Gatto
-rnadeg <- function(input, status,
-                   type, reportname = "rnadegradation") {
-    .Defunct(msg = "This function is defunct due to the deprecation of 'yaqcaffy'")
-}
-
-
 ##' A simple wrapper for the QC of 15N labelling. The respective
 ##' QC items are the distribution of PSM incorporation rates,
 ##' distribution of log2 fold-changes and number of identified
@@ -63,14 +36,14 @@ n15qc <- function(object,
                   lfctr = c(-0.5, 0.5),
                   type,
                   reportname) {
-    requireNamespace("ggplot2")
-    requireNamespace("MSnbase")
+    stopifnot(requireNamespace("MSnbase"))
+    stopifnot(requireNamespace("ggplot2"))
     stopifnot(inherits(object, "MSnSet"))
-    stopifnot(all(fcol %in% fvarLabels(object)))
+    stopifnot(all(fcol %in% MSnbase::fvarLabels(object)))
     
     ## incorporation rate QC metric
     qcinc <- QcMetric(name = "15N incorporation rate")
-    qcdata(qcinc, "inc") <- fData(object)[, fcol[5]]
+    qcdata(qcinc, "inc") <- MSnbase::fData(object)[, fcol[5]]
     qcdata(qcinc, "tr") <- inctr
     status(qcinc) <- median(qcdata(qcinc, "inc")) > qcdata(qcinc, "tr")
 
@@ -86,40 +59,40 @@ n15qc <- function(object,
         tr <- qcdata(object, "tr")
         lab <- "Incorporation rate"
         dd <- data.frame(inc = qcdata(qcinc, "inc"))
-        p <- ggplot(dd, aes(factor(""), inc)) +
-            geom_jitter(colour = "#4582B370", size = 3) + 
-        geom_boxplot(fill = "#FFFFFFD0", colour = "#000000",
-                     outlier.size = 0) +
-                         geom_hline(yintercept = tr, colour = "red",
-                                    linetype = "dotted", size = 1) +
-                                        labs(x = "", y = "Incorporation rate") 
+        p <- ggplot2::ggplot(dd, ggplot2::aes(factor(""), inc)) +            
+             ggplot2::geom_jitter(colour = "#4582B370", size = 3) + 
+             ggplot2::geom_boxplot(fill = "#FFFFFFD0",
+                                   colour = "#000000", outlier.size = 0) +
+             ggplot2::geom_hline(yintercept = tr, colour = "red",
+                                 linetype = "dotted", size = 1) +
+             ggplot2::labs(x = "", y = "Incorporation rate") 
         p
     }
 
     ## summarise data
-    fData(object)$modseq <- ## pep seq + PTM
-        paste(fData(object)[, fcol[2]],
-              fData(object)[, fcol[4]], sep = "+")
-    pep <- combineFeatures(object,
-                           as.character(fData(object)[, fcol[2]]), 
-                           "median", verbose = FALSE)
-    modpep <- combineFeatures(object,
-                              fData(object)$modseq,
-                              "median", verbose = FALSE)
-    prot <- combineFeatures(object,
-                            as.character(fData(object)[, fcol[1]]), 
-                            "median", verbose = FALSE)
+    MSnbase::fData(object)$modseq <- ## pep seq + PTM
+        paste(MSnbase::fData(object)[, fcol[2]],
+              MSnbase::fData(object)[, fcol[4]], sep = "+")
+    pep <- MSnbase::combineFeatures(object,
+                                    as.character(MSnbase::fData(object)[, fcol[2]]), 
+                                    "median", verbose = FALSE)
+    modpep <- MSnbase::combineFeatures(object,
+                                       MSnbase::fData(object)$modseq,
+                                       "median", verbose = FALSE)
+    prot <- MSnbase::combineFeatures(object,
+                                     as.character(MSnbase::fData(object)[, fcol[1]]), 
+                                     "median", verbose = FALSE)
 
     ## calculate log fold-change
     qclfc <- QcMetric(name = "Log2 fold-changes")
     qcdata(qclfc, "lfc.psm") <-
-        log2(exprs(object)[,"unlabelled"] / exprs(object)[, "N15"])
+        log2(MSnbase::exprs(object)[,"unlabelled"] / MSnbase::exprs(object)[, "N15"])
     qcdata(qclfc, "lfc.pep") <-
-        log2(exprs(pep)[,"unlabelled"] / exprs(pep)[, "N15"])
+        log2(MSnbase::exprs(pep)[,"unlabelled"] / MSnbase::exprs(pep)[, "N15"])
     qcdata(qclfc, "lfc.modpep") <-
-        log2(exprs(modpep)[,"unlabelled"] / exprs(modpep)[, "N15"])
+        log2(MSnbase::exprs(modpep)[,"unlabelled"] / MSnbase::exprs(modpep)[, "N15"])
     qcdata(qclfc, "lfc.prot") <-
-        log2(exprs(prot)[,"unlabelled"] / exprs(prot)[, "N15"])
+        log2(MSnbase::exprs(prot)[,"unlabelled"] / MSnbase::exprs(prot)[, "N15"])
     qcdata(qclfc, "explfc") <- lfctr
     
     status(qclfc) <-
@@ -171,11 +144,11 @@ n15qc <- function(object,
         Pep = nrow(pep),
         Prot = nrow(prot))
     qcdata(qcnb, "peptab") <-
-        table(fData(object)[, fcol[2]])
+        table(MSnbase::fData(object)[, fcol[2]])
     qcdata(qcnb, "modpeptab") <-
-        table(fData(object)$modseq)
+        table(MSnbase::fData(object)$modseq)
     qcdata(qcnb, "upep.per.prot") <- 
-        fData(object)[, fcol[3]]
+        MSnbase::fData(object)[, fcol[3]]
     
     show(qcnb) <- function(object) {
         qcshow(object, qcdata = FALSE)
@@ -194,8 +167,8 @@ n15qc <- function(object,
     }
 
     qcm <- QcMetrics(qcdata = list(qcinc, qclfc, qcnb))    
-    metadata(qcm) <- list(File = fileNames(object),
-                          Experiment = experimentData(object))                          
+    metadata(qcm) <- list(File = MSnbase::fileNames(object),
+                          Experiment = MSnbase::experimentData(object))                          
     if (!missing(type)) {
         if (missing(reportname))
             reportname <- paste("n15qcreport",

@@ -1,7 +1,7 @@
 setMethod("qcReport", "QcMetrics",
           function(object,
                    reportname = "qcreport",
-                   type = c("pdf", "tex", "nozzle", "Rmd", "html"),
+                   type = c("pdf", "tex", "Rmd", "html"),
                    author = Sys.getenv("USER"),
                    title = "Quality control report generated with qcmetrics",
                    meta = length(mdata(object)) > 0,
@@ -59,8 +59,7 @@ setMethod("qcReport", "QcMetrics",
                                     author, title, meta,
                                     toc, summary, sessioninfo,                  
                                     template,
-                                    clean, quiet, qcto, ...),
-                                nozzle = reporting_nozzle(object, reportname))
+                                    clean, quiet, qcto, ...))
               }
               message("Report written to ", out)   
               invisible(out)
