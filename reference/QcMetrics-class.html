@@ -45,6 +45,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -56,9 +58,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">qcmetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.29.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.31.1</span>
       </span>
     </div>
 
@@ -91,7 +99,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/lgatto/qcmetrics/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -161,7 +169,7 @@
 	"QcMetadata")</code>: sets the objects metadata. Also available as 
       <code>mdata</code>.</p></dd>
     <dt>name</dt><dd><p><code>signature(object = "QcMetrics")</code>: returns a
-      <code>character</code> vector of length <code><a href='https://rdrr.io/r/base/length.html'>length(object)</a></code> with the names
+      <code>character</code> vector of length <code>length(object)</code> with the names
       of the <code>QcMetric</code> instances.</p></dd>
     <dt>qcdata</dt><dd><p><code>signature(object = "QcMetrics", x = "missing")</code>:
       returns a list of all <code>QcMetric</code> instances.</p></dd>
@@ -175,7 +183,7 @@
 	"logical")</code>: sets the quality statuses. Length of <code>value</code>
       and <code>object</code> must be identical.</p></dd>    
     <dt>as</dt><dd><p><code>signature(object = "QcMetrics", "data.frame")</code>:
-      coerces <code>object</code> as a <code><a href='https://rdrr.io/r/base/length.html'>length(object)</a></code> by 2 data frame
+      coerces <code>object</code> as a <code>length(object)</code> by 2 data frame
       with the respective <code>QcMetric</code> instances names and statuses.</p></dd> 
     <dt>qcReport</dt><dd><p><code>signature(object = "QcMetrics")</code>: ...</p></dd>
   
@@ -189,167 +197,181 @@
     <div class='dont-index'><p>The <code><a href='QcMetric-class.html'>QcMetric</a></code> class for individual QC items.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span><span class='op'>(</span><span class='va'>QcMetric</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; QcMtrc&gt; (qc &lt;- QcMetric())
-#&gt; Object of class "QcMetric"
-#&gt;  Name: A QcMetric prototype 
-#&gt;  Status: NA 
-#&gt;  Data: empty
-#&gt; 
-#&gt; QcMtrc&gt; qcdata(qc)
-#&gt; character(0)
-#&gt; 
-#&gt; QcMtrc&gt; try(qcdata(qc, "x"))
-#&gt; Error in qcdata(qc, "x") : No qcdata 'x' in object.
-#&gt; 
-#&gt; QcMtrc&gt; x &lt;- rnorm(10)
-#&gt; 
-#&gt; QcMtrc&gt; qcdata(qc, "qc1") &lt;- x
-#&gt; 
-#&gt; QcMtrc&gt; qcdata(qc, "qc2") &lt;- 1:10
-#&gt; 
-#&gt; QcMtrc&gt; qcdata(qc)
-#&gt; [1] "qc1" "qc2"
-#&gt; 
-#&gt; QcMtrc&gt; all.equal(qcdata(qc, "qc1"), x)
-#&gt; [1] TRUE
-#&gt; 
-#&gt; QcMtrc&gt; all.equal(qcdata(qc, "qc2"), 1:10)
-#&gt; [1] TRUE
-#&gt; 
-#&gt; QcMtrc&gt; name(qc) &lt;- "My test QcMetric"
-#&gt; 
-#&gt; QcMtrc&gt; description(qc) &lt;- "This qc metric describes bla bla bla, indicating possible issues in the third step of protocol bla bla bla."
-#&gt; 
-#&gt; QcMtrc&gt; status(qc) &lt;- FALSE
-#&gt; 
-#&gt; QcMtrc&gt; qc
-#&gt; Object of class "QcMetric"
-#&gt;  Name: My test QcMetric 
-#&gt;  Description:
-#&gt; This qc metric describes bla bla bla, indicating possible issues in the
-#&gt; third step of protocol bla bla bla.
-#&gt;  Status: FALSE 
-#&gt;  Data: qc1 qc2 
-#&gt; 
-#&gt; QcMtrc&gt; ## or
-#&gt; QcMtrc&gt; e &lt;- new.env()
-#&gt; 
-#&gt; QcMtrc&gt; e$qc1 &lt;- rnorm(100)
-#&gt; 
-#&gt; QcMtrc&gt; e$qc2 &lt;- 1:100
-#&gt; 
-#&gt; QcMtrc&gt; qcdata(qc) &lt;- e
-#&gt; 
-#&gt; QcMtrc&gt; length(qcdata(qc, "qc1"))
-#&gt; [1] 100
-#&gt; 
-#&gt; QcMtrc&gt; head(qcdata(qc, "qc2"))
-#&gt; [1] 1 2 3 4 5 6
-#&gt; 
-#&gt; QcMtrc&gt; show(qc)
-#&gt; Object of class "QcMetric"
-#&gt;  Name: My test QcMetric 
-#&gt;  Description:
-#&gt; This qc metric describes bla bla bla, indicating possible issues in the
-#&gt; third step of protocol bla bla bla.
-#&gt;  Status: FALSE 
-#&gt;  Data: qc1 qc2 
-#&gt; 
-#&gt; QcMtrc&gt; show(qc) &lt;- function(object) cat("Updated show method\n")
-#&gt; 
-#&gt; QcMtrc&gt; show(qc)
-#&gt; Updated show method
-#&gt; 
-#&gt; QcMtrc&gt; show(qc) &lt;- qcshow
-#&gt; 
-#&gt; QcMtrc&gt; qc
-#&gt; Object of class "QcMetric"
-#&gt;  Name: My test QcMetric 
-#&gt;  Description:
-#&gt; This qc metric describes bla bla bla, indicating possible issues in the
-#&gt; third step of protocol bla bla bla.
-#&gt;  Status: FALSE 
-#&gt;  Data: qc1 qc2 
-#&gt; 
-#&gt; QcMtrc&gt; plot(qc)</div><div class='output co'>#&gt; <span class='warning'>Warning: No specific plot function defined</span></div><div class='output co'>#&gt; 
-#&gt; QcMtrc&gt; plot(qc) &lt;-
-#&gt; QcMtrc+     function(object, ...) 
-#&gt; QcMtrc+         plot(qcdata(object, "qc2"),
-#&gt; QcMtrc+              qcdata(object, "qc1"),
-#&gt; QcMtrc+              xlab = "qc1",
-#&gt; QcMtrc+              ylab = "qc2",
-#&gt; QcMtrc+              ...)
-#&gt; 
-#&gt; QcMtrc&gt; plot(qc)</div><div class='img'><img src='QcMetrics-class-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; QcMtrc&gt; plot(qc, col = "red", pch = 19)</div><div class='img'><img src='QcMetrics-class-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; QcMtrc&gt; ## Not run: 
-#&gt; QcMtrc&gt; ##D     ## generate a report 
-#&gt; QcMtrc&gt; ##D     qcReport(qcm)
-#&gt; QcMtrc&gt; ## End(Not run)
-#&gt; QcMtrc&gt; 
-#&gt; QcMtrc&gt; 
-#&gt; QcMtrc&gt; </div><div class='input'><span class='fu'>show</span><span class='op'>(</span><span class='va'>qc</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Object of class "QcMetric"
-#&gt;  Name: My test QcMetric 
-#&gt;  Description:
-#&gt; This qc metric describes bla bla bla, indicating possible issues in the
-#&gt; third step of protocol bla bla bla.
-#&gt;  Status: FALSE 
-#&gt;  Data: qc1 qc2 </div><div class='input'>
-<span class='va'>qc2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QcMetric-class.html'>QcMetric</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"My other metric"</span>, status <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='QcMetric-class.html'>qcdata</a></span><span class='op'>(</span><span class='va'>qc2</span>, <span class='st'>"x"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>
-<span class='fu'><a href='QcMetric-class.html'>qcdata</a></span><span class='op'>(</span><span class='va'>qc2</span>, <span class='st'>"k"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>, <span class='fl'>50</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>qc2</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='http://lattice.r-forge.r-project.org/'>"lattice"</a></span><span class='op'>)</span>
-    <span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='QcMetric-class.html'>qcdata</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='st'>"x"</span><span class='op'>)</span>,
-                    k <span class='op'>=</span> <span class='fu'><a href='QcMetric-class.html'>qcdata</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='st'>"k"</span><span class='op'>)</span><span class='op'>)</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/lattice/man/xyplot.html'>bwplot</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>~</span> <span class='va'>k</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-<span class='va'>qcm</span> <span class='op'>&lt;-</span> <span class='fu'>QcMetrics</span><span class='op'>(</span>qcdata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>qc</span>, <span class='va'>qc2</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>qcm</span>
-</div><div class='output co'>#&gt; Object of class "QcMetrics"
-#&gt;  containing 2 QC metrics.
-#&gt;  and no metadata variables.</div><div class='input'>
-<span class='va'>qcm</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='co'>## a QcMetrics instance</span>
-</div><div class='output co'>#&gt; Object of class "QcMetrics"
-#&gt;  containing 1 QC metrics.
-#&gt;  and no metadata variables.</div><div class='input'><span class='va'>qcm</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='co'>## a single QcMetric</span>
-</div><div class='output co'>#&gt; Object of class "QcMetric"
-#&gt;  Name: My test QcMetric 
-#&gt;  Description:
-#&gt; This qc metric describes bla bla bla, indicating possible issues in the
-#&gt; third step of protocol bla bla bla.
-#&gt;  Status: FALSE 
-#&gt;  Data: qc1 qc2 </div><div class='input'>
-<span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; list()</div><div class='input'><span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QcMetadata-class.html'>QcMetadata</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Prof. Who"</span>,
-                                 lab <span class='op'>=</span> <span class='st'>"Cabin University"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'>## or, shorter but equivalent</span>
-<span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Prof. Who"</span>,
-                      lab <span class='op'>=</span> <span class='st'>"Cabin University"</span><span class='op'>)</span>
-<span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span> <span class='co'>## or mdata(qcm)</span>
-</div><div class='output co'>#&gt; $name
-#&gt; [1] "Prof. Who"
-#&gt; 
-#&gt; $lab
-#&gt; [1] "Cabin University"
-#&gt; </div><div class='input'><span class='co'>## update metadata</span>
-<span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>lab <span class='op'>=</span> <span class='st'>"Big lab"</span>, <span class='co'>## updated</span>
-                      uni <span class='op'>=</span> <span class='st'>"Cabin University"</span><span class='op'>)</span> <span class='co'>## added</span>
-<span class='fu'>mdata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $name
-#&gt; [1] "Prof. Who"
-#&gt; 
-#&gt; $lab
-#&gt; [1] "Big lab"
-#&gt; 
-#&gt; $uni
-#&gt; [1] "Cabin University"
-#&gt; </div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span><span class='op'>(</span><span class='va'>QcMetric</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; (qc &lt;- QcMetric())</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class "QcMetric"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Name: A QcMetric prototype </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Status: NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Data: empty</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; qcdata(qc)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> character(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; try(qcdata(qc, "x"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in qcdata(qc, "x") : No qcdata 'x' in object.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; x &lt;- rnorm(10)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; qcdata(qc, "qc1") &lt;- x</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; qcdata(qc, "qc2") &lt;- 1:10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; qcdata(qc)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "qc1" "qc2"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; all.equal(qcdata(qc, "qc1"), x)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; all.equal(qcdata(qc, "qc2"), 1:10)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; name(qc) &lt;- "My test QcMetric"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; description(qc) &lt;- "This qc metric describes bla bla bla, indicating possible issues in the third step of protocol bla bla bla."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; status(qc) &lt;- FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; qc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class "QcMetric"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Name: My test QcMetric </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Description:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> This qc metric describes bla bla bla, indicating possible issues in the</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> third step of protocol bla bla bla.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Status: FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Data: qc1 qc2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; ## or</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; e &lt;- new.env()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; e$qc1 &lt;- rnorm(100)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; e$qc2 &lt;- 1:100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; qcdata(qc) &lt;- e</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; length(qcdata(qc, "qc1"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; head(qcdata(qc, "qc2"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2 3 4 5 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; show(qc)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class "QcMetric"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Name: My test QcMetric </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Description:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> This qc metric describes bla bla bla, indicating possible issues in the</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> third step of protocol bla bla bla.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Status: FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Data: qc1 qc2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; show(qc) &lt;- function(object) cat("Updated show method\n")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; show(qc)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Updated show method</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; show(qc) &lt;- qcshow</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; qc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class "QcMetric"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Name: My test QcMetric </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Description:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> This qc metric describes bla bla bla, indicating possible issues in the</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> third step of protocol bla bla bla.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Status: FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Data: qc1 qc2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; plot(qc)</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>No specific plot function defined</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; plot(qc) &lt;-</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc+     function(object, ...) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc+         plot(qcdata(object, "qc2"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc+              qcdata(object, "qc1"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc+              xlab = "qc1",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc+              ylab = "qc2",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc+              ...)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; plot(qc)</span>
+<span class='r-plt'><img src='QcMetrics-class-1.png' alt='' width='700' height='433' /></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; plot(qc, col = "red", pch = 19)</span>
+<span class='r-plt'><img src='QcMetrics-class-2.png' alt='' width='700' height='433' /></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; ## Not run: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; ##D     ## generate a report </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; ##D     qcReport(qcm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; ## End(Not run)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QcMtrc&gt; </span>
+<span class='r-in'><span class='fu'>show</span><span class='op'>(</span><span class='va'>qc</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class "QcMetric"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Name: My test QcMetric </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Description:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> This qc metric describes bla bla bla, indicating possible issues in the</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> third step of protocol bla bla bla.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Status: FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Data: qc1 qc2 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>qc2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QcMetric-class.html'>QcMetric</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"My other metric"</span>, status <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='QcMetric-class.html'>qcdata</a></span><span class='op'>(</span><span class='va'>qc2</span>, <span class='st'>"x"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='QcMetric-class.html'>qcdata</a></span><span class='op'>(</span><span class='va'>qc2</span>, <span class='st'>"k"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>, <span class='fl'>50</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>qc2</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='http://lattice.r-forge.r-project.org/'>"lattice"</a></span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='QcMetric-class.html'>qcdata</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='st'>"x"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    k <span class='op'>=</span> <span class='fu'><a href='QcMetric-class.html'>qcdata</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='st'>"k"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/pkg/lattice/man/xyplot.html'>bwplot</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>~</span> <span class='va'>k</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>qcm</span> <span class='op'>&lt;-</span> <span class='fu'>QcMetrics</span><span class='op'>(</span>qcdata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>qc</span>, <span class='va'>qc2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>qcm</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class "QcMetrics"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  containing 2 QC metrics.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  and no metadata variables.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>qcm</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='co'>## a QcMetrics instance</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class "QcMetrics"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  containing 1 QC metrics.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  and no metadata variables.</span>
+<span class='r-in'><span class='va'>qcm</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='co'>## a single QcMetric</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class "QcMetric"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Name: My test QcMetric </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Description:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> This qc metric describes bla bla bla, indicating possible issues in the</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> third step of protocol bla bla bla.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Status: FALSE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Data: qc1 qc2 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-in'><span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='QcMetadata-class.html'>QcMetadata</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Prof. Who"</span>,</span>
+<span class='r-in'>                                 lab <span class='op'>=</span> <span class='st'>"Cabin University"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## or, shorter but equivalent</span></span>
+<span class='r-in'><span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Prof. Who"</span>,</span>
+<span class='r-in'>                      lab <span class='op'>=</span> <span class='st'>"Cabin University"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span> <span class='co'>## or mdata(qcm)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Prof. Who"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $lab</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Cabin University"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## update metadata</span></span>
+<span class='r-in'><span class='fu'>metadata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>lab <span class='op'>=</span> <span class='st'>"Big lab"</span>, <span class='co'>## updated</span></span>
+<span class='r-in'>                      uni <span class='op'>=</span> <span class='st'>"Cabin University"</span><span class='op'>)</span> <span class='co'>## added</span></span>
+<span class='r-in'><span class='fu'>mdata</span><span class='op'>(</span><span class='va'>qcm</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Prof. Who"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $lab</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Big lab"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $uni</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Cabin University"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -361,11 +383,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Laurent Gatto.</p>
+  <p><p>Developed by Laurent Gatto.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -373,6 +395,8 @@
 
   
 
+
+  
 
   </body>
 </html>

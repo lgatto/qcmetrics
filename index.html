@@ -13,15 +13,17 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="A Framework for Quality Control">
 <meta property="og:description" content="The package provides a framework for generic quality
-	     control of data. It permits to create, manage and
-	     visualise individual or sets of quality control metrics
-	     and generate quality control reports in various formats.">
+             control of data. It permits to create, manage and
+             visualise individual or sets of quality control metrics
+             and generate quality control reports in various formats.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">qcmetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.29.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.31.1</span>
       </span>
     </div>
 
@@ -53,7 +55,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/lgatto/qcmetrics/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -71,40 +73,40 @@
   <div class="contents col-md-9">
 <div id="a-general-framework-for-quality-control-metrics" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#a-general-framework-for-quality-control-metrics" class="anchor"></a>A General Framework for Quality Control Metrics</h1></div>
+<a href="#a-general-framework-for-quality-control-metrics" class="anchor" aria-hidden="true"></a>A General Framework for Quality Control Metrics</h1></div>
 <div id="about" class="section level2">
 <h2 class="hasAnchor">
-<a href="#about" class="anchor"></a>About</h2>
+<a href="#about" class="anchor" aria-hidden="true"></a>About</h2>
 <p>The <code>qcmetrics</code> package provides a general framework to develope quality control (QC) pipelines for any type of data that can be imported into <code>R</code>. The application of <code>qcmetrics</code> can be schematised in 5 points</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Identify a set of quality metrics of interest and implement them and their visualisation method into individual <code>QcMetric</code> instances.</li>
 <li>Bundles the <code>QcMetric</code> items into a <code>QcMetrics</code> instance.</li>
 <li>Automatically generate reports in pdf of html using the <code>qcReport</code> function using the <code>QcMetrics</code> object of step 2 as input.</li>
 <li>Optionally, reports can be customised.</li>
 <li>Wrap the above steps into a wrapper function or a new QC package for production use.</li>
 </ol>
-<p>QC pipelines and packages will be described and disseminated through the <a href="https://github.com/lgatto/qcmetrics/wiki">wiki</a>.</p>
+<p>QC pipelines and packages will be described and disseminated through the <a href="https://github.com/lgatto/qcmetrics/wiki" class="external-link">wiki</a>.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p><em><a href="http://bioconductor.org/packages/qcmetrics">qcmetrics</a></em> is a Bioconductor package and should in installed with</p>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
+<p><em><a href="http://bioconductor.org/packages/qcmetrics" class="external-link">qcmetrics</a></em> is a Bioconductor package and should in installed with</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"qcmetrics"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"qcmetrics"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="bugs-and-question" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugs-and-question" class="anchor"></a>Bugs and question</h2>
-<p>Either file a <a href="https://github.com/lgatto/qcmetrics/issues">GitHub issue</a> or use the <a href="https://support.bioconductor.org/">Bioconductor support forum</a>.</p>
+<a href="#bugs-and-question" class="anchor" aria-hidden="true"></a>Bugs and question</h2>
+<p>Either file a <a href="https://github.com/lgatto/qcmetrics/issues" class="external-link">GitHub issue</a> or use the <a href="https://support.bioconductor.org/" class="external-link">Bioconductor support forum</a>.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Download from BIOC at <br><a href="https://www.bioconductor.org/packages/qcmetrics">https://​www.bioconductor.org/​packages/​qcmetrics</a>
 </li>
@@ -114,29 +116,36 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
 </ul>
 </div>
+
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Laurent Gatto <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Laurent Gatto.</p>
+  <p></p>
+<p>Developed by Laurent Gatto.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
@@ -144,6 +153,8 @@
 
   
 
+
+  
 
   </body>
 </html>
