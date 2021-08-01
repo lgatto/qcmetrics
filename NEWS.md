@@ -1,3 +1,9 @@
+# qcmetrics 1.31
+
+## qcmetrics 1.31.1
+
+- Suggest rmarkdown to fix build error
+
 # qcmetrics 1.29
 
 ## qcmetrics 1.29.1
