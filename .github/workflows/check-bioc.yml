@@ -263,28 +263,37 @@ jobs:
           covr::codecov()
         shell: Rscript {0}
 
+      - name: Install package
+        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
+        run: R CMD INSTALL .
+
       - name: Install pkgdown
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
         run: |
           remotes::install_github("r-lib/pkgdown")
         shell: Rscript {0}
 
-      - name: Install package
-        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
-        run: R CMD INSTALL .
-
-      - name: Deploy package
-        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git config --global --add safe.directory /__w/qcmetrics/qcmetrics
-          Rscript -e "pkgdown::deploy_to_branch(new_process = FALSE)"
-        shell: bash {0}
+      - name: Build pkgdown site
+        if: env.run_pkgdown == 'true' && runner.os == 'Linux'
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        shell: Rscript {0}
         ## Note that you need to run pkgdown::deploy_to_branch(new_process = FALSE)
         ## at least one locally before this will work. This creates the gh-pages
         ## branch (erasing anything you haven't version controlled!) and
         ## makes the git history recognizable by pkgdown.
+
+      - name: Install deploy dependencies
+        if: env.run_pkgdown == 'true' && runner.os == 'Linux'
+        run: |
+          apt-get update && apt-get -y install rsync
+
+      - name: Deploy pkgdown site to GitHub pages 🚀
+        if: env.run_pkgdown == 'true' && runner.os == 'Linux'
+        uses: JamesIves/github-pages-deploy-action@releases/v4
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
 
       - name: Upload check results
         if: failure()
