@@ -4,7 +4,7 @@ Quality control report generated with `qcmetrics`
 
 Author: 
 
-Date: Sat Feb  3 05:21:40 2024
+Date: Sat Feb  3 05:31:15 2024
 
 
 Metadata
@@ -55,7 +55,7 @@ QC summary
 -----------------------------
 
 <!-- html table generated in R 4.4.0 by xtable 1.8-4 package -->
-<!-- Sat Feb  3 05:21:40 2024 -->
+<!-- Sat Feb  3 05:31:15 2024 -->
 <table border=1>
 <tr> <th>  </th> <th> name </th> <th> status </th>  </tr>
   <tr> <td align="right"> 1 </td> <td> My test QcMetric </td> <td> FALSE </td> </tr>
