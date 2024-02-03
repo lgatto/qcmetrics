@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">qcmetrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.31.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
       </span>
     </div>
 
@@ -66,14 +66,16 @@
 
       
 
-      </header><script src="qcmetrics_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Index file for the qcmetrics package vignette</h1>
-                        <h4 data-toc-skip class="author">Laurent Gatto</h4>
+      <h1 data-toc-skip>Index file for the qcmetrics package
+vignette</h1>
+                        <h4 data-toc-skip class="author">Laurent
+Gatto</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/lgatto/qcmetrics/blob/master/vignettes/qcmetrics.Rmd" class="external-link"><code>vignettes/qcmetrics.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lgatto/qcmetrics/blob/HEAD/vignettes/qcmetrics.Rmd" class="external-link"><code>vignettes/qcmetrics.Rmd</code></a></small>
       <div class="hidden name"><code>qcmetrics.Rmd</code></div>
 
     </div>
@@ -81,161 +83,258 @@
     
         <div class="abstract">
       <p class="abstract">Abstract</p>
-      <p>The <code>qcmetrics</code> package is a framework that provides simple data containers for quality metrics and support for automatic report generation. This document briefly illustrates the core data structures and then demonstrates the generation and automation of quality control reports for microarray and proteomics data.</p>
+      <p>The <code>qcmetrics</code> package is a framework that provides
+      simple data containers for quality metrics and support for
+      automatic report generation. This document briefly illustrates the
+      core data structures and then demonstrates the generation and
+      automation of quality control reports for microarray and
+      proteomics data.</p>
     </div>
     
-<div id="sec:intro" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sec:intro" class="anchor" aria-hidden="true"></a>Introduction</h1>
-<p>Quality control (QC) is an essential step in any analytical process. Data of poor quality can at best lead to the absence of positive results or, much worse, false positives that stem from uncaught faulty and noisy data and much wasted resources in pursuing red herrings.</p>
-<p>Quality is often a relative concept that depends on the nature of the biological sample, the experimental settings, the analytical process and other factors. Research and development in the area of QC has generally lead to two types of work being disseminated. Firstly, the comparison of samples of variable quality and the identification of metrics that correlate with the quality of the data. These quality metrics could then, in later experiments, be used to assess their quality. Secondly, the design of domain-specific software to facilitate the collection, visualisation and interpretation of various QC metrics is also an area that has seen much development. QC is a prime example where standardisation and automation are of great benefit. While a great variety of QC metrics, software and pipelines have been described for any assay commonly used in modern biology, we present here a different tool for QC, whose main features are flexibility and versatility. The <code>qcmetrics</code> package is a general framework for QC that can accommodate any type of data. It provides a flexible framework to implement QC items that store relevant QC metrics with a specific visualisation mechanism. These individual items can be bundled into higher level QC containers that can be readily used to generate reports in various formats. As a result, it becomes easy to develop complete custom pipelines from scratch and automate the generation of reports. The pipelines can be easily updated to accommodate new QC items of better visualisation techniques.</p>
-<p>Section @ref(sec:qcclasses) provides an overview of the framework. In section @ref(sec:pipeline), we use proteomics data (subsection @ref(sec:prot)) to demonstrate the elaboration of QC pipelines: how to create individual QC objects, how to bundle them to create sets of QC metrics and how to generate reports in multiple formats. We also show how the above steps can be fully automated through simple wrapper functions. Although kept simple in the interest of time and space, these examples are meaningful and relevant. In section @ref(sec:report), we provide more detail about the report generation process, how reports can be customised and how new exports can be contributed. We proceed in section @ref(sec:qcpkg) to the consolidation of QC pipelines using R and elaborate on the development of dedicated QC packages with <code>qcmetrics</code>.</p>
+<div class="section level2">
+<h2 id="sec:intro">Introduction<a class="anchor" aria-label="anchor" href="#sec:intro"></a>
+</h2>
+<p>Quality control (QC) is an essential step in any analytical process.
+Data of poor quality can at best lead to the absence of positive results
+or, much worse, false positives that stem from uncaught faulty and noisy
+data and much wasted resources in pursuing red herrings.</p>
+<p>Quality is often a relative concept that depends on the nature of the
+biological sample, the experimental settings, the analytical process and
+other factors. Research and development in the area of QC has generally
+lead to two types of work being disseminated. Firstly, the comparison of
+samples of variable quality and the identification of metrics that
+correlate with the quality of the data. These quality metrics could
+then, in later experiments, be used to assess their quality. Secondly,
+the design of domain-specific software to facilitate the collection,
+visualisation and interpretation of various QC metrics is also an area
+that has seen much development. QC is a prime example where
+standardisation and automation are of great benefit. While a great
+variety of QC metrics, software and pipelines have been described for
+any assay commonly used in modern biology, we present here a different
+tool for QC, whose main features are flexibility and versatility. The
+<code>qcmetrics</code> package is a general framework for QC that can
+accommodate any type of data. It provides a flexible framework to
+implement QC items that store relevant QC metrics with a specific
+visualisation mechanism. These individual items can be bundled into
+higher level QC containers that can be readily used to generate reports
+in various formats. As a result, it becomes easy to develop complete
+custom pipelines from scratch and automate the generation of reports.
+The pipelines can be easily updated to accommodate new QC items of
+better visualisation techniques.</p>
+<p>Section @ref(sec:qcclasses) provides an overview of the framework. In
+section @ref(sec:pipeline), we use proteomics data (subsection
+@ref(sec:prot)) to demonstrate the elaboration of QC pipelines: how to
+create individual QC objects, how to bundle them to create sets of QC
+metrics and how to generate reports in multiple formats. We also show
+how the above steps can be fully automated through simple wrapper
+functions. Although kept simple in the interest of time and space, these
+examples are meaningful and relevant. In section @ref(sec:report), we
+provide more detail about the report generation process, how reports can
+be customised and how new exports can be contributed. We proceed in
+section @ref(sec:qcpkg) to the consolidation of QC pipelines using R and
+elaborate on the development of dedicated QC packages with
+<code>qcmetrics</code>.</p>
 </div>
-<div id="sec:qcclasses" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sec:qcclasses" class="anchor" aria-hidden="true"></a>The QC classes</h1>
-<p>The package provides two types of QC containers. The <code>QcMetric</code> class stores data and visualisation functions for single metrics. Several such metrics can be bundled into <code>QcMetrics</code> instances, that can be used as input for automated report generation. Below, we will provide a quick overview of how to create respective <code>QcMetric</code> and <code>QcMetrics</code> instances. More details are available in the corresponding documentations.</p>
-<div id="the-qcmetric-class" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-qcmetric-class" class="anchor" aria-hidden="true"></a>The <code>QcMetric</code> class</h2>
-<p>A QC metric is composed of a description (<code>name</code> in the code chunk below), some QC data (<code>qcdata</code>) and a <code>status</code> that defines if the metric is deemed of acceptable quality (coded as <code>TRUE</code>), bad quality (coded as <code>FALSE</code>) or not yet evaluated (coded as <code>NA</code>). Individual metrics can be displayed as a short textual summary or plotted. To do the former, one can use the default <code>show</code> method.</p>
+<div class="section level2">
+<h2 id="sec:qcclasses">The QC classes<a class="anchor" aria-label="anchor" href="#sec:qcclasses"></a>
+</h2>
+<p>The package provides two types of QC containers. The
+<code>QcMetric</code> class stores data and visualisation functions for
+single metrics. Several such metrics can be bundled into
+<code>QcMetrics</code> instances, that can be used as input for
+automated report generation. Below, we will provide a quick overview of
+how to create respective <code>QcMetric</code> and
+<code>QcMetrics</code> instances. More details are available in the
+corresponding documentations.</p>
+<div class="section level3">
+<h3 id="the-qcmetric-class">The <code>QcMetric</code> class<a class="anchor" aria-label="anchor" href="#the-qcmetric-class"></a>
+</h3>
+<p>A QC metric is composed of a description (<code>name</code> in the
+code chunk below), some QC data (<code>qcdata</code>) and a
+<code>status</code> that defines if the metric is deemed of acceptable
+quality (coded as <code>TRUE</code>), bad quality (coded as
+<code>FALSE</code>) or not yet evaluated (coded as <code>NA</code>).
+Individual metrics can be displayed as a short textual summary or
+plotted. To do the former, one can use the default <code>show</code>
+method.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://lgatto.github.io/qcmetrics/articles/qcmetrics.html" class="external-link">"qcmetrics"</a></span><span class="op">)</span>
-<span class="va">qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"A test metric"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc</span>, <span class="st">"x"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="co">## all available qcdata</span></code></pre></div>
-<pre><code>## [1] "x"</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://lgatto.github.io/qcmetrics/articles/qcmetrics.html" class="external-link">"qcmetrics"</a></span><span class="op">)</span></span>
+<span><span class="va">qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"A test metric"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc</span>, <span class="st">"x"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="co">## all available qcdata</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "x"</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span> <span class="co">## get x</span></code></pre></div>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-## -2.2147 -0.4942  0.1139  0.1089  0.6915  2.4016</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span> <span class="co">## get x</span></span></code></pre></div>
+<pre><code><span><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">## -2.2147 -0.4942  0.1139  0.1089  0.6915  2.4016</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="co">## or just qc</span></code></pre></div>
-<pre><code>## Object of class "QcMetric"
-##  Name: A test metric 
-##  Status: NA 
-##  Data: x</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="co">## or just qc</span></span></code></pre></div>
+<pre><code><span><span class="co">## Object of class "QcMetric"</span></span>
+<span><span class="co">##  Name: A test metric </span></span>
+<span><span class="co">##  Status: NA </span></span>
+<span><span class="co">##  Data: x</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QcMetric-class.html">status</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
-<span class="va">qc</span></code></pre></div>
-<pre><code>## Object of class "QcMetric"
-##  Name: A test metric 
-##  Status: TRUE 
-##  Data: x</code></pre>
-<p>Plotting <code>QcMetric</code> instances requires to implement a plotting method that is relevant to the data at hand. We can use a <code>plot</code> replacement method to define our custom function. The code inside the <code>plot</code> uses <code>qcdata</code> to extract the relevant QC data from <code>object</code> that is then passed as argument to <code>plot</code> and uses the adequate visualisation to present the QC data.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QcMetric-class.html">status</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
+<span><span class="va">qc</span></span></code></pre></div>
+<pre><code><span><span class="co">## Object of class "QcMetric"</span></span>
+<span><span class="co">##  Name: A test metric </span></span>
+<span><span class="co">##  Status: TRUE </span></span>
+<span><span class="co">##  Data: x</span></span></code></pre>
+<p>Plotting <code>QcMetric</code> instances requires to implement a
+plotting method that is relevant to the data at hand. We can use a
+<code>plot</code> replacement method to define our custom function. The
+code inside the <code>plot</code> uses <code>qcdata</code> to extract
+the relevant QC data from <code>object</code> that is then passed as
+argument to <code>plot</code> and uses the adequate visualisation to
+present the QC data.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning in x@plot(x, ...): No specific plot function defined</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in x@plot(x, ...): No specific plot function defined</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span> <span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"x"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span>
-<span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span> <span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"x"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span></span></code></pre></div>
 <p><img src="qcmetrics_files/figure-html/qcmetricplot-1.png" width="700"></p>
 </div>
-<div id="the-qcmetrics-class" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-qcmetrics-class" class="anchor" aria-hidden="true"></a>The <code>QcMetrics</code> class</h2>
-<p>A <code>QcMetrics</code> object is essentially just a list of individual  instances. It is also possible to set a list of metadata variables to describe the source of the QC metrics. The metadata can be passed as an <code>QcMetadata</code> object (the way it is stored in the <code>QcMetrics</code> instance) or directly as a named <code>list</code>. The <code>QcMetadata</code> is itself a <code>list</code> and can be accessed and set with <code>metadata</code> or <code>mdata</code>. When accessed, it is returned and displayed as a <code>list</code>.</p>
+<div class="section level3">
+<h3 id="the-qcmetrics-class">The <code>QcMetrics</code> class<a class="anchor" aria-label="anchor" href="#the-qcmetrics-class"></a>
+</h3>
+<p>A <code>QcMetrics</code> object is essentially just a list of
+individual instances. It is also possible to set a list of metadata
+variables to describe the source of the QC metrics. The metadata can be
+passed as an <code>QcMetadata</code> object (the way it is stored in the
+<code>QcMetrics</code> instance) or directly as a named
+<code>list</code>. The <code>QcMetadata</code> is itself a
+<code>list</code> and can be accessed and set with <code>metadata</code>
+or <code>mdata</code>. When accessed, it is returned and displayed as a
+<code>list</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">qcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetrics-class.html">QcMetrics</a></span><span class="op">(</span>qcdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span><span class="op">)</span>
-<span class="va">qcm</span></code></pre></div>
-<pre><code>## Object of class "QcMetrics"
-##  containing 1 QC metrics.
-##  and no metadata variables.</code></pre>
+<code class="sourceCode R"><span><span class="va">qcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetrics-class.html">QcMetrics</a></span><span class="op">(</span>qcdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">qcm</span></span></code></pre></div>
+<pre><code><span><span class="co">## Object of class "QcMetrics"</span></span>
+<span><span class="co">##  containing 1 QC metrics.</span></span>
+<span><span class="co">##  and no metadata variables.</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QcMetrics-class.html">metadata</a></span><span class="op">(</span><span class="va">qcm</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>author <span class="op">=</span> <span class="st">"Prof. Who"</span>,
-                      lab <span class="op">=</span> <span class="st">"Big lab"</span><span class="op">)</span>
-<span class="va">qcm</span></code></pre></div>
-<pre><code>## Object of class "QcMetrics"
-##  containing 1 QC metrics.
-##  and 2 metadata variables.</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QcMetrics-class.html">metadata</a></span><span class="op">(</span><span class="va">qcm</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>author <span class="op">=</span> <span class="st">"Prof. Who"</span>,</span>
+<span>                      lab <span class="op">=</span> <span class="st">"Big lab"</span><span class="op">)</span></span>
+<span><span class="va">qcm</span></span></code></pre></div>
+<pre><code><span><span class="co">## Object of class "QcMetrics"</span></span>
+<span><span class="co">##  containing 1 QC metrics.</span></span>
+<span><span class="co">##  and 2 metadata variables.</span></span></code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QcMetrics-class.html">mdata</a></span><span class="op">(</span><span class="va">qcm</span><span class="op">)</span></code></pre></div>
-<pre><code>## $author
-## [1] "Prof. Who"
-## 
-## $lab
-## [1] "Big lab"</code></pre>
-<p>The metadata can be updated with the same interface. If new named items are passed, the metadata is updated by addition of the new elements. If a named item is already present, its value gets updated.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QcMetrics-class.html">mdata</a></span><span class="op">(</span><span class="va">qcm</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $author</span></span>
+<span><span class="co">## [1] "Prof. Who"</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $lab</span></span>
+<span><span class="co">## [1] "Big lab"</span></span></code></pre>
+<p>The metadata can be updated with the same interface. If new named
+items are passed, the metadata is updated by addition of the new
+elements. If a named item is already present, its value gets
+updated.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/QcMetrics-class.html">metadata</a></span><span class="op">(</span><span class="va">qcm</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>author <span class="op">=</span> <span class="st">"Prof. Who"</span>,
-                      lab <span class="op">=</span> <span class="st">"Cabin lab"</span>,
-                      University <span class="op">=</span> <span class="st">"Universe-ity"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetrics-class.html">mdata</a></span><span class="op">(</span><span class="va">qcm</span><span class="op">)</span></code></pre></div>
-<pre><code>## $author
-## [1] "Prof. Who"
-## 
-## $lab
-## [1] "Cabin lab"
-## 
-## $University
-## [1] "Universe-ity"</code></pre>
-<p>The <code>QcMetrics</code> can then be passed to the <code>qcReport</code> method to generate reports, as described in more details below.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/QcMetrics-class.html">metadata</a></span><span class="op">(</span><span class="va">qcm</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>author <span class="op">=</span> <span class="st">"Prof. Who"</span>,</span>
+<span>                      lab <span class="op">=</span> <span class="st">"Cabin lab"</span>,</span>
+<span>                      University <span class="op">=</span> <span class="st">"Universe-ity"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetrics-class.html">mdata</a></span><span class="op">(</span><span class="va">qcm</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $author</span></span>
+<span><span class="co">## [1] "Prof. Who"</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $lab</span></span>
+<span><span class="co">## [1] "Cabin lab"</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $University</span></span>
+<span><span class="co">## [1] "Universe-ity"</span></span></code></pre>
+<p>The <code>QcMetrics</code> can then be passed to the
+<code>qcReport</code> method to generate reports, as described in more
+details below.</p>
 </div>
 </div>
-<div id="sec:pipeline" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sec:pipeline" class="anchor" aria-hidden="true"></a>Creating QC pipelines</h1>
-<div id="sec:marray" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sec:marray" class="anchor" aria-hidden="true"></a>Microarray degradation</h2>
-<p>The Microarray degradation section has been removed since the packages it was depending on have been deprecated.</p>
+<div class="section level2">
+<h2 id="sec:pipeline">Creating QC pipelines<a class="anchor" aria-label="anchor" href="#sec:pipeline"></a>
+</h2>
+<div class="section level3">
+<h3 id="sec:marray">Microarray degradation<a class="anchor" aria-label="anchor" href="#sec:marray"></a>
+</h3>
+<p>The Microarray degradation section has been removed since the
+packages it was depending on have been deprecated.</p>
 </div>
-<div id="sec:prot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sec:prot" class="anchor" aria-hidden="true"></a>Proteomics raw data</h2>
-<p>To illustrate a simple QC analysis for proteomics data, we will download data set <code>PXD00001</code> from the ProteomeXchange repository in the mzXML format <span class="citation">(Pedrioli and others 2004)</span>. The MS2 spectra from that mass-spectrometry run are then read into Rand stored as an <code>MSnExp</code> experiment using the <code>readMSData</code> function from the <code>MSnbase</code> package <span class="citation">(Gatto and Lilley 2012)</span>.</p>
+<div class="section level3">
+<h3 id="sec:prot">Proteomics raw data<a class="anchor" aria-label="anchor" href="#sec:prot"></a>
+</h3>
+<p>To illustrate a simple QC analysis for proteomics data, we will
+download data set <code>PXD00001</code> from the ProteomeXchange
+repository in the mzXML format <span class="citation">(Pedrioli et al.
+2004)</span>. The MS2 spectra from that mass-spectrometry run are then
+read into Rand stored as an <code>MSnExp</code> experiment using the
+<code>readMSData</code> function from the <code>MSnbase</code> package
+<span class="citation">(Gatto and Lilley 2012)</span>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"RforProteomics"</span><span class="op">)</span>
-<span class="va">msfile</span> <span class="op">&lt;-</span> <span class="fu">getPXD000001mzXML</span><span class="op">(</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://lgatto.github.io/MSnbase" class="external-link">"MSnbase"</a></span><span class="op">)</span>
-<span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/readMSData.html" class="external-link">readMSData</a></span><span class="op">(</span><span class="va">msfile</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>In the interest of time, this code chunk has been pre-computed and a subset (1 in 3) of the <code>exp</code> instance is distributed with the package. The data is loaded with</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"RforProteomics"</span><span class="op">)</span></span>
+<span><span class="va">msfile</span> <span class="op">&lt;-</span> <span class="fu">getPXD000001mzXML</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://lgatto.github.io/MSnbase" class="external-link">"MSnbase"</a></span><span class="op">)</span></span>
+<span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/readMSData.html" class="external-link">readMSData</a></span><span class="op">(</span><span class="va">msfile</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>In the interest of time, this code chunk has been pre-computed and a
+subset (1 in 3) of the <code>exp</code> instance is distributed with the
+package. The data is loaded with</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/exp.rda"</span>, package <span class="op">=</span> <span class="st">"qcmetrics"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>The <code>QcMetrics</code> will consist of 3 items, namely a chromatogram constructed with the MS2 spectra precursor’s intensities, a figure illustrating the precursor charges in the MS space and an m/z delta plot illustrating the suitability of MS2 spectra for identification (see <code><a href="https://lgatto.github.io/MSnbase/reference/plotMzDelta-methods.html" class="external-link">?plotMzDelta</a></code> or <span class="citation">(Foster et al. 2011)</span>).</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/exp.rda"</span>, package <span class="op">=</span> <span class="st">"qcmetrics"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>The <code>QcMetrics</code> will consist of 3 items, namely a
+chromatogram constructed with the MS2 spectra precursor’s intensities, a
+figure illustrating the precursor charges in the MS space and an m/z
+delta plot illustrating the suitability of MS2 spectra for
+identification (see <code><a href="https://lgatto.github.io/MSnbase/reference/plotMzDelta-methods.html" class="external-link">?plotMzDelta</a></code> or <span class="citation">(Foster et al. 2011)</span>).</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">qc1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Chromatogram"</span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/Spectrum-class.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/Spectrum2-class.html" class="external-link">precursorIntensity</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc1</span>, <span class="st">"x"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="va">o</span><span class="op">]</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc1</span>, <span class="st">"y"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">o</span><span class="op">]</span>
-<span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span>
-    <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"x"</span><span class="op">)</span>,
-         <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"y"</span><span class="op">)</span>,
-         col <span class="op">=</span> <span class="st">"darkgrey"</span>, type <span class="op">=</span><span class="st">"l"</span>,
-         xlab <span class="op">=</span> <span class="st">"retention time"</span>,
-         ylab <span class="op">=</span> <span class="st">"precursor intensity"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">qc1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Chromatogram"</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">precursorIntensity</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc1</span>, <span class="st">"x"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="va">o</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc1</span>, <span class="st">"y"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">o</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"x"</span><span class="op">)</span>,</span>
+<span>         <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"y"</span><span class="op">)</span>,</span>
+<span>         col <span class="op">=</span> <span class="st">"darkgrey"</span>, type <span class="op">=</span><span class="st">"l"</span>,</span>
+<span>         xlab <span class="op">=</span> <span class="st">"retention time"</span>,</span>
+<span>         ylab <span class="op">=</span> <span class="st">"precursor intensity"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">qc2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"MS space"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc2</span>, <span class="st">"p2d"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot2d-methods.html" class="external-link">plot2d</a></span><span class="op">(</span><span class="va">exp</span>, z <span class="op">=</span> <span class="st">"charge"</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span> 
-    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"p2d"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">qc2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"MS space"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc2</span>, <span class="st">"p2d"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot2d-methods.html" class="external-link">plot2d</a></span><span class="op">(</span><span class="va">exp</span>, z <span class="op">=</span> <span class="st">"charge"</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"p2d"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">qc3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"m/z delta plot"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc3</span>, <span class="st">"pmz"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plotMzDelta-methods.html" class="external-link">plotMzDelta</a></span><span class="op">(</span><span class="va">exp</span>, plot <span class="op">=</span> <span class="cn">FALSE</span>,
-                                  verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc3</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> 
-    <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"pmz"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Note that we do not store the raw data in any of the above instances, but always pre-compute the necessary data or plots that are then stored as <code>qcdata</code>. If the raw data was to be needed in multiple <code>QcMetric</code> instances, we could re-use the same <code>qcdata</code> <em>environment</em> to avoid unnecessary copies using <code>qcdata(qc2) &lt;- qcenv(qc1)</code> and implement different views through custom <code>plot</code> methods.</p>
-<p>Let’s now combine the three items into a <code>QcMetrics</code> object, decorate it with custom metadata using the MIAPE information from the <code>MSnExp</code> object and generate a report.</p>
+<code class="sourceCode R"><span><span class="va">qc3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"m/z delta plot"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qc3</span>, <span class="st">"pmz"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plotMzDelta-methods.html" class="external-link">plotMzDelta</a></span><span class="op">(</span><span class="va">exp</span>, plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                                  verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qc3</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"pmz"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Note that we do not store the raw data in any of the above instances,
+but always pre-compute the necessary data or plots that are then stored
+as <code>qcdata</code>. If the raw data was to be needed in multiple
+<code>QcMetric</code> instances, we could re-use the same
+<code>qcdata</code> <em>environment</em> to avoid unnecessary copies
+using <code>qcdata(qc2) &lt;- qcenv(qc1)</code> and implement different
+views through custom <code>plot</code> methods.</p>
+<p>Let’s now combine the three items into a <code>QcMetrics</code>
+object, decorate it with custom metadata using the MIAPE information
+from the <code>MSnExp</code> object and generate a report.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">protqcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetrics-class.html">QcMetrics</a></span><span class="op">(</span>qcdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">qc1</span>, <span class="va">qc2</span>, <span class="va">qc3</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetrics-class.html">metadata</a></span><span class="op">(</span><span class="va">protqcm</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="st">"PXD000001"</span>,
-    instrument <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">instrumentModel</span>,
-    source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">ionSource</span>,
-    analyser <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">analyser</span>,
-    detector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">detectorType</span>,
-    manufacurer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">instrumentManufacturer</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">protqcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetrics-class.html">QcMetrics</a></span><span class="op">(</span>qcdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">qc1</span>, <span class="va">qc2</span>, <span class="va">qc3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetrics-class.html">metadata</a></span><span class="op">(</span><span class="va">protqcm</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="st">"PXD000001"</span>,</span>
+<span>    instrument <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">instrumentModel</span>,</span>
+<span>    source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">ionSource</span>,</span>
+<span>    analyser <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">analyser</span>,</span>
+<span>    detector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">detectorType</span>,</span>
+<span>    manufacurer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">@</span><span class="va">instrumentManufacturer</span><span class="op">)</span></span></code></pre></div>
 <!-- Running this one with echoing so that the auxiliary files,  -->
 <!-- in particular the figure directory does not get deleted, as  -->
 <!-- it is also created and needed by the vignette itself. -->
-<p>The status column of the summary table is empty as we have not set the QC items statuses yet.</p>
+<p>The status column of the summary table is empty as we have not set
+the QC items statuses yet.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/qcReport-methods.html">qcReport</a></span><span class="op">(</span><span class="va">protqcm</span>, reportname <span class="op">=</span> <span class="st">"protqc"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/qcReport-methods.html">qcReport</a></span><span class="op">(</span><span class="va">protqcm</span>, reportname <span class="op">=</span> <span class="st">"protqc"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="figs/protqc.png" alt="Proteomics QC report" width="100%"><p class="caption">
 Proteomics QC report
@@ -243,180 +342,237 @@ Proteomics QC report
 </div>
 <p>The complete pdf report is available with:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="fu"><a href="../reference/qcReport-methods.html">example_reports</a></span><span class="op">(</span><span class="st">"protqc"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="fu"><a href="../reference/qcReport-methods.html">example_reports</a></span><span class="op">(</span><span class="st">"protqc"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="sec:n15" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sec:n15" class="anchor" aria-hidden="true"></a>Processed N15 labelling data</h2>
-<p>In this section, we describe a set of N15 metabolic labelling QC metrics <span class="citation">(Krijgsveld et al. 2003)</span>. The data is a phospho-enriched N15 labelled <em>Arabidopsis thaliana</em> sample prepared as described in <span class="citation">(Groen et al. 2013)</span>. The data was processed with in-house tools and is available as an <code>MSnSet</code> instance. Briefly, MS2 spectra were search with the Mascot engine and identification scores adjusted with Mascot Percolator. Heavy and light pairs were then searched in the survey scans and N15 incorporation was estimated based on the peptide sequence and the isotopic envelope of the heavy member of the pair (the <code>inc</code> feature variable). Heavy and light peptides isotopic envelope areas were finally integrated to obtain unlabelled and N15 quantitation data. The <code>psm</code> object provides such data for PSMs (peptide spectrum matches) with a posterior error probability &lt; 0.05 that can be uniquely matched to proteins.</p>
-<p>We first load the <code>MSnbase</code> package (required to support the <code>MSnSet</code> data structure) and example data that is distributed with the <code>qcmetrics</code> package. We will make use of the <code>ggplot2</code> plotting package.</p>
+<div class="section level3">
+<h3 id="sec:n15">Processed N15 labelling data<a class="anchor" aria-label="anchor" href="#sec:n15"></a>
+</h3>
+<p>In this section, we describe a set of N15 metabolic labelling QC
+metrics <span class="citation">(Krijgsveld et al. 2003)</span>. The data
+is a phospho-enriched N15 labelled <em>Arabidopsis thaliana</em> sample
+prepared as described in <span class="citation">(Groen et al.
+2013)</span>. The data was processed with in-house tools and is
+available as an <code>MSnSet</code> instance. Briefly, MS2 spectra were
+search with the Mascot engine and identification scores adjusted with
+Mascot Percolator. Heavy and light pairs were then searched in the
+survey scans and N15 incorporation was estimated based on the peptide
+sequence and the isotopic envelope of the heavy member of the pair (the
+<code>inc</code> feature variable). Heavy and light peptides isotopic
+envelope areas were finally integrated to obtain unlabelled and N15
+quantitation data. The <code>psm</code> object provides such data for
+PSMs (peptide spectrum matches) with a posterior error probability &lt;
+0.05 that can be uniquely matched to proteins.</p>
+<p>We first load the <code>MSnbase</code> package (required to support
+the <code>MSnSet</code> data structure) and example data that is
+distributed with the <code>qcmetrics</code> package. We will make use of
+the <code>ggplot2</code> plotting package.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://lgatto.github.io/MSnbase" class="external-link">"MSnbase"</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">n15psm</span><span class="op">)</span>
-<span class="va">psm</span></code></pre></div>
-<pre><code>## MSnSet (storageMode: lockedEnvironment)
-## assayData: 1772 features, 2 samples 
-##   element names: exprs 
-## protocolData: none
-## phenoData: none
-## featureData
-##   featureNames: 3 5 ... 4499 (1772 total)
-##   fvarLabels: Protein_Accession Protein_Description ... inc (21 total)
-##   fvarMetadata: labelDescription
-## experimentData: use 'experimentData(object)'
-##   pubMedIds: 23681576 
-## Annotation:  
-## - - - Processing information - - -
-## Subset [22540,2][1999,2] Tue Sep 17 01:34:09 2013 
-## Removed features with more than 0 NAs: Tue Sep 17 01:34:09 2013 
-## Dropped featureData's levels Tue Sep 17 01:34:09 2013 
-##  MSnbase version: 1.9.7</code></pre>
-<p>The first QC item examines the N15 incorporation rate, available in the <code>inc</code> feature variable. We also defined a median incorporation rate threshold <code>tr</code> equal to 97.5 that is used to set the QC status.</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://lgatto.github.io/MSnbase" class="external-link">"MSnbase"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">n15psm</span><span class="op">)</span></span>
+<span><span class="va">psm</span></span></code></pre></div>
+<pre><code><span><span class="co">## MSnSet (storageMode: lockedEnvironment)</span></span>
+<span><span class="co">## assayData: 1772 features, 2 samples </span></span>
+<span><span class="co">##   element names: exprs </span></span>
+<span><span class="co">## protocolData: none</span></span>
+<span><span class="co">## phenoData: none</span></span>
+<span><span class="co">## featureData</span></span>
+<span><span class="co">##   featureNames: 3 5 ... 4499 (1772 total)</span></span>
+<span><span class="co">##   fvarLabels: Protein_Accession Protein_Description ... inc (21 total)</span></span>
+<span><span class="co">##   fvarMetadata: labelDescription</span></span>
+<span><span class="co">## experimentData: use 'experimentData(object)'</span></span>
+<span><span class="co">##   pubMedIds: 23681576 </span></span>
+<span><span class="co">## Annotation:  </span></span>
+<span><span class="co">## - - - Processing information - - -</span></span>
+<span><span class="co">## Subset [22540,2][1999,2] Tue Sep 17 01:34:09 2013 </span></span>
+<span><span class="co">## Removed features with more than 0 NAs: Tue Sep 17 01:34:09 2013 </span></span>
+<span><span class="co">## Dropped featureData's levels Tue Sep 17 01:34:09 2013 </span></span>
+<span><span class="co">##  MSnbase version: 1.9.7</span></span></code></pre>
+<p>The first QC item examines the N15 incorporation rate, available in
+the <code>inc</code> feature variable. We also defined a median
+incorporation rate threshold <code>tr</code> equal to 97.5 that is used
+to set the QC status.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## incorporation rate QC metric</span>
-<span class="va">qcinc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"15N incorporation rate"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"inc"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">inc</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"tr"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">97.5</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">status</a></span><span class="op">(</span><span class="va">qcinc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"inc"</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"tr"</span><span class="op">)</span></code></pre></div>
-<p>Next, we implement a custom <code>show</code> method, that prints 5 summary values of the variable’s distribution.</p>
+<code class="sourceCode R"><span><span class="co">## incorporation rate QC metric</span></span>
+<span><span class="va">qcinc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"15N incorporation rate"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"inc"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">inc</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"tr"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">97.5</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">status</a></span><span class="op">(</span><span class="va">qcinc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"inc"</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"tr"</span><span class="op">)</span></span></code></pre></div>
+<p>Next, we implement a custom <code>show</code> method, that prints 5
+summary values of the variable’s distribution.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">qcinc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/QcMetric-class.html">qcshow</a></span><span class="op">(</span><span class="va">object</span>, qcdata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> 
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" QC threshold:"</span>, <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"tr"</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" Incorporation rate\n"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"inc"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
-<p>We then define the metric’s <code>plot</code> function that represent the distribution of the PSM’s incorporation rates as a boxplot, shows all the individual rates as jittered dots and represents the <code>tr</code> threshold as a dotted red line.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">qcinc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/QcMetric-class.html">qcshow</a></span><span class="op">(</span><span class="va">object</span>, qcdata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" QC threshold:"</span>, <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"tr"</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" Incorporation rate\n"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"inc"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>We then define the metric’s <code>plot</code> function that represent
+the distribution of the PSM’s incorporation rates as a boxplot, shows
+all the individual rates as jittered dots and represents the
+<code>tr</code> threshold as a dotted red line.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qcinc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">inc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"inc"</span><span class="op">)</span>
-    <span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"tr"</span><span class="op">)</span>
-    <span class="va">lab</span> <span class="op">&lt;-</span> <span class="st">"Incorporation rate"</span>
-    <span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>inc <span class="op">=</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"inc"</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dd</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>, <span class="va">inc</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html" class="external-link">geom_jitter</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"#4582B370"</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span> 
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#FFFFFFD0"</span>, colour <span class="op">=</span> <span class="st">"#000000"</span>,
-                 outlier.size <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="va">tr</span>, colour <span class="op">=</span> <span class="st">"red"</span>,
-               linetype <span class="op">=</span> <span class="st">"dotted"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">"Incorporation rate"</span><span class="op">)</span> 
-    <span class="va">p</span>
-<span class="op">}</span></code></pre></div>
-<p>N15 experiments of good quality are characterised by high incorporation rates, which allow to deconvolute the heavy and light peptide isotopic envelopes and accurate quantification.</p>
-<p>The second metric inspects the log2 fold-changes of the PSMs, unique peptides with modifications, unique peptide sequences (not taking modifications into account) and proteins. These respective data sets are computed with the <code>combineFeatures</code> function (see <code><a href="https://lgatto.github.io/MSnbase/reference/combineFeatures.html" class="external-link">?combineFeatures</a></code> for details).</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qcinc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">inc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"inc"</span><span class="op">)</span></span>
+<span>    <span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"tr"</span><span class="op">)</span></span>
+<span>    <span class="va">lab</span> <span class="op">&lt;-</span> <span class="st">"Incorporation rate"</span></span>
+<span>    <span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>inc <span class="op">=</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="st">"inc"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dd</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>, <span class="va">inc</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html" class="external-link">geom_jitter</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"#4582B370"</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#FFFFFFD0"</span>, colour <span class="op">=</span> <span class="st">"#000000"</span>,</span>
+<span>                 outlier.size <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="va">tr</span>, colour <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>               linetype <span class="op">=</span> <span class="st">"dotted"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">"Incorporation rate"</span><span class="op">)</span></span>
+<span>    <span class="va">p</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>N15 experiments of good quality are characterised by high
+incorporation rates, which allow to deconvolute the heavy and light
+peptide isotopic envelopes and accurate quantification.</p>
+<p>The second metric inspects the log2 fold-changes of the PSMs, unique
+peptides with modifications, unique peptide sequences (not taking
+modifications into account) and proteins. These respective data sets are
+computed with the <code>combineFeatures</code> function (see
+<code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">?combineFeatures</a></code> for details).</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">modseq</span> <span class="op">&lt;-</span> <span class="co">## pep seq + PTM</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Peptide_Sequence</span>, 
-          <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Variable_Modifications</span>, sep <span class="op">=</span> <span class="st">"+"</span><span class="op">)</span>
-<span class="va">pep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/combineFeatures.html" class="external-link">combineFeatures</a></span><span class="op">(</span><span class="va">psm</span>,
-                       <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Peptide_Sequence</span><span class="op">)</span>, 
-                       <span class="st">"median"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">modpep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/combineFeatures.html" class="external-link">combineFeatures</a></span><span class="op">(</span><span class="va">psm</span>,
-                          <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">modseq</span>,
-                          <span class="st">"median"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">prot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/combineFeatures.html" class="external-link">combineFeatures</a></span><span class="op">(</span><span class="va">psm</span>,
-                        <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Protein_Accession</span><span class="op">)</span>, 
-                        <span class="st">"median"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>The log2 fold-changes for all the features are then computed and stored as QC data of our next QC item. We also store a pair of values <code>explfc</code> that defined an interval in which we expect our median PSM log2 fold-change to be.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">modseq</span> <span class="op">&lt;-</span> <span class="co">## pep seq + PTM</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Peptide_Sequence</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Variable_Modifications</span>, sep <span class="op">=</span> <span class="st">"+"</span><span class="op">)</span></span>
+<span><span class="va">pep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">combineFeatures</a></span><span class="op">(</span><span class="va">psm</span>,</span>
+<span>                       <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Peptide_Sequence</span><span class="op">)</span>,</span>
+<span>                       <span class="st">"median"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">modpep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">combineFeatures</a></span><span class="op">(</span><span class="va">psm</span>,</span>
+<span>                          <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">modseq</span>,</span>
+<span>                          <span class="st">"median"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">prot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">combineFeatures</a></span><span class="op">(</span><span class="va">psm</span>,</span>
+<span>                        <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Protein_Accession</span><span class="op">)</span>,</span>
+<span>                        <span class="st">"median"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>The log2 fold-changes for all the features are then computed and
+stored as QC data of our next QC item. We also store a pair of values
+<code>explfc</code> that defined an interval in which we expect our
+median PSM log2 fold-change to be.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## calculate log fold-change</span>
-<span class="va">qclfc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Log2 fold-changes"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.psm"</span><span class="op">)</span> <span class="op">&lt;-</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">[</span>,<span class="st">"unlabelled"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">[</span>, <span class="st">"N15"</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.pep"</span><span class="op">)</span> <span class="op">&lt;-</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">pep</span><span class="op">)</span><span class="op">[</span>,<span class="st">"unlabelled"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">pep</span><span class="op">)</span><span class="op">[</span>, <span class="st">"N15"</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.modpep"</span><span class="op">)</span> <span class="op">&lt;-</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">modpep</span><span class="op">)</span><span class="op">[</span>,<span class="st">"unlabelled"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">modpep</span><span class="op">)</span><span class="op">[</span>, <span class="st">"N15"</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.prot"</span><span class="op">)</span> <span class="op">&lt;-</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">prot</span><span class="op">)</span><span class="op">[</span>,<span class="st">"unlabelled"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">prot</span><span class="op">)</span><span class="op">[</span>, <span class="st">"N15"</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"explfc"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/QcMetric-class.html">status</a></span><span class="op">(</span><span class="va">qclfc</span><span class="op">)</span> <span class="op">&lt;-</span>
-    <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"explfc"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&amp;</span>
-    <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"explfc"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
-<p>As previously, we provide a custom <code>show</code> method that displays summary values for the four fold-changes. The <code>plot</code> function illustrates the respective log2 fold-change densities and the expected median PSM fold-change range (red rectangle). The expected 0 log2 fold-change is shown as a dotted black vertical line and the observed median PSM value is shown as a blue dashed line.</p>
+<code class="sourceCode R"><span><span class="co">## calculate log fold-change</span></span>
+<span><span class="va">qclfc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Log2 fold-changes"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.psm"</span><span class="op">)</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">[</span>,<span class="st">"unlabelled"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">[</span>, <span class="st">"N15"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.pep"</span><span class="op">)</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">pep</span><span class="op">)</span><span class="op">[</span>,<span class="st">"unlabelled"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">pep</span><span class="op">)</span><span class="op">[</span>, <span class="st">"N15"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.modpep"</span><span class="op">)</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">modpep</span><span class="op">)</span><span class="op">[</span>,<span class="st">"unlabelled"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">modpep</span><span class="op">)</span><span class="op">[</span>, <span class="st">"N15"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.prot"</span><span class="op">)</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">prot</span><span class="op">)</span><span class="op">[</span>,<span class="st">"unlabelled"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">prot</span><span class="op">)</span><span class="op">[</span>, <span class="st">"N15"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"explfc"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">status</a></span><span class="op">(</span><span class="va">qclfc</span><span class="op">)</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"explfc"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&amp;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qclfc</span>, <span class="st">"explfc"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></code></pre></div>
+<p>As previously, we provide a custom <code>show</code> method that
+displays summary values for the four fold-changes. The <code>plot</code>
+function illustrates the respective log2 fold-change densities and the
+expected median PSM fold-change range (red rectangle). The expected 0
+log2 fold-change is shown as a dotted black vertical line and the
+observed median PSM value is shown as a blue dashed line.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">qclfc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/QcMetric-class.html">qcshow</a></span><span class="op">(</span><span class="va">object</span>, qcdata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">## default</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" QC thresholds:"</span>, <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"explfc"</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" * PSM log2 fold-changes\n"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" * Modified peptide log2 fold-changes\n"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.modpep"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" * Peptide log2 fold-changes\n"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.pep"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" * Protein log2 fold-changes\n"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.prot"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>    
-    <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qclfc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"explfc"</span><span class="op">)</span>
-    <span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/density.html" class="external-link">density</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span>,
-         main <span class="op">=</span> <span class="st">""</span>, sub <span class="op">=</span> <span class="st">""</span>, col <span class="op">=</span> <span class="st">"red"</span>,
-         ylab <span class="op">=</span> <span class="st">""</span>, lwd <span class="op">=</span> <span class="fl">2</span>,
-         xlab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">log</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">~</span><span class="va">fold</span><span class="op">-</span><span class="va">change</span><span class="op">)</span><span class="op">)</span>    
-    <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/density.html" class="external-link">density</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.modpep"</span><span class="op">)</span><span class="op">)</span>,
-          col <span class="op">=</span> <span class="st">"steelblue"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/density.html" class="external-link">density</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.pep"</span><span class="op">)</span><span class="op">)</span>,
-          col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/density.html" class="external-link">density</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.prot"</span><span class="op">)</span><span class="op">)</span>,
-          col <span class="op">=</span> <span class="st">"orange"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span>, col <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span>    
-    <span class="fu"><a href="https://rdrr.io/r/graphics/rect.html" class="external-link">rect</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="op">-</span><span class="fl">1</span>, <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"#EE000030"</span>,
-         border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span>,
-           lty <span class="op">=</span> <span class="st">"dashed"</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,
-           <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PSM"</span>, <span class="st">"Peptides"</span>, <span class="st">"Modified peptides"</span>, <span class="st">"Proteins"</span><span class="op">)</span>,
-           col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"steelblue"</span>, <span class="st">"blue"</span>, <span class="st">"orange"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,
-           bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
-<p>A good quality experiment is expected to have a tight distribution centred around 0. Major deviations would indicate incomplete incorporation, errors in the respective amounts of light and heavy material used, and a wide distribution would reflect large variability in the data.</p>
-<p>Our last QC item inspects the number of features that have been identified in the experiment. We also investigate how many peptides (with or without considering the modification) have been observed at the PSM level and the number of unique peptides per protein. Here, we do not specify any expected values as the number of observed features is experiment specific; the QC status is left as <code>NA</code>.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">qclfc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/QcMetric-class.html">qcshow</a></span><span class="op">(</span><span class="va">object</span>, qcdata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">## default</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" QC thresholds:"</span>, <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"explfc"</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" * PSM log2 fold-changes\n"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" * Modified peptide log2 fold-changes\n"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.modpep"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" * Peptide log2 fold-changes\n"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.pep"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" * Protein log2 fold-changes\n"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.prot"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qclfc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"explfc"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         main <span class="op">=</span> <span class="st">""</span>, sub <span class="op">=</span> <span class="st">""</span>, col <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>         ylab <span class="op">=</span> <span class="st">""</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>         xlab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">log</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">~</span><span class="va">fold</span><span class="op">-</span><span class="va">change</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.modpep"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>          col <span class="op">=</span> <span class="st">"steelblue"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.pep"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>          col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.prot"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>          col <span class="op">=</span> <span class="st">"orange"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span>, col <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/rect.html" class="external-link">rect</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="op">-</span><span class="fl">1</span>, <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"#EE000030"</span>,</span>
+<span>         border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"lfc.psm"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>           lty <span class="op">=</span> <span class="st">"dashed"</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PSM"</span>, <span class="st">"Peptides"</span>, <span class="st">"Modified peptides"</span>, <span class="st">"Proteins"</span><span class="op">)</span>,</span>
+<span>           col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"steelblue"</span>, <span class="st">"blue"</span>, <span class="st">"orange"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>           bty <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>A good quality experiment is expected to have a tight distribution
+centred around 0. Major deviations would indicate incomplete
+incorporation, errors in the respective amounts of light and heavy
+material used, and a wide distribution would reflect large variability
+in the data.</p>
+<p>Our last QC item inspects the number of features that have been
+identified in the experiment. We also investigate how many peptides
+(with or without considering the modification) have been observed at the
+PSM level and the number of unique peptides per protein. Here, we do not
+specify any expected values as the number of observed features is
+experiment specific; the QC status is left as <code>NA</code>.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## number of features</span>
-<span class="va">qcnb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Number of features"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcnb</span>, <span class="st">"count"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span>
-    PSM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span>,
-    ModPep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">modpep</span><span class="op">)</span>,
-    Pep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">pep</span><span class="op">)</span>,
-    Prot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">prot</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcnb</span>, <span class="st">"peptab"</span><span class="op">)</span> <span class="op">&lt;-</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Peptide_Sequence</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcnb</span>, <span class="st">"modpeptab"</span><span class="op">)</span> <span class="op">&lt;-</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">modseq</span><span class="op">)</span>
-<span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcnb</span>, <span class="st">"upep.per.prot"</span><span class="op">)</span> <span class="op">&lt;-</span> 
-    <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Number_Of_Unique_Peptides</span></code></pre></div>
-<p>The counts are displayed by the new <code>show</code> and plotted as bar charts by the <code>plot</code> methods.</p>
+<code class="sourceCode R"><span><span class="co">## number of features</span></span>
+<span><span class="va">qcnb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetric-class.html">QcMetric</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Number of features"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcnb</span>, <span class="st">"count"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    PSM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span>,</span>
+<span>    ModPep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">modpep</span><span class="op">)</span>,</span>
+<span>    Pep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">pep</span><span class="op">)</span>,</span>
+<span>    Prot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">prot</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcnb</span>, <span class="st">"peptab"</span><span class="op">)</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Peptide_Sequence</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcnb</span>, <span class="st">"modpeptab"</span><span class="op">)</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">modseq</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">qcnb</span>, <span class="st">"upep.per.prot"</span><span class="op">)</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/featureData.html" class="external-link">fData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">$</span><span class="va">Number_Of_Unique_Peptides</span></span></code></pre></div>
+<p>The counts are displayed by the new <code>show</code> and plotted as
+bar charts by the <code>plot</code> methods.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">qcnb</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/QcMetric-class.html">qcshow</a></span><span class="op">(</span><span class="va">object</span>, qcdata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"count"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="fu"><a href="https://lgatto.github.io/MSnbase/reference/plot-methods.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qcnb</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"count"</span><span class="op">)</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span>, las <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"modpeptab"</span><span class="op">)</span><span class="op">)</span>,
-            xlab <span class="op">=</span> <span class="st">"Modified peptides"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"peptab"</span><span class="op">)</span><span class="op">)</span>,
-            xlab <span class="op">=</span> <span class="st">"Peptides"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"upep.per.prot"</span><span class="op">)</span><span class="op">)</span>,
-            xlab <span class="op">=</span> <span class="st">"Unique peptides per protein "</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
-<p>In the code chunk below, we combine the 3 QC items into a <code>QcMetrics</code> instance and generate a report using meta data extracted from the <code>psm</code> <code>MSnSet</code> instance.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">qcnb</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/QcMetric-class.html">qcshow</a></span><span class="op">(</span><span class="va">object</span>, qcdata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"count"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qcnb</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"count"</span><span class="op">)</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span>, las <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"modpeptab"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>            xlab <span class="op">=</span> <span class="st">"Modified peptides"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"peptab"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>            xlab <span class="op">=</span> <span class="st">"Peptides"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/QcMetric-class.html">qcdata</a></span><span class="op">(</span><span class="va">object</span>, <span class="st">"upep.per.prot"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>            xlab <span class="op">=</span> <span class="st">"Unique peptides per protein "</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>In the code chunk below, we combine the 3 QC items into a
+<code>QcMetrics</code> instance and generate a report using meta data
+extracted from the <code>psm</code> <code>MSnSet</code> instance.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">n15qcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetrics-class.html">QcMetrics</a></span><span class="op">(</span>qcdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="va">qclfc</span>, <span class="va">qcnb</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">n15qcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/QcMetrics-class.html">QcMetrics</a></span><span class="op">(</span>qcdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">qcinc</span>, <span class="va">qclfc</span>, <span class="va">qcnb</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/qcReport-methods.html">qcReport</a></span><span class="op">(</span><span class="va">n15qcm</span>, reportname <span class="op">=</span> <span class="st">"n15qcreport"</span>,
-         title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/internals.html" class="external-link">expinfo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"title"</span><span class="op">]</span>,
-         author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/internals.html" class="external-link">expinfo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"contact"</span><span class="op">]</span>,
-         clean <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>Once an appropriate set of quality metrics has been identified, the generation of the <code>QcMetrics</code> instances can be wrapped up for automation.</p>
-<p>We provide such a wrapper function for this examples: the <code>n15qc</code> function fully automates the above pipeline. The names of the feature variable columns and the thresholds for the two first QC items are provided as arguments. In case no report name is given, a custom title with date and time is used, to avoid overwriting existing reports.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/qcReport-methods.html">qcReport</a></span><span class="op">(</span><span class="va">n15qcm</span>, reportname <span class="op">=</span> <span class="st">"n15qcreport"</span>,</span>
+<span>         title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/internals.html" class="external-link">expinfo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"title"</span><span class="op">]</span>,</span>
+<span>         author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/internals.html" class="external-link">expinfo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/abstract.html" class="external-link">experimentData</a></span><span class="op">(</span><span class="va">psm</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"contact"</span><span class="op">]</span>,</span>
+<span>         clean <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>Once an appropriate set of quality metrics has been identified, the
+generation of the <code>QcMetrics</code> instances can be wrapped up for
+automation.</p>
+<p>We provide such a wrapper function for this examples: the
+<code>n15qc</code> function fully automates the above pipeline. The
+names of the feature variable columns and the thresholds for the two
+first QC items are provided as arguments. In case no report name is
+given, a custom title with date and time is used, to avoid overwriting
+existing reports.</p>
 <div class="figure" style="text-align: center">
 <img src="figs/n15qcreport.png" alt="N15 QC report" width="100%"><p class="caption">
 N15 QC report
@@ -424,57 +580,91 @@ N15 QC report
 </div>
 <p>The complete pdf report is available with</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="fu"><a href="../reference/qcReport-methods.html">example_reports</a></span><span class="op">(</span><span class="st">"n15qc"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="fu"><a href="../reference/qcReport-methods.html">example_reports</a></span><span class="op">(</span><span class="st">"n15qc"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="sec:report" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sec:report" class="anchor" aria-hidden="true"></a>Report generation</h1>
-<p>The report generation is handled by dedicated packages, in particular <code>knitr</code> <span class="citation">(Xie 2013)</span> and <code>markdown</code> <span class="citation">(Allaire et al. 2013)</span>.</p>
-<div id="custom-reports" class="section level2">
-<h2 class="hasAnchor">
-<a href="#custom-reports" class="anchor" aria-hidden="true"></a>Custom reports</h2>
-<div id="templates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#templates" class="anchor" aria-hidden="true"></a>Templates</h3>
-<p>It is possible to customise reports for any of the existing types. The generation of the pdf report is based on a <code>tex</code> template, <code>knitr-template.Rnw</code>, that is available with the package (you can find it with <code>system.file("templates", "knitr-template.Rnw", package = "qcmetrics")</code>). The <code>qcReport</code> method accepts the path to a custom <code>template</code> as argument.</p>
-<p>The template corresponds to a LaTeX preamble with the inclusion of two variables that are passed to the <code>qcReport</code> and used to customise the template: the author’s name and the title of the report. The former is defaulted to the system username with <code>Sys.getenv("USER")</code> and the later is a simple character. The <code>qcReport</code> function also automatically generates summary and session information sections. The core of the QC report, i.e the sections corresponding the the individual <code>QcMetric</code> instances bundled in a <code>QcMetrics</code> input (described in more details below) is then inserted into the template and weaved, or more specifically <code>knit</code>’ted into a tex document that is (if <code>type=pdf</code>) compiled into a pdf document.</p>
-<p>The generation of the html report is enabled by the creation of a R markdown file (Rmd) that is then converted with <code>knitr</code> and <code>markdown</code> into html. The Rmd syntax being much simpler, no Rmd template is needed. It is possible to customise the final html output by providing a css definition as <code>template</code> argument when calling <code>qcReport</code>.</p>
-</div>
-<div id="qcmetric-sections" class="section level3">
-<h3 class="hasAnchor">
-<a href="#qcmetric-sections" class="anchor" aria-hidden="true"></a>QcMetric sections</h3>
-<p>The generation of the sections for <code>QcMetric</code> instances is controlled by a function passed to the <code>qcto</code> argument. This function takes care of transforming an instance of class <code>QcMetric</code> into a character that can be inserted into the report. For the tex and pdf reports, <code>Qc2Tex</code> is used; the Rmd and html reports make use of Qc2Rmd. These functions take an instance of class <code>QcMetrics</code> and the index of the <code>QcMetric</code> to be converted.</p>
+<div class="section level2">
+<h2 id="sec:report">Report generation<a class="anchor" aria-label="anchor" href="#sec:report"></a>
+</h2>
+<p>The report generation is handled by dedicated packages, in particular
+<code>knitr</code> <span class="citation">(Xie 2013)</span> and
+<code>markdown</code> <span class="citation">(Allaire et al.
+2013)</span>.</p>
+<div class="section level3">
+<h3 id="custom-reports">Custom reports<a class="anchor" aria-label="anchor" href="#custom-reports"></a>
+</h3>
+<!-- ### Templates -->
+<!-- It is possible to customise reports for any of the existing types. The -->
+<!-- generation of the pdf report is based on a `tex` template, -->
+<!-- `knitr-template.Rnw`, that is available with the package (you can find -->
+<!-- it with `system.file("templates", "knitr-template.Rnw", package = -->
+<!-- "qcmetrics")`). The `qcReport` method accepts the path to a custom -->
+<!-- `template` as argument. -->
+<!-- The template corresponds to a LaTeX preamble with the inclusion of two -->
+<!-- variables that are passed to the `qcReport` and used to customise the -->
+<!-- template: the author's name and the title of the report. The former is -->
+<!-- defaulted to the system username with `Sys.getenv("USER")` and the -->
+<!-- later is a simple character. The `qcReport` function also -->
+<!-- automatically generates summary and session information sections. The -->
+<!-- core of the QC report, i.e the sections corresponding the the -->
+<!-- individual `QcMetric` instances bundled in a `QcMetrics` input -->
+<!-- (described in more details below) is then inserted into the template -->
+<!-- and weaved, or more specifically `knit`'ted into a tex document that -->
+<!-- is (if `type=pdf`) compiled into a pdf document. -->
+<!-- The generation of the html report is enabled by the creation of a R -->
+<!-- markdown file (Rmd) that is then converted with `knitr` and `markdown` -->
+<!-- into html. The Rmd syntax being much simpler, no Rmd template is -->
+<!-- needed. It is possible to customise the final html output by providing -->
+<!-- a css definition as `template` argument when calling `qcReport`. -->
+<div class="section level4">
+<h4 id="qcmetric-sections">QcMetric sections<a class="anchor" aria-label="anchor" href="#qcmetric-sections"></a>
+</h4>
+<p>The generation of the sections for <code>QcMetric</code> instances is
+controlled by a function passed to the <code>qcto</code> argument. This
+function takes care of transforming an instance of class
+<code>QcMetric</code> into a character that can be inserted into the
+report. For the tex and pdf reports, <code>Qc2Tex</code> is used; the
+Rmd and html reports make use of Qc2Rmd. These functions take an
+instance of class <code>QcMetrics</code> and the index of the
+<code>QcMetric</code> to be converted.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">qcmetrics</span><span class="fu">:::</span><span class="va"><a href="../reference/Qc2Tex.html">Qc2Tex</a></span></code></pre></div>
-<pre><code>## function (object, i) 
-## {
-##     c(paste0("\\section{", name(object[[i]]), "}"), paste0("&lt;&lt;", 
-##         name(object[[i]]), ", echo=FALSE&gt;&gt;="), paste0("show(object[[", 
-##         i, "]])"), "@\n", "\\begin{figure}[!hbt]", "&lt;&lt;dev='pdf', echo=FALSE, fig.width=5, fig.height=5, fig.align='center'&gt;&gt;=", 
-##         paste0("plot(object[[", i, "]])"), "@", "\\end{figure}", 
-##         "\\clearpage")
-## }
-## &lt;bytecode: 0x55bc6c89f7e8&gt;
-## &lt;environment: namespace:qcmetrics&gt;</code></pre>
+<code class="sourceCode R"><span><span class="fu">qcmetrics</span><span class="fu">:::</span><span class="va"><a href="../reference/Qc2Tex.html">Qc2Tex</a></span></span></code></pre></div>
+<pre><code><span><span class="co">## function (object, i) </span></span>
+<span><span class="co">## {</span></span>
+<span><span class="co">##     c(paste0("\\section{", name(object[[i]]), "}"), paste0("&lt;&lt;", </span></span>
+<span><span class="co">##         name(object[[i]]), ", echo=FALSE&gt;&gt;="), paste0("show(object[[", </span></span>
+<span><span class="co">##         i, "]])"), "@\n", "\\begin{figure}[!hbt]", "&lt;&lt;dev='pdf', echo=FALSE, fig.width=5, fig.height=5, fig.align='center'&gt;&gt;=", </span></span>
+<span><span class="co">##         paste0("plot(object[[", i, "]])"), "@", "\\end{figure}", </span></span>
+<span><span class="co">##         "\\clearpage")</span></span>
+<span><span class="co">## }</span></span>
+<span><span class="co">## &lt;bytecode: 0x564b472bd268&gt;</span></span>
+<span><span class="co">## &lt;environment: namespace:qcmetrics&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">qcmetrics</span><span class="fu">:::</span><span class="fu"><a href="../reference/Qc2Tex.html">Qc2Tex</a></span><span class="op">(</span><span class="va">n15qcm</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "\\section{15N incorporation rate}"                                        
-##  [2] "&lt;&lt;15N incorporation rate, echo=FALSE&gt;&gt;="                                  
-##  [3] "show(object[[1]])"                                                        
-##  [4] "@\n"                                                                      
-##  [5] "\\begin{figure}[!hbt]"                                                    
-##  [6] "&lt;&lt;dev='pdf', echo=FALSE, fig.width=5, fig.height=5, fig.align='center'&gt;&gt;="
-##  [7] "plot(object[[1]])"                                                        
-##  [8] "@"                                                                        
-##  [9] "\\end{figure}"                                                            
-## [10] "\\clearpage"</code></pre>
-<p>Let’s investigate how to customise these sections depending on the <code>QcMetric</code> status, the goal being to highlight positive QC results (i.e. when the status is <code>TRUE</code>) with green circles (or smileys), negative results with red cirlces (or frownies) and use en empty black circle if status is <code>NA</code> after the section title (the respective symbols are from the LaTeX package <code>wasysym</code>).</p>
-<pre class="rqc2tex2"><code>Qc2Tex2</code></pre>
-<p>To use this specific sectioning code, we pass our new function as <code>qcto</code> when generating the report. To generate smiley labels, use <code>Qc2Tex3</code>.</p>
+<code class="sourceCode R"><span><span class="fu">qcmetrics</span><span class="fu">:::</span><span class="fu"><a href="../reference/Qc2Tex.html">Qc2Tex</a></span><span class="op">(</span><span class="va">n15qcm</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "\\section{15N incorporation rate}"                                        </span></span>
+<span><span class="co">##  [2] "&lt;&lt;15N incorporation rate, echo=FALSE&gt;&gt;="                                  </span></span>
+<span><span class="co">##  [3] "show(object[[1]])"                                                        </span></span>
+<span><span class="co">##  [4] "@\n"                                                                      </span></span>
+<span><span class="co">##  [5] "\\begin{figure}[!hbt]"                                                    </span></span>
+<span><span class="co">##  [6] "&lt;&lt;dev='pdf', echo=FALSE, fig.width=5, fig.height=5, fig.align='center'&gt;&gt;="</span></span>
+<span><span class="co">##  [7] "plot(object[[1]])"                                                        </span></span>
+<span><span class="co">##  [8] "@"                                                                        </span></span>
+<span><span class="co">##  [9] "\\end{figure}"                                                            </span></span>
+<span><span class="co">## [10] "\\clearpage"</span></span></code></pre>
+<p>Let’s investigate how to customise these sections depending on the
+<code>QcMetric</code> status, the goal being to highlight positive QC
+results (i.e. when the status is <code>TRUE</code>) with green circles
+(or smileys), negative results with red cirlces (or frownies) and use en
+empty black circle if status is <code>NA</code> after the section title
+(the respective symbols are from the LaTeX package
+<code>wasysym</code>).</p>
+<pre class="rqc2tex2"><code><span><span class="va">Qc2Tex2</span></span></code></pre>
+<p>To use this specific sectioning code, we pass our new function as
+<code>qcto</code> when generating the report. To generate smiley labels,
+use <code>Qc2Tex3</code>.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/qcReport-methods.html">qcReport</a></span><span class="op">(</span><span class="va">n15qcm</span>, reportname <span class="op">=</span> <span class="st">"report"</span>, qcto <span class="op">=</span> <span class="va">Qc2Tex2</span><span class="op">)</span>
-<span class="fu"><a href="../reference/qcReport-methods.html">qcReport</a></span><span class="op">(</span><span class="va">n15qcm</span>, reportname <span class="op">=</span> <span class="st">"report"</span>, qcto <span class="op">=</span> <span class="va">Qc2Tex3</span><span class="op">)</span> <span class="co">## for smiley/frowney</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/qcReport-methods.html">qcReport</a></span><span class="op">(</span><span class="va">n15qcm</span>, reportname <span class="op">=</span> <span class="st">"report"</span>, qcto <span class="op">=</span> <span class="va">Qc2Tex2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/qcReport-methods.html">qcReport</a></span><span class="op">(</span><span class="va">n15qcm</span>, reportname <span class="op">=</span> <span class="st">"report"</span>, qcto <span class="op">=</span> <span class="va">Qc2Tex3</span><span class="op">)</span> <span class="co">## for smiley/frowney</span></span></code></pre></div>
 <div class="figure">
 <img src="figs/custom.png" alt="Customised QC report" width="100%"><p class="caption">
 Customised QC report
@@ -482,120 +672,214 @@ Customised QC report
 </div>
 <p>The complete pdf report is available with:</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="fu"><a href="../reference/qcReport-methods.html">example_reports</a></span><span class="op">(</span><span class="st">"custom"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="fu"><a href="../reference/qcReport-methods.html">example_reports</a></span><span class="op">(</span><span class="st">"custom"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="new-report-types" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-report-types" class="anchor" aria-hidden="true"></a>New report types</h2>
+<div class="section level3">
+<h3 id="new-report-types">New report types<a class="anchor" aria-label="anchor" href="#new-report-types"></a>
+</h3>
 <p>A reporting function is a function that</p>
 <ul>
-<li><p>Converts the appropriate QC item sections (for example the <code>Qc2Tex2</code> function described above).</p></li>
-<li><p>Optionally includes the QC item sections into addition header and footer, either by writing these directly or by inserting the sections into an appropriate template. The reporting functions that are available in <code>qcmetrics</code> can be found in <code><a href="../reference/qcReport-methods.html">?qcReport</a></code>: <code>reporting_tex</code> for type tex, <code>reporting\_pdf</code> for type <code>pdf</code>, … These functions should use the same arguments as <code>qcReport</code> insofar as possible.</p></li>
-<li><p>Once written to a report source file, the final report type is generated. <code>knit</code> is used to convert the Rnw source to tex which is compiled into pdf using <code><a href="https://rdrr.io/r/tools/texi2dvi.html" class="external-link">tools::texi2pdf</a></code>. The Rmd content is directly written into a file which is knitted and converted to html using <code>knit2html</code> (which call <code>markdownTOHTML</code>).</p></li>
+<li><p>Converts the appropriate QC item sections (for example the
+<code>Qc2Tex2</code> function described above).</p></li>
+<li><p>Optionally includes the QC item sections into addition header and
+footer, either by writing these directly or by inserting the sections
+into an appropriate template. The reporting functions that are available
+in <code>qcmetrics</code> can be found in <code><a href="../reference/qcReport-methods.html">?qcReport</a></code>:
+<code>reporting_tex</code> for type tex, <code>reporting\_pdf</code> for
+type <code>pdf</code>, … These functions should use the same arguments
+as <code>qcReport</code> insofar as possible.</p></li>
+<li><p>Once written to a report source file, the final report type is
+generated. <code>knit</code> is used to convert the Rnw source to tex
+which is compiled into pdf using <code><a href="https://rdrr.io/r/tools/texi2dvi.html" class="external-link">tools::texi2pdf</a></code>. The Rmd
+content is directly written into a file which is knitted and converted
+to html using <code>knit2html</code> (which call
+<code>markdownTOHTML</code>).</p></li>
 </ul>
-<p>New <code>reporting_abc</code> functions can be called directly or passed to <code>qcReport</code> using the <code>reporter</code> argument.</p>
+<p>New <code>reporting_abc</code> functions can be called directly or
+passed to <code>qcReport</code> using the <code>reporter</code>
+argument.</p>
 </div>
-<div id="sec:qcpkg" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sec:qcpkg" class="anchor" aria-hidden="true"></a>QC packages</h2>
-<p>While the examples presented in section @ref(sec:pipeline) are flexible and fast ways to design QC pipeline prototypes, a more robust mechanism is desirable for production pipelines. The R packaging mechanism is ideally suited for this as it provides versioning, documentation, unit testing and easy distribution and installation facilities.</p>
-<p>While the detailed description of package development is out of the scope of this document, it is of interest to provide an overview of the development of a QC package. Taking the wrapper function, it could be used the create the package structure</p>
+<div class="section level3">
+<h3 id="sec:qcpkg">QC packages<a class="anchor" aria-label="anchor" href="#sec:qcpkg"></a>
+</h3>
+<p>While the examples presented in section @ref(sec:pipeline) are
+flexible and fast ways to design QC pipeline prototypes, a more robust
+mechanism is desirable for production pipelines. The R packaging
+mechanism is ideally suited for this as it provides versioning,
+documentation, unit testing and easy distribution and installation
+facilities.</p>
+<p>While the detailed description of package development is out of the
+scope of this document, it is of interest to provide an overview of the
+development of a QC package. Taking the wrapper function, it could be
+used the create the package structure</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/package.skeleton.html" class="external-link">package.skeleton</a></span><span class="op">(</span><span class="st">"N15QC"</span>, list <span class="op">=</span> <span class="st">"n15qc"</span><span class="op">)</span></code></pre></div>
-<p>The <code>DESCRIPTION</code> file would need to be updated. The packages <code>qcmetrics</code>, and <code>MSnbas</code> would need to be specified as dependencies in the <code>Imports:</code> line and imported in the <code>NAMESPACE</code> file. The documentation file <code>N15QC/man/n15qc.Rd</code> and the (optional)  would need to be updated. q</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/package.skeleton.html" class="external-link">package.skeleton</a></span><span class="op">(</span><span class="st">"N15QC"</span>, list <span class="op">=</span> <span class="st">"n15qc"</span><span class="op">)</span></span></code></pre></div>
+<p>The <code>DESCRIPTION</code> file would need to be updated. The
+packages <code>qcmetrics</code>, and <code>MSnbas</code> would need to
+be specified as dependencies in the <code>Imports:</code> line and
+imported in the <code>NAMESPACE</code> file. The documentation file
+<code>N15QC/man/n15qc.Rd</code> and the (optional) would need to be
+updated. q</p>
 </div>
 </div>
-<div id="sec:ccl" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sec:ccl" class="anchor" aria-hidden="true"></a>Conclusions</h1>
-<p>R and Bioconductor are well suited for the analysis of high throughput biology data. They provide first class statistical routines, excellent graph capabilities and an interface of choice to import and manipulate various omics data, as demonstrated by the wealth of packages that provide <a href="http://bioconductor.org/packages/release/BiocViews.html#___QualityControl" class="external-link">functionalities for QC</a>.</p>
-<p>The <code>qcmetrics</code> package is different than existing R packages and QC systems in general. It proposes a unique domain-independent framework to design QC pipelines and is thus suited for any use case. The examples presented in this document illustrated the application of <code>qcmetrics</code> on data containing single or multiple samples or experimental runs from different technologies. It is also possible to automate the generation of QC metrics for a set of repeated (and growing) analyses of standard samples to establish <em>lab memory</em> types of QC reports, that track a set of metrics for controlled standard samples over time. It can be applied to raw data or processed data and tailored to suite precise needs. The popularisation of integrative approaches that combine multiple types of data in novel ways stresses out the need for flexible QC development.</p>
-<p><code>qcmetrics</code> is a versatile software that allows rapid and easy QC pipeline prototyping and development and supports straightforward migration to production level systems through its well defined packaging mechanism.</p>
-<p><strong>Acknowledgements</strong>: Many thanks to Arnoud Groen for providing the N15 data and Andrzej Oles for helpful comments and suggestions about the package and this document.</p>
+<div class="section level2">
+<h2 id="sec:ccl">Conclusions<a class="anchor" aria-label="anchor" href="#sec:ccl"></a>
+</h2>
+<p>R and Bioconductor are well suited for the analysis of high
+throughput biology data. They provide first class statistical routines,
+excellent graph capabilities and an interface of choice to import and
+manipulate various omics data, as demonstrated by the wealth of packages
+that provide <a href="http://bioconductor.org/packages/release/BiocViews.html#___QualityControl" class="external-link">functionalities
+for QC</a>.</p>
+<p>The <code>qcmetrics</code> package is different than existing R
+packages and QC systems in general. It proposes a unique
+domain-independent framework to design QC pipelines and is thus suited
+for any use case. The examples presented in this document illustrated
+the application of <code>qcmetrics</code> on data containing single or
+multiple samples or experimental runs from different technologies. It is
+also possible to automate the generation of QC metrics for a set of
+repeated (and growing) analyses of standard samples to establish <em>lab
+memory</em> types of QC reports, that track a set of metrics for
+controlled standard samples over time. It can be applied to raw data or
+processed data and tailored to suite precise needs. The popularisation
+of integrative approaches that combine multiple types of data in novel
+ways stresses out the need for flexible QC development.</p>
+<p><code>qcmetrics</code> is a versatile software that allows rapid and
+easy QC pipeline prototyping and development and supports
+straightforward migration to production level systems through its well
+defined packaging mechanism.</p>
+<p><strong>Acknowledgements</strong>: Many thanks to Arnoud Groen for
+providing the N15 data and Andrzej Oles for helpful comments and
+suggestions about the package and this document.</p>
 </div>
-<div id="sec:sessionInfo" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sec:sessionInfo" class="anchor" aria-hidden="true"></a>Session information</h1>
-<p>All software and respective versions used to produce this document are listed below.</p>
+<div class="section level2">
+<h2 id="sec:sessionInfo">Session information<a class="anchor" aria-label="anchor" href="#sec:sessionInfo"></a>
+</h2>
+<p>All software and respective versions used to produce this document
+are listed below.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.1.0 (2021-05-18)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
-## 
-## Matrix products: default
-## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
-## 
-## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## attached base packages:
-## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
-## [8] base     
-## 
-## other attached packages:
-##  [1] ggplot2_3.3.5       MSnbase_2.19.1      ProtGenerics_1.25.1
-##  [4] S4Vectors_0.31.0    Biobase_2.53.0      BiocGenerics_0.39.1
-##  [7] mzR_2.27.1          Rcpp_1.0.7          qcmetrics_1.31.1   
-## [10] BiocStyle_2.21.3   
-## 
-## loaded via a namespace (and not attached):
-##  [1] sass_0.4.0            vsn_3.61.2            jsonlite_1.7.2       
-##  [4] foreach_1.5.1         bslib_0.2.5.1         highr_0.9            
-##  [7] BiocManager_1.30.16   affy_1.71.0           pander_0.6.4         
-## [10] yaml_2.2.1            impute_1.67.0         pillar_1.6.2         
-## [13] lattice_0.20-44       glue_1.4.2            limma_3.49.1         
-## [16] digest_0.6.27         colorspace_2.0-2      htmltools_0.5.1.1    
-## [19] preprocessCore_1.55.2 plyr_1.8.6            MALDIquant_1.20      
-## [22] XML_3.99-0.6          pkgconfig_2.0.3       bookdown_0.22        
-## [25] zlibbioc_1.39.0       xtable_1.8-4          scales_1.1.1         
-## [28] affyio_1.63.1         BiocParallel_1.27.2   tibble_3.1.3         
-## [31] IRanges_2.27.0        ellipsis_0.3.2        withr_2.4.2          
-## [34] cachem_1.0.5          magrittr_2.0.1        crayon_1.4.1         
-## [37] memoise_2.0.0         evaluate_0.14         fs_1.5.0             
-## [40] ncdf4_1.17            fansi_0.5.0           doParallel_1.0.16    
-## [43] MASS_7.3-54           textshaping_0.3.5     tools_4.1.0          
-## [46] lifecycle_1.0.0       stringr_1.4.0         munsell_0.5.0        
-## [49] cluster_2.1.2         pcaMethods_1.85.0     compiler_4.1.0       
-## [52] pkgdown_1.6.1.9001    jquerylib_0.1.4       mzID_1.31.0          
-## [55] systemfonts_1.0.2     rlang_0.4.11          grid_4.1.0           
-## [58] iterators_1.0.13      MsCoreUtils_1.5.0     rmarkdown_2.9        
-## [61] gtable_0.3.0          codetools_0.2-18      R6_2.5.0             
-## [64] knitr_1.33            fastmap_1.1.0         utf8_1.2.2           
-## [67] clue_0.3-59           rprojroot_2.0.2       ragg_1.1.3           
-## [70] desc_1.3.0            stringi_1.7.3         parallel_4.1.0       
-## [73] vctrs_0.3.8           xfun_0.24</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## R Under development (unstable) (2024-01-31 r85845)</span></span>
+<span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.3 LTS</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Matrix products: default</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## locale:</span></span>
+<span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
+<span><span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
+<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
+<span><span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
+<span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
+<span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## time zone: UTC</span></span>
+<span><span class="co">## tzcode source: system (glibc)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attached base packages:</span></span>
+<span><span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span><span class="co">## [8] base     </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## other attached packages:</span></span>
+<span><span class="co">##  [1] ggplot2_3.4.4       MSnbase_2.29.3      ProtGenerics_1.35.2</span></span>
+<span><span class="co">##  [4] S4Vectors_0.41.3    Biobase_2.63.0      BiocGenerics_0.49.1</span></span>
+<span><span class="co">##  [7] mzR_2.37.0          Rcpp_1.0.12         qcmetrics_1.41.1   </span></span>
+<span><span class="co">## [10] BiocStyle_2.31.0   </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span><span class="co">##  [1] bitops_1.0-7                rlang_1.1.3                </span></span>
+<span><span class="co">##  [3] magrittr_2.0.3              clue_0.3-65                </span></span>
+<span><span class="co">##  [5] matrixStats_1.2.0           compiler_4.4.0             </span></span>
+<span><span class="co">##  [7] systemfonts_1.0.5           vctrs_0.6.5                </span></span>
+<span><span class="co">##  [9] stringr_1.5.1               pkgconfig_2.0.3            </span></span>
+<span><span class="co">## [11] crayon_1.5.2                fastmap_1.1.1              </span></span>
+<span><span class="co">## [13] XVector_0.43.1              pander_0.6.5               </span></span>
+<span><span class="co">## [15] utf8_1.2.4                  rmarkdown_2.25             </span></span>
+<span><span class="co">## [17] preprocessCore_1.65.0       ragg_1.2.7                 </span></span>
+<span><span class="co">## [19] purrr_1.0.2                 xfun_0.41                  </span></span>
+<span><span class="co">## [21] MultiAssayExperiment_1.29.0 zlibbioc_1.49.0            </span></span>
+<span><span class="co">## [23] cachem_1.0.8                GenomeInfoDb_1.39.5        </span></span>
+<span><span class="co">## [25] jsonlite_1.8.8              highr_0.10                 </span></span>
+<span><span class="co">## [27] DelayedArray_0.29.1         BiocParallel_1.37.0        </span></span>
+<span><span class="co">## [29] parallel_4.4.0              cluster_2.1.6              </span></span>
+<span><span class="co">## [31] R6_2.5.1                    bslib_0.6.1                </span></span>
+<span><span class="co">## [33] stringi_1.8.3               limma_3.59.1               </span></span>
+<span><span class="co">## [35] GenomicRanges_1.55.2        jquerylib_0.1.4            </span></span>
+<span><span class="co">## [37] iterators_1.0.14            bookdown_0.37              </span></span>
+<span><span class="co">## [39] SummarizedExperiment_1.33.3 knitr_1.45                 </span></span>
+<span><span class="co">## [41] IRanges_2.37.1              Matrix_1.6-5               </span></span>
+<span><span class="co">## [43] igraph_2.0.1.1              tidyselect_1.2.0           </span></span>
+<span><span class="co">## [45] abind_1.4-5                 yaml_2.3.8                 </span></span>
+<span><span class="co">## [47] doParallel_1.0.17           codetools_0.2-19           </span></span>
+<span><span class="co">## [49] affy_1.81.0                 lattice_0.22-5             </span></span>
+<span><span class="co">## [51] tibble_3.2.1                plyr_1.8.9                 </span></span>
+<span><span class="co">## [53] withr_3.0.0                 evaluate_0.23              </span></span>
+<span><span class="co">## [55] desc_1.4.3                  pillar_1.9.0               </span></span>
+<span><span class="co">## [57] affyio_1.73.0               BiocManager_1.30.22        </span></span>
+<span><span class="co">## [59] MatrixGenerics_1.15.0       foreach_1.5.2              </span></span>
+<span><span class="co">## [61] MALDIquant_1.22.2           ncdf4_1.22                 </span></span>
+<span><span class="co">## [63] generics_0.1.3              RCurl_1.98-1.14            </span></span>
+<span><span class="co">## [65] munsell_0.5.0               scales_1.3.0               </span></span>
+<span><span class="co">## [67] xtable_1.8-4                glue_1.7.0                 </span></span>
+<span><span class="co">## [69] lazyeval_0.2.2              tools_4.4.0                </span></span>
+<span><span class="co">## [71] mzID_1.41.0                 QFeatures_1.13.2           </span></span>
+<span><span class="co">## [73] vsn_3.71.0                  fs_1.6.3                   </span></span>
+<span><span class="co">## [75] XML_3.99-0.16.1             grid_4.4.0                 </span></span>
+<span><span class="co">## [77] impute_1.77.0               MsCoreUtils_1.15.3         </span></span>
+<span><span class="co">## [79] colorspace_2.1-0            GenomeInfoDbData_1.2.11    </span></span>
+<span><span class="co">## [81] PSMatch_1.7.1               cli_3.6.2                  </span></span>
+<span><span class="co">## [83] textshaping_0.3.7           fansi_1.0.6                </span></span>
+<span><span class="co">## [85] S4Arrays_1.3.3              dplyr_1.1.4                </span></span>
+<span><span class="co">## [87] AnnotationFilter_1.27.0     pcaMethods_1.95.0          </span></span>
+<span><span class="co">## [89] gtable_0.3.4                sass_0.4.8                 </span></span>
+<span><span class="co">## [91] digest_0.6.34               SparseArray_1.3.3          </span></span>
+<span><span class="co">## [93] memoise_2.0.1               htmltools_0.5.7            </span></span>
+<span><span class="co">## [95] pkgdown_2.0.7.9000          lifecycle_1.0.4            </span></span>
+<span><span class="co">## [97] statmod_1.5.0               MASS_7.3-60.2</span></span></code></pre>
 </div>
-<div id="references" class="section level1 unnumbered">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor" aria-hidden="true"></a>References</h1>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-markdown" class="csl-entry">
-Allaire, JJ, J Horner, V Marti, and N Porte. 2013. <em>Markdown: Markdown Rendering for r</em>. <a href="http://CRAN.R-project.org/package=markdown" class="external-link">http://CRAN.R-project.org/package=markdown</a>.
+Allaire, JJ, J Horner, V Marti, and N Porte. 2013. <em>Markdown:
+Markdown Rendering for r</em>. <a href="http://CRAN.R-project.org/package=markdown" class="external-link">http://CRAN.R-project.org/package=markdown</a>.
 </div>
 <div id="ref-Foster:2011" class="csl-entry">
-Foster, K M, S Degroeve, L Gatto, M Visser, R Wang, K Griss, R Apweiler, and L Martens. 2011. <span>“A Posteriori Quality Control for the Curation and Reuse of Public Proteomics Data.”</span> <em>Proteomics</em> 11 (11): 2182–94. <a href="https://doi.org/10.1002/pmic.201000602" class="external-link">https://doi.org/10.1002/pmic.201000602</a>.
+Foster, K M, S Degroeve, L Gatto, M Visser, R Wang, K Griss, R Apweiler,
+and L Martens. 2011. <span>“A Posteriori Quality Control for the
+Curation and Reuse of Public Proteomics Data.”</span>
+<em>Proteomics</em> 11 (11): 2182–94. <a href="https://doi.org/10.1002/pmic.201000602" class="external-link">https://doi.org/10.1002/pmic.201000602</a>.
 </div>
 <div id="ref-Gatto:2012" class="csl-entry">
-Gatto, L, and K S Lilley. 2012. <span>“<span>MS</span>nbase – an <span>R</span>/<span>B</span>ioconductor Package for Isobaric Tagged Mass Spectrometry Data Visualization, Processing and Quantitation.”</span> <em>Bioinformatics</em> 28 (2): 288–89. <a href="https://doi.org/10.1093/bioinformatics/btr645" class="external-link">https://doi.org/10.1093/bioinformatics/btr645</a>.
+Gatto, L, and K S Lilley. 2012. <span>“<span>MS</span>nbase – an
+<span>R</span>/<span>B</span>ioconductor Package for Isobaric Tagged
+Mass Spectrometry Data Visualization, Processing and
+Quantitation.”</span> <em>Bioinformatics</em> 28 (2): 288–89. <a href="https://doi.org/10.1093/bioinformatics/btr645" class="external-link">https://doi.org/10.1093/bioinformatics/btr645</a>.
 </div>
 <div id="ref-Groen:2013" class="csl-entry">
-Groen, A, L Thomas, K Lilley, and C Marondedze. 2013. <span>“Identification and Quantitation of Signal Molecule-Dependent Protein Phosphorylation.”</span> <em>Methods Mol Biol</em> 1016: 121–37. <a href="https://doi.org/10.1007/978-1-62703-441-8_9" class="external-link">https://doi.org/10.1007/978-1-62703-441-8_9</a>.
+Groen, A, L Thomas, K Lilley, and C Marondedze. 2013.
+<span>“Identification and Quantitation of Signal Molecule-Dependent
+Protein Phosphorylation.”</span> <em>Methods Mol Biol</em> 1016: 121–37.
+<a href="https://doi.org/10.1007/978-1-62703-441-8_9" class="external-link">https://doi.org/10.1007/978-1-62703-441-8_9</a>.
 </div>
 <div id="ref-Krijgsveld:2003" class="csl-entry">
-Krijgsveld, J, R F Ketting, T Mahmoudi, J Johansen, M Artal-Sanz, C P Verrijzer, R H Plasterk, and A J Heck. 2003. <span>“Metabolic Labeling of c. Elegans and d. Melanogaster for Quantitative Proteomics.”</span> <em>Nat Biotechnol</em> 21 (8): 927–31. <a href="https://doi.org/10.1038/nbt848" class="external-link">https://doi.org/10.1038/nbt848</a>.
+Krijgsveld, J, R F Ketting, T Mahmoudi, J Johansen, M Artal-Sanz, C P
+Verrijzer, R H Plasterk, and A J Heck. 2003. <span>“Metabolic Labeling
+of c. Elegans and d. Melanogaster for Quantitative Proteomics.”</span>
+<em>Nat Biotechnol</em> 21 (8): 927–31. <a href="https://doi.org/10.1038/nbt848" class="external-link">https://doi.org/10.1038/nbt848</a>.
 </div>
 <div id="ref-Pedrioli:2004" class="csl-entry">
-Pedrioli, P G A, and others. 2004. <span>“A Common Open Representation of Mass Spectrometry Data and Its Application to Proteomics Research.”</span> <em>Nat. Biotechnol.</em> 22 (11): 1459–66. <a href="https://doi.org/10.1038/nbt1031" class="external-link">https://doi.org/10.1038/nbt1031</a>.
+Pedrioli, P G A et al. 2004. <span>“A Common Open Representation of Mass
+Spectrometry Data and Its Application to Proteomics Research.”</span>
+<em>Nat. Biotechnol.</em> 22 (11): 1459–66. <a href="https://doi.org/10.1038/nbt1031" class="external-link">https://doi.org/10.1038/nbt1031</a>.
 </div>
 <div id="ref-Xie:2013" class="csl-entry">
-Xie, Y. 2013. <em>Dynamic Documents with <span>R</span> and Knitr</em>. Chapman; Hall/CRC. <a href="http://yihui.name/knitr/" class="external-link">http://yihui.name/knitr/</a>.
+Xie, Y. 2013. <em>Dynamic Documents with <span>R</span> and Knitr</em>.
+Chapman; Hall/CRC. <a href="http://yihui.name/knitr/" class="external-link">http://yihui.name/knitr/</a>.
 </div>
 </div>
 </div>
@@ -618,7 +902,7 @@ Xie, Y. 2013. <em>Dynamic Documents with <span>R</span> and Knitr</em>. Chapman;
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer>

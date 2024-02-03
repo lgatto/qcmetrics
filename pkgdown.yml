@@ -1,7 +1,7 @@
-pandoc: 2.11.4
-pkgdown: 1.6.1.9001
-pkgdown_sha: ce9781a15c7ea07df9fb17a11295ba4abec0b54b
+pandoc: 3.1.1
+pkgdown: 2.0.7.9000
+pkgdown_sha: 3979e7c0afbba4503248dc8a6d04fe0a2e03f26f
 articles:
   qcmetrics: qcmetrics.html
-last_built: 2021-08-01T15:29Z
+last_built: 2024-02-03T05:21Z
 
