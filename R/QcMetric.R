@@ -85,8 +85,8 @@ setMethod("qcdata", c("QcMetric", "character"),
 setReplaceMethod("qcdata",
                  signature(object="QcMetric", value="ANY"),
                  function(object, var, value) {
-                     if (missing(value) & is.environment(var)) {
-                         object@qcdata <- var
+                     if (missing(var) & is.environment(value)) {
+                         object@qcdata <- value
                      } else {
                          objs <- qcdata(object)
                          if (var %in% objs)

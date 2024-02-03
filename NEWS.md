@@ -1,3 +1,8 @@
+# qcmetrics 1.41
+
+## qcmetrics 1.41.1
+- Fix bug when when setting the env.
+
 # qcmetrics 1.31
 
 ## qcmetrics 1.31.1
