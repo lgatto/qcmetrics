@@ -2,6 +2,7 @@
 
 ## qcmetrics 1.41.1
 - Fix bug when when setting the env.
+- Remove template reporting argument.
 
 # qcmetrics 1.31
 

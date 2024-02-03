@@ -33,7 +33,7 @@
 \title{The \code{"QcMetric"} class for QC items}
 
 \description{
-  Data structure for individual QC metrics items. 
+  Data structure for individual QC metrics items.
 }
 
 \section{Objects from the Class}{
@@ -45,7 +45,7 @@
     \item{\code{name}:}{Object of class \code{"character"} of length 1
       naming the \code{object}. }
     \item{\code{description}:}{Object of class \code{"character"} of
-      arbitrary length describing the qc metric in more details. }    
+      arbitrary length describing the qc metric in more details. }
     \item{\code{qcdata}:}{Object of class \code{"environment"} that
       stores the actual data. }
     \item{\code{plot}:}{Object of class \code{"function"} to graphically
@@ -55,29 +55,29 @@
       default value is provided. }
     \item{\code{status}:}{Object of class \code{"logical"} that
       indicates weather the data passes (\code{TRUE}) or fails
-      (\code{FALSE}) the metric or has not yet been evaluated. } 
+      (\code{FALSE}) the metric or has not yet been evaluated. }
   }
 }
 
 \section{Methods}{
   \describe{
     \item{name}{\code{signature(object = "QcMetric")}: retrieves the
-      name of the \code{object}. }	
+      name of the \code{object}. }
     \item{name<-}{\code{signature(object = "QcMetric", value =
-	"character")}: set the name of the \code{object}. }
+        "character")}: set the name of the \code{object}. }
     \item{description}{\code{signature(object = "QcMetric")}: retrieves the
-      description of the \code{object}. }	
+      description of the \code{object}. }
     \item{description<-}{\code{signature(object = "QcMetric", value =
-	"character")}: set the description of the \code{object}. }
+        "character")}: set the description of the \code{object}. }
     \item{status}{\code{signature(object = "QcMetric")}: retrieves the
       status of the \code{object}. }
     \item{status<-}{\code{signature(object = "QcMetric", value =
-	"logical")}: sets the status of the \code{object}s. }    
+        "logical")}: sets the status of the \code{object}s. }
     \item{qcdata}{\code{signature(object = "QcMetric", x = "missing")}:
       lists all the data \code{object}s that are associated with the
-      \code{object}s. }  
+      \code{object}s. }
     \item{qcdata}{\code{signature(object = "QcMetric", x =
-	"character")}: retrieves the variable \code{x} for the
+        "character")}: retrieves the variable \code{x} for the
       \code{object}. }
     \item{qcdata<-}{\code{signature(object = "QcMetric", var)}: creates
       or overwrites (with a message) the data variable \code{var} by
@@ -89,22 +89,22 @@
     \item{qcenv<-}{\code{signature(object = "QcMetric")}:
       Set all variable in the RHS \code{environment} as \code{qcdata}
       variables. Equivalent to \code{qcdata(object) <- x} where \code{x}
-      is an environment. } 
+      is an environment. }
     \item{show}{\code{signature(object = "QcMetric")}: shows a textual
       summary of \code{object}. The default \code{show} implementation
       is available as the \code{qcshow{object, qcdata}} function. The
       second argument is a logical (default is \code{TRUE}) that
       specifies whether \code{qcdata(object)} should be displayed. }
     \item{show<-}{\code{signature(object = "QcMetric", value =
-	"function")}: sets a custom \code{show} method for
-      \code{object}. } 
+        "function")}: sets a custom \code{show} method for
+      \code{object}. }
     \item{plot}{\code{signature(x = "QcMetric", y = "missing")}: plots
       the \code{object} using the provide \code{show} method. }
     \item{plot<-}{\code{signature(object = "QcMetric", value =
-	"function")}: sets a custom \code{plot} method for
+        "function")}: sets a custom \code{plot} method for
       \code{object}. }
-    \item{qcReport}{\code{signature(x = "QcMetric", ...)}: to generate 
-      quality reports. See \code{\link{qcReport}} for details. }    
+    \item{qcReport}{\code{signature(x = "QcMetric", ...)}: to generate
+      quality reports. See \code{\link{qcReport}} for details. }
   }
 }
 
@@ -115,7 +115,7 @@
 
 \seealso{
   The \code{\link{QcMetrics}} class to bundle a set of
-  \code{QcMetric} instances. 
+  \code{QcMetric} instances.
 }
 \examples{
 (qc <- QcMetric())
@@ -137,7 +137,7 @@ qc
 e <- new.env()
 e$qc1 <- rnorm(100)
 e$qc2 <- 1:100
-qcdata(qc) <- e
+qcenv(qc) <- e
 length(qcdata(qc, "qc1"))
 head(qcdata(qc, "qc2"))
 
@@ -150,7 +150,7 @@ qc
 
 plot(qc)
 plot(qc) <-
-    function(object, ...) 
+    function(object, ...)
         plot(qcdata(object, "qc2"),
              qcdata(object, "qc1"),
              xlab = "qc1",
@@ -159,10 +159,6 @@ plot(qc) <-
 plot(qc)
 plot(qc, col = "red", pch = 19)
 
-\dontrun{
-    ## generate a report 
-    qcReport(qcm)
-}
 }
 
 \keyword{classes}

@@ -8,7 +8,6 @@ setMethod("qcReport", "QcMetrics",
                    toc = FALSE,
                    summary = TRUE,
                    sessioninfo = TRUE,
-                   template = NULL,
                    clean = TRUE,
                    quiet = TRUE,
                    reporter,
@@ -37,11 +36,11 @@ setMethod("qcReport", "QcMetrics",
                       USE.NAMES = FALSE
                   ),
                   add = TRUE)
-                  
+
                   ## reset to knitr defaults
                   lapply(opts, function(name)
                       .subset2(get(name), "restore")())
-                
+
                   out <- switch(type,
                                 Rmd = reporting_rmd(object, reportname,
                                     author, title, meta,
@@ -50,18 +49,16 @@ setMethod("qcReport", "QcMetrics",
                                 html = reporting_html(object, reportname,
                                     author, title, meta,
                                     summary, sessioninfo,
-                                    template, clean, quiet, qcto),
+                                    clean, quiet, qcto),
                                 tex = reporting_tex(object, reportname,
                                     author, title, meta,
                                     toc, summary, sessioninfo,
-                                    template, quiet, qcto),
+                                    quiet, qcto),
                                 pdf = reporting_pdf(object, reportname,
                                     author, title, meta,
-                                    toc, summary, sessioninfo,                  
-                                    template,
+                                    toc, summary, sessioninfo,
                                     clean, quiet, qcto, ...))
               }
-              message("Report written to ", out)   
+              message("Report written to ", out)
               invisible(out)
           })
-

@@ -19,7 +19,7 @@ reporting_rmd <- function(object,
     .date <- paste0("Date: ", date(), "\n\n")
     writeLines(c(title, author, .date), con)
     if (meta)
-        writeLines(metadata_rmd(object@metadata), con)    
+        writeLines(metadata_rmd(object@metadata), con)
     for (i in 1:length(object))
         writeLines(qcto(object, i),
                    con)
@@ -47,11 +47,10 @@ reporting_html <- function(object,
                            reportname = reportname,
                            author = author,
                            title = title,
-                           meta = meta, 
+                           meta = meta,
                            summary = summary,
                            sessioninfo = sessioninfo,
-                           template,
-                           clean = clean, 
+                           clean = clean,
                            quiet = quiet,
                            qcto) {
     if (is.null(qcto))
@@ -78,7 +77,7 @@ reporting_html <- function(object,
                          print.results = FALSE),
                    con)
     }
-    if (sessioninfo) 
+    if (sessioninfo)
         writeLines(c("Session information",
                      "-------------------------\n",
                      "```{r echo=FALSE}",
@@ -86,18 +85,11 @@ reporting_html <- function(object,
                      "```"),
                    con)
     close(con)
-    ## procude html    
+    ## procude html
     ext <- "html"
-    if (!is.null(template)) {
-        out <- knit2html(out,
-                         output = paste(reportname, ext, sep = "."),
-                         stylesheet = template, 
-                         quiet = quiet)
-    } else {
-        out <- knit2html(out,
-                         output = paste(reportname, ext, sep = "."),
-                         quiet = quiet)
-    }        
+    out <- knit2html(out,
+                     output = paste(reportname, ext, sep = "."),
+                     quiet = quiet)
     if (clean) {
         unlink(paste(reportname, "Rmd", sep = "."))
         unlink(paste(reportname, "md", sep = "."))
@@ -113,8 +105,7 @@ reporting_pdf <- function(object,
                           toc = toc,
                           summary = summary,
                           sessioninfo = sessioninfo,
-                          template = template,
-                          clean = clean, 
+                          clean = clean,
                           quiet = clean,
                           qcto,
                           ...) {
@@ -128,9 +119,8 @@ reporting_pdf <- function(object,
                          toc = toc,
                          summary = summary,
                          sessioninfo = sessioninfo,
-                         template = template,
                          quiet = quiet,
-                         qcto = qcto)     
+                         qcto = qcto)
     ext <- "pdf"
     tools::texi2pdf(out, quiet = quiet, clean = clean, ...)
     out <- paste(reportname, ext, sep = ".")
@@ -150,16 +140,14 @@ reporting_tex <- function(object,
                           toc = toc,
                           summary = summary,
                           sessioninfo = sessioninfo,
-                          template = template,
-                          ## clean -  no tex files cleaning 
+                          ## clean -  no tex files cleaning
                           quiet = quiet,
                           qcto) {
     if (is.null(qcto))
         qcto <- Qc2Tex
     ext <- "tex"
-    if (is.null(template)) 
-        template <- system.file("templates", "knitr-template.Rnw",
-                                package = "qcmetrics")
+    template <- system.file("templates", "knitr-template.Rnw",
+                            package = "qcmetrics")
     parent <- c('<<parent, include = FALSE>>=',
                 paste0('set_parent("', template , '")'),
                 '@')
@@ -178,19 +166,19 @@ reporting_tex <- function(object,
                  function(i) qcto(object, i))
     ex <- append(list(mktitle, toc, parent, mtd), ex)
     if (summary)
-        ex <- append(ex, 
+        ex <- append(ex,
                      c("\\clearpage",
                        "\\section{QC summary}",
                        "<<summary, results = 'asis', echo = FALSE>>=",
                        "library('xtable')",
                        "xtable(as(object, 'data.frame'))",
                        "@"))
-    if (sessioninfo) 
+    if (sessioninfo)
         ex <- append(ex,
                      list(c("\\section{Session information}",
                             "<<session-info, cache=FALSE, results = 'asis', echo=FALSE>>=",
                             "toLatex(sessionInfo())",
-                            "@")))                 
+                            "@")))
     ## generate tex file
     opts_knit$set(out.format = "latex")
     out <- knit(text = unlist(ex),
@@ -237,7 +225,7 @@ Qc2Tex2 <- function(object, i) {
         symb <- "{\\color{red} $\\CIRCLE$}"
     }
     sec <- paste0("\\section{", nm,
-                  "\\hspace{2mm}", symb, "}")    
+                  "\\hspace{2mm}", symb, "}")
     cont <- c(paste0("<<", name(object[[i]]), ", echo=FALSE>>="),
               paste0("show(object[[", i, "]])"),
               "@\n",
@@ -260,7 +248,7 @@ Qc2Tex3 <- function(object, i) {
         symb <- "{\\color{red} $\\frownie$}"
     }
     sec <- paste0("\\section{", nm,
-                  "\\hspace{2mm}", symb, "}")    
+                  "\\hspace{2mm}", symb, "}")
     cont <- c(paste0("<<", name(object[[i]]), ", echo=FALSE>>="),
               paste0("show(object[[", i, "]])"),
               "@\n",
@@ -298,7 +286,7 @@ metadata_rmd <-
         }
         c(mdsec, "\n")
     }
-     
+
 metadata_tex <-
     metadata_pdf <- function(object) {
         stopifnot(class(object) == "QcMetadata")
@@ -308,7 +296,7 @@ metadata_tex <-
             names(object) <-
                 paste0("Metadata ", 1:n)
         mdsec <- c(mdsec, "\\begin{description}")
-        for (i in seq_len(n)) {            
+        for (i in seq_len(n)) {
             if (is.vector(metadata(object)[[i]])) {
                 mdsec <- c(mdsec,
                            paste0("\\item[",

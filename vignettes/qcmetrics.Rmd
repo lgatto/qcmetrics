@@ -8,7 +8,7 @@ abstract: >
   automatic report generation. This document briefly illustrates the
   core data structures and then demonstrates the generation and
   automation of quality control reports for microarray and proteomics
-  data.  
+  data.
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -185,7 +185,7 @@ the package. The data is loaded with
 ```{r}
 load(system.file("extdata/exp.rda", package = "qcmetrics"))
 ```
-	
+
 The `QcMetrics` will consist of 3 items, namely a chromatogram
 constructed with the MS2 spectra precursor's intensities, a figure
 illustrating the precursor charges in the MS space and an m/z delta
@@ -211,7 +211,7 @@ plot(qc1) <- function(object, ...)
 ```{r protqc2, cache = TRUE}
 qc2 <- QcMetric(name = "MS space")
 qcdata(qc2, "p2d") <- plot2d(exp, z = "charge", plot = FALSE)
-plot(qc2) <- function(object) { 
+plot(qc2) <- function(object) {
     require("ggplot2")
     print(qcdata(object, "p2d"))
 }
@@ -221,7 +221,7 @@ plot(qc2) <- function(object) {
 qc3 <- QcMetric(name = "m/z delta plot")
 qcdata(qc3, "pmz") <- plotMzDelta(exp, plot = FALSE,
                                   verbose = FALSE)
-plot(qc3) <- function(object) 
+plot(qc3) <- function(object)
     suppressWarnings(print(qcdata(object, "pmz")))
 ```
 
@@ -321,7 +321,7 @@ values of the variable's distribution.
 
 ```{r qcinc2}
 show(qcinc) <- function(object) {
-    qcshow(object, qcdata = FALSE) 
+    qcshow(object, qcdata = FALSE)
     cat(" QC threshold:", qcdata(object, "tr"), "\n")
     cat(" Incorporation rate\n")
     print(summary(qcdata(object, "inc")))
@@ -343,12 +343,12 @@ plot(qcinc) <- function(object) {
     lab <- "Incorporation rate"
     dd <- data.frame(inc = qcdata(qcinc, "inc"))
     p <- ggplot(dd, aes(factor(""), inc)) +
-        geom_jitter(colour = "#4582B370", size = 3) + 
+        geom_jitter(colour = "#4582B370", size = 3) +
     geom_boxplot(fill = "#FFFFFFD0", colour = "#000000",
                  outlier.size = 0) +
     geom_hline(yintercept = tr, colour = "red",
                linetype = "dotted", size = 1) +
-    labs(x = "", y = "Incorporation rate") 
+    labs(x = "", y = "Incorporation rate")
     p
 }
 ```
@@ -365,16 +365,16 @@ are computed with the `combineFeatures` function (see
 
 ```{r combinefeatures}
 fData(psm)$modseq <- ## pep seq + PTM
-    paste(fData(psm)$Peptide_Sequence, 
+    paste(fData(psm)$Peptide_Sequence,
           fData(psm)$Variable_Modifications, sep = "+")
 pep <- combineFeatures(psm,
-                       as.character(fData(psm)$Peptide_Sequence), 
+                       as.character(fData(psm)$Peptide_Sequence),
                        "median", verbose = FALSE)
 modpep <- combineFeatures(psm,
                           fData(psm)$modseq,
                           "median", verbose = FALSE)
 prot <- combineFeatures(psm,
-                        as.character(fData(psm)$Protein_Accession), 
+                        as.character(fData(psm)$Protein_Accession),
                         "median", verbose = FALSE)
 ```
 
@@ -419,7 +419,7 @@ show(qclfc) <- function(object) {
     cat(" * Peptide log2 fold-changes\n")
     print(summary(qcdata(object, "lfc.pep")))
     cat(" * Protein log2 fold-changes\n")
-    print(summary(qcdata(object, "lfc.prot")))    
+    print(summary(qcdata(object, "lfc.prot")))
     invisible(NULL)
 }
 plot(qclfc) <- function(object) {
@@ -427,7 +427,7 @@ plot(qclfc) <- function(object) {
     plot(density(qcdata(object, "lfc.psm")),
          main = "", sub = "", col = "red",
          ylab = "", lwd = 2,
-         xlab = expression(log[2]~fold-change))    
+         xlab = expression(log[2]~fold-change))
     lines(density(qcdata(object, "lfc.modpep")),
           col = "steelblue", lwd = 2)
     lines(density(qcdata(object, "lfc.pep")),
@@ -435,7 +435,7 @@ plot(qclfc) <- function(object) {
     lines(density(qcdata(object, "lfc.prot")),
           col = "orange")
     abline(h = 0, col = "grey")
-    abline(v = 0, lty = "dotted")    
+    abline(v = 0, lty = "dotted")
     rect(x[1], -1, x[2], 1, col = "#EE000030",
          border = NA)
     abline(v = median(qcdata(object, "lfc.psm")),
@@ -473,7 +473,7 @@ qcdata(qcnb, "peptab") <-
     table(fData(psm)$Peptide_Sequence)
 qcdata(qcnb, "modpeptab") <-
     table(fData(psm)$modseq)
-qcdata(qcnb, "upep.per.prot") <- 
+qcdata(qcnb, "upep.per.prot") <-
     fData(psm)$Number_Of_Unique_Peptides
 ```
 
@@ -545,32 +545,32 @@ The report generation is handled by dedicated packages, in particular
 ## Custom reports
 
 
-### Templates
+<!-- ### Templates -->
 
-It is possible to customise reports for any of the existing types. The
-generation of the pdf report is based on a `tex` template,
-`knitr-template.Rnw`, that is available with the package (you can find
-it with `system.file("templates", "knitr-template.Rnw", package =
-"qcmetrics")`). The `qcReport` method accepts the path to a custom
-`template` as argument.
+<!-- It is possible to customise reports for any of the existing types. The -->
+<!-- generation of the pdf report is based on a `tex` template, -->
+<!-- `knitr-template.Rnw`, that is available with the package (you can find -->
+<!-- it with `system.file("templates", "knitr-template.Rnw", package = -->
+<!-- "qcmetrics")`). The `qcReport` method accepts the path to a custom -->
+<!-- `template` as argument. -->
 
-The template corresponds to a LaTeX preamble with the inclusion of two
-variables that are passed to the `qcReport` and used to customise the
-template: the author's name and the title of the report. The former is
-defaulted to the system username with `Sys.getenv("USER")` and the
-later is a simple character. The `qcReport` function also
-automatically generates summary and session information sections. The
-core of the QC report, i.e the sections corresponding the the
-individual `QcMetric` instances bundled in a `QcMetrics` input
-(described in more details below) is then inserted into the template
-and weaved, or more specifically `knit`'ted into a tex document that
-is (if `type=pdf`) compiled into a pdf document.
+<!-- The template corresponds to a LaTeX preamble with the inclusion of two -->
+<!-- variables that are passed to the `qcReport` and used to customise the -->
+<!-- template: the author's name and the title of the report. The former is -->
+<!-- defaulted to the system username with `Sys.getenv("USER")` and the -->
+<!-- later is a simple character. The `qcReport` function also -->
+<!-- automatically generates summary and session information sections. The -->
+<!-- core of the QC report, i.e the sections corresponding the the -->
+<!-- individual `QcMetric` instances bundled in a `QcMetrics` input -->
+<!-- (described in more details below) is then inserted into the template -->
+<!-- and weaved, or more specifically `knit`'ted into a tex document that -->
+<!-- is (if `type=pdf`) compiled into a pdf document. -->
 
-The generation of the html report is enabled by the creation of a R
-markdown file (Rmd) that is then converted with `knitr` and `markdown`
-into html. The Rmd syntax being much simpler, no Rmd template is
-needed. It is possible to customise the final html output by providing
-a css definition as `template` argument when calling `qcReport`.
+<!-- The generation of the html report is enabled by the creation of a R -->
+<!-- markdown file (Rmd) that is then converted with `knitr` and `markdown` -->
+<!-- into html. The Rmd syntax being much simpler, no Rmd template is -->
+<!-- needed. It is possible to customise the final html output by providing -->
+<!-- a css definition as `template` argument when calling `qcReport`. -->
 
 ### QcMetric sections
 
@@ -624,7 +624,7 @@ browseURL(example_reports("custom"))
 ## New report types
 
 
-A reporting function is a function that 
+A reporting function is a function that
 
 
 - Converts the appropriate QC item sections (for example the
@@ -706,7 +706,7 @@ packaging mechanism.
 N15 data and Andrzej Oles for helpful comments and suggestions about
 the package and this document.
 
-# Session information {#sec:sessionInfo} 
+# Session information {#sec:sessionInfo}
 
 All software and respective versions used to produce this document are
 listed below.
@@ -714,4 +714,4 @@ listed below.
 ```{r si}
 sessionInfo()
 ```
-# References 
+# References

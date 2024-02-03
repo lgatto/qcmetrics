@@ -16,7 +16,7 @@
   The \code{qcReport} method generates report in various formats taking
   a \code{\linkS4class{QcMetrics}} instance as input. Each individual
   quality control item produces a section with description of the item
-  and a assessment figure.  
+  and a assessment figure.
 }
 
 
@@ -37,23 +37,22 @@
 \section{Methods}{
   \describe{
     \item{\code{signature(
-	object = "QcMetrics",
-	reportname = "character",
-	type = "character",
-	author = "character",
-	title = "character",
-	metadata = "logical",
-	toc = "logical",
-	summary = "logical",
-	sessioninfo = "logical",
-	template = "character",
-	clean = "logical",
-	quiet = "logical",
-	reporter,
-	qcto,
-	...)}}{
+        object = "QcMetrics",
+        reportname = "character",
+        type = "character",
+        author = "character",
+        title = "character",
+        metadata = "logical",
+        toc = "logical",
+        summary = "logical",
+        sessioninfo = "logical",
+        clean = "logical",
+        quiet = "logical",
+        reporter,
+        qcto,
+        ...)}}{
       generates a report for the \code{\link{QcMetrics}}
-      \code{object}. The report will be named according the 
+      \code{object}. The report will be named according the
       \code{reportname} (default is \code{qcreprt})and \code{type}, the
       latter defining the output format and the extension. Possible
       types are \code{pdf} (default), "tex", "Rmd", "html" (all
@@ -66,12 +65,11 @@
       \code{toc}, \code{metadata}, \code{summary} and
       \code{sessioninformation} arguments. The metadata section is
       added to the report when present and the other have \code{TRUE} as
-      default. 
-      
-      It is possible to supply custom templates using the
-      \code{template} arguments. Intermediate files are deleted, unless 
-      \code{clean} is set to \code{FALSE} and verbose output can be turned
-      on by setting \code{quiet} to \code{FALSE}. 
+      default.
+
+      Intermediate files are deleted, unless \code{clean} is set to
+      \code{FALSE} and verbose output can be turned on by setting
+      \code{quiet} to \code{FALSE}.
 
       The \code{reporter} and \code{qcto} arguments are used to convert
       \code{QcMetric} and \code{QcMetrics} objects into report
@@ -79,10 +77,10 @@
 
       Addition parameters can be passed to inner functions. For the
       \code{pdf} report, passed to \code{texi2pdf}; for \code{html},
-      passed to \code{markdown::markdownToHTML}. 
+      passed to \code{markdown::markdownToHTML}.
 
       The method invisibly returns the name of the report that was
-      generated. 
+      generated.
     }
   }
 }
@@ -107,23 +105,6 @@ html <- qcReport(qcm, reportname = report, type = "html")
 html
 if (interactive())
     browseURL(html)
-
-## using a custom css templates
-writeLines("
-body {
-    font-size: 14pt;
-    width: 650px;
-    background: #789855;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
-    margin-bottom: 20;
-    text-align:justify;
-}", con = "style.css")
-
-html2 <- qcReport(qcm, reportname = "customreport", template = "style.css", type = "html")
-if (interactive())
-    browseURL(html2)
 }
 
 \keyword{methods}
